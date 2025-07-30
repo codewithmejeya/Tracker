@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   CheckCircle,
   XCircle,
@@ -11,13 +11,13 @@ import {
   DollarSign,
   User,
   FileText,
-  AlertCircle
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
+  AlertCircle,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -25,29 +25,25 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from '@/components/ui/alert';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
-import Layout from '@/components/Layout';
+} from "@/components/ui/select";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import Layout from "@/components/Layout";
 
 interface PendingExpense {
   id: string;
@@ -59,45 +55,50 @@ interface PendingExpense {
   description: string;
   receiptUrl?: string;
   submittedDate: string;
-  urgency: 'low' | 'medium' | 'high';
+  urgency: "low" | "medium" | "high";
   daysWaiting: number;
   createdAt: string;
 }
 
 interface ApprovalAction {
   expenseId: string;
-  action: 'approve' | 'reject';
+  action: "approve" | "reject";
   comments: string;
   amount?: number; // for partial approvals
 }
 
 export default function ExpenseApproval() {
   const [pendingExpenses, setPendingExpenses] = useState<PendingExpense[]>([]);
-  const [selectedExpenses, setSelectedExpenses] = useState<Set<string>>(new Set());
-  const [searchTerm, setSearchTerm] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState<string>('all');
-  const [urgencyFilter, setUrgencyFilter] = useState<string>('all');
+  const [selectedExpenses, setSelectedExpenses] = useState<Set<string>>(
+    new Set(),
+  );
+  const [searchTerm, setSearchTerm] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [urgencyFilter, setUrgencyFilter] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
-  const [reviewingExpense, setReviewingExpense] = useState<PendingExpense | null>(null);
-  const [approvalComments, setApprovalComments] = useState('');
-  const [approvalAction, setApprovalAction] = useState<'approve' | 'reject'>('approve');
-  const [partialAmount, setPartialAmount] = useState('');
+  const [reviewingExpense, setReviewingExpense] =
+    useState<PendingExpense | null>(null);
+  const [approvalComments, setApprovalComments] = useState("");
+  const [approvalAction, setApprovalAction] = useState<"approve" | "reject">(
+    "approve",
+  );
+  const [partialAmount, setPartialAmount] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
 
   const itemsPerPage = 10;
 
   const categories = [
-    'Travel & Transportation',
-    'Meals & Entertainment',
-    'Office Supplies',
-    'Communications',
-    'Training & Development',
-    'Client Meeting',
-    'Software & Subscriptions',
-    'Equipment & Hardware',
-    'Other'
+    "Travel & Transportation",
+    "Meals & Entertainment",
+    "Office Supplies",
+    "Communications",
+    "Training & Development",
+    "Client Meeting",
+    "Software & Subscriptions",
+    "Equipment & Hardware",
+    "Other",
   ];
 
   useEffect(() => {
@@ -106,12 +107,12 @@ export default function ExpenseApproval() {
 
   const fetchPendingExpenses = async () => {
     try {
-      const response = await fetch('/api/expenses/pending-approval', {
+      const response = await fetch("/api/expenses/pending-approval", {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setPendingExpenses(data);
@@ -119,74 +120,74 @@ export default function ExpenseApproval() {
         // Fallback mock data
         setPendingExpenses([
           {
-            id: 'EXP001',
-            employeeName: 'Rajesh Kumar',
-            employeeId: 'EMP001',
-            department: 'Sales',
-            category: 'Travel & Transportation',
+            id: "EXP001",
+            employeeName: "Rajesh Kumar",
+            employeeId: "EMP001",
+            department: "Sales",
+            category: "Travel & Transportation",
             amount: 2500,
-            description: 'Flight tickets for client meeting in Mumbai',
+            description: "Flight tickets for client meeting in Mumbai",
             submittedDate: new Date().toISOString(),
-            urgency: 'high',
+            urgency: "high",
             daysWaiting: 1,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
           },
           {
-            id: 'EXP003',
-            employeeName: 'Arun Patel',
-            employeeId: 'EMP003',
-            department: 'Marketing',
-            category: 'Meals & Entertainment',
+            id: "EXP003",
+            employeeName: "Arun Patel",
+            employeeId: "EMP003",
+            department: "Marketing",
+            category: "Meals & Entertainment",
             amount: 1200,
-            description: 'Client dinner at Taj Hotel',
+            description: "Client dinner at Taj Hotel",
             submittedDate: new Date(Date.now() - 172800000).toISOString(),
-            urgency: 'medium',
+            urgency: "medium",
             daysWaiting: 2,
-            createdAt: new Date(Date.now() - 172800000).toISOString()
+            createdAt: new Date(Date.now() - 172800000).toISOString(),
           },
           {
-            id: 'EXP006',
-            employeeName: 'Lakshmi Narayanan',
-            employeeId: 'EMP006',
-            department: 'IT',
-            category: 'Software & Subscriptions',
+            id: "EXP006",
+            employeeName: "Lakshmi Narayanan",
+            employeeId: "EMP006",
+            department: "IT",
+            category: "Software & Subscriptions",
             amount: 5000,
-            description: 'Annual software license renewal',
+            description: "Annual software license renewal",
             submittedDate: new Date(Date.now() - 259200000).toISOString(),
-            urgency: 'low',
+            urgency: "low",
             daysWaiting: 3,
-            createdAt: new Date(Date.now() - 259200000).toISOString()
+            createdAt: new Date(Date.now() - 259200000).toISOString(),
           },
           {
-            id: 'EXP007',
-            employeeName: 'Kavitha Reddy',
-            employeeId: 'EMP007',
-            department: 'HR',
-            category: 'Training & Development',
+            id: "EXP007",
+            employeeName: "Kavitha Reddy",
+            employeeId: "EMP007",
+            department: "HR",
+            category: "Training & Development",
             amount: 8500,
-            description: 'Leadership training program',
+            description: "Leadership training program",
             submittedDate: new Date(Date.now() - 345600000).toISOString(),
-            urgency: 'medium',
+            urgency: "medium",
             daysWaiting: 4,
-            createdAt: new Date(Date.now() - 345600000).toISOString()
+            createdAt: new Date(Date.now() - 345600000).toISOString(),
           },
           {
-            id: 'EXP008',
-            employeeName: 'Ravi Shankar',
-            employeeId: 'EMP008',
-            department: 'Operations',
-            category: 'Equipment & Hardware',
+            id: "EXP008",
+            employeeName: "Ravi Shankar",
+            employeeId: "EMP008",
+            department: "Operations",
+            category: "Equipment & Hardware",
             amount: 12000,
-            description: 'New laptop for development work',
+            description: "New laptop for development work",
             submittedDate: new Date(Date.now() - 432000000).toISOString(),
-            urgency: 'high',
+            urgency: "high",
             daysWaiting: 5,
-            createdAt: new Date(Date.now() - 432000000).toISOString()
-          }
+            createdAt: new Date(Date.now() - 432000000).toISOString(),
+          },
         ]);
       }
     } catch (error) {
-      console.error('Error fetching pending expenses:', error);
+      console.error("Error fetching pending expenses:", error);
       toast({
         title: "Error",
         description: "Failed to fetch pending expenses.",
@@ -195,29 +196,34 @@ export default function ExpenseApproval() {
     }
   };
 
-  const handleApprovalAction = async (expense: PendingExpense, action: 'approve' | 'reject', comments: string, amount?: number) => {
+  const handleApprovalAction = async (
+    expense: PendingExpense,
+    action: "approve" | "reject",
+    comments: string,
+    amount?: number,
+  ) => {
     setIsProcessing(true);
-    
+
     try {
       const response = await fetch(`/api/expenses/${expense.id}/${action}`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
           comments,
-          approvedAmount: amount || expense.amount
-        })
+          approvedAmount: amount || expense.amount,
+        }),
       });
 
       if (response.ok) {
         fetchPendingExpenses();
         setIsReviewDialogOpen(false);
         setReviewingExpense(null);
-        setApprovalComments('');
-        setPartialAmount('');
-        
+        setApprovalComments("");
+        setPartialAmount("");
+
         toast({
           title: "Success",
           description: `Expense ${action}d successfully.`,
@@ -237,7 +243,7 @@ export default function ExpenseApproval() {
     }
   };
 
-  const handleBulkApproval = async (action: 'approve' | 'reject') => {
+  const handleBulkApproval = async (action: "approve" | "reject") => {
     if (selectedExpenses.size === 0) {
       toast({
         title: "Warning",
@@ -248,10 +254,10 @@ export default function ExpenseApproval() {
     }
 
     setIsProcessing(true);
-    
+
     try {
-      const promises = Array.from(selectedExpenses).map(expenseId => {
-        const expense = pendingExpenses.find(e => e.id === expenseId);
+      const promises = Array.from(selectedExpenses).map((expenseId) => {
+        const expense = pendingExpenses.find((e) => e.id === expenseId);
         if (expense) {
           return handleApprovalAction(expense, action, `Bulk ${action}al`);
         }
@@ -260,7 +266,7 @@ export default function ExpenseApproval() {
 
       await Promise.all(promises);
       setSelectedExpenses(new Set());
-      
+
       toast({
         title: "Success",
         description: `${selectedExpenses.size} expenses ${action}d successfully.`,
@@ -279,16 +285,16 @@ export default function ExpenseApproval() {
 
   const handleReview = (expense: PendingExpense) => {
     setReviewingExpense(expense);
-    setApprovalAction('approve');
-    setApprovalComments('');
-    setPartialAmount('');
+    setApprovalAction("approve");
+    setApprovalComments("");
+    setPartialAmount("");
     setIsReviewDialogOpen(true);
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
@@ -296,11 +302,11 @@ export default function ExpenseApproval() {
 
   const getUrgencyBadge = (urgency: string) => {
     switch (urgency) {
-      case 'high':
+      case "high":
         return <Badge className="bg-red-100 text-red-800">High</Badge>;
-      case 'medium':
+      case "medium":
         return <Badge className="bg-yellow-100 text-yellow-800">Medium</Badge>;
-      case 'low':
+      case "low":
         return <Badge className="bg-green-100 text-green-800">Low</Badge>;
       default:
         return <Badge>{urgency}</Badge>;
@@ -309,37 +315,52 @@ export default function ExpenseApproval() {
 
   const getUrgencyIcon = (urgency: string) => {
     switch (urgency) {
-      case 'high':
+      case "high":
         return <AlertCircle className="w-4 h-4 text-red-600" />;
-      case 'medium':
+      case "medium":
         return <Clock className="w-4 h-4 text-yellow-600" />;
-      case 'low':
+      case "low":
         return <Clock className="w-4 h-4 text-green-600" />;
       default:
         return <Clock className="w-4 h-4 text-gray-600" />;
     }
   };
 
-  const filteredExpenses = pendingExpenses.filter(expense => {
-    const matchesSearch = expense.employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         expense.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         expense.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         expense.id.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesCategory = categoryFilter === 'all' || expense.category === categoryFilter;
-    const matchesUrgency = urgencyFilter === 'all' || expense.urgency === urgencyFilter;
-    
+  const filteredExpenses = pendingExpenses.filter((expense) => {
+    const matchesSearch =
+      expense.employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      expense.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      expense.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      expense.id.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesCategory =
+      categoryFilter === "all" || expense.category === categoryFilter;
+    const matchesUrgency =
+      urgencyFilter === "all" || expense.urgency === urgencyFilter;
+
     return matchesSearch && matchesCategory && matchesUrgency;
   });
 
   const totalPages = Math.ceil(filteredExpenses.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedExpenses = filteredExpenses.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedExpenses = filteredExpenses.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
 
-  const totalPendingAmount = pendingExpenses.reduce((sum, expense) => sum + expense.amount, 0);
-  const avgProcessingTime = pendingExpenses.length > 0 
-    ? Math.round(pendingExpenses.reduce((sum, expense) => sum + expense.daysWaiting, 0) / pendingExpenses.length)
-    : 0;
+  const totalPendingAmount = pendingExpenses.reduce(
+    (sum, expense) => sum + expense.amount,
+    0,
+  );
+  const avgProcessingTime =
+    pendingExpenses.length > 0
+      ? Math.round(
+          pendingExpenses.reduce(
+            (sum, expense) => sum + expense.daysWaiting,
+            0,
+          ) / pendingExpenses.length,
+        )
+      : 0;
 
   return (
     <Layout>
@@ -347,24 +368,28 @@ export default function ExpenseApproval() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Expense Approval</h1>
-            <p className="text-gray-600">Review and approve pending expense submissions</p>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Expense Approval
+            </h1>
+            <p className="text-gray-600">
+              Review and approve pending expense submissions
+            </p>
           </div>
           <div className="flex space-x-2">
             <Button variant="outline">
               <Download className="w-4 h-4 mr-2" />
               Export
             </Button>
-            <Button 
-              onClick={() => handleBulkApproval('approve')}
+            <Button
+              onClick={() => handleBulkApproval("approve")}
               className="bg-green-600 hover:bg-green-700"
               disabled={selectedExpenses.size === 0 || isProcessing}
             >
               <CheckCircle className="w-4 h-4 mr-2" />
               Bulk Approve
             </Button>
-            <Button 
-              onClick={() => handleBulkApproval('reject')}
+            <Button
+              onClick={() => handleBulkApproval("reject")}
               variant="destructive"
               disabled={selectedExpenses.size === 0 || isProcessing}
             >
@@ -378,45 +403,59 @@ export default function ExpenseApproval() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Pending Approval</CardTitle>
+              <CardTitle className="text-sm font-medium text-gray-600">
+                Pending Approval
+              </CardTitle>
               <Clock className="h-4 w-4 text-gray-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-orange-600">{pendingExpenses.length}</div>
+              <div className="text-2xl font-bold text-orange-600">
+                {pendingExpenses.length}
+              </div>
               <p className="text-xs text-gray-500 mt-1">expenses waiting</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Total Amount</CardTitle>
+              <CardTitle className="text-sm font-medium text-gray-600">
+                Total Amount
+              </CardTitle>
               <DollarSign className="h-4 w-4 text-gray-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-600">{formatCurrency(totalPendingAmount)}</div>
+              <div className="text-2xl font-bold text-blue-600">
+                {formatCurrency(totalPendingAmount)}
+              </div>
               <p className="text-xs text-gray-500 mt-1">pending approval</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Avg. Processing</CardTitle>
+              <CardTitle className="text-sm font-medium text-gray-600">
+                Avg. Processing
+              </CardTitle>
               <Calendar className="h-4 w-4 text-gray-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-gray-900">{avgProcessingTime} days</div>
+              <div className="text-2xl font-bold text-gray-900">
+                {avgProcessingTime} days
+              </div>
               <p className="text-xs text-gray-500 mt-1">average waiting time</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">High Priority</CardTitle>
+              <CardTitle className="text-sm font-medium text-gray-600">
+                High Priority
+              </CardTitle>
               <AlertCircle className="h-4 w-4 text-gray-400" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-red-600">
-                {pendingExpenses.filter(e => e.urgency === 'high').length}
+                {pendingExpenses.filter((e) => e.urgency === "high").length}
               </div>
               <p className="text-xs text-gray-500 mt-1">urgent approvals</p>
             </CardContent>
@@ -424,13 +463,23 @@ export default function ExpenseApproval() {
         </div>
 
         {/* High Priority Alert */}
-        {pendingExpenses.filter(e => e.urgency === 'high' && e.daysWaiting > 2).length > 0 && (
+        {pendingExpenses.filter(
+          (e) => e.urgency === "high" && e.daysWaiting > 2,
+        ).length > 0 && (
           <Alert className="border-red-200 bg-red-50">
             <AlertCircle className="h-4 w-4 text-red-600" />
-            <AlertTitle className="text-red-800">Urgent Attention Required</AlertTitle>
+            <AlertTitle className="text-red-800">
+              Urgent Attention Required
+            </AlertTitle>
             <AlertDescription className="text-red-700">
-              You have {pendingExpenses.filter(e => e.urgency === 'high' && e.daysWaiting > 2).length} high-priority 
-              expenses waiting for more than 2 days. Please review immediately.
+              You have{" "}
+              {
+                pendingExpenses.filter(
+                  (e) => e.urgency === "high" && e.daysWaiting > 2,
+                ).length
+              }{" "}
+              high-priority expenses waiting for more than 2 days. Please review
+              immediately.
             </AlertDescription>
           </Alert>
         )}
@@ -447,7 +496,7 @@ export default function ExpenseApproval() {
                   className="pl-10 w-64"
                 />
               </div>
-              
+
               <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                 <SelectTrigger className="w-48">
                   <SelectValue placeholder="Category" />
@@ -486,11 +535,15 @@ export default function ExpenseApproval() {
                   if (selectedExpenses.size === filteredExpenses.length) {
                     setSelectedExpenses(new Set());
                   } else {
-                    setSelectedExpenses(new Set(filteredExpenses.map(e => e.id)));
+                    setSelectedExpenses(
+                      new Set(filteredExpenses.map((e) => e.id)),
+                    );
                   }
                 }}
               >
-                {selectedExpenses.size === filteredExpenses.length ? 'Deselect All' : 'Select All'}
+                {selectedExpenses.size === filteredExpenses.length
+                  ? "Deselect All"
+                  : "Select All"}
               </Button>
             </div>
           </div>
@@ -505,10 +558,17 @@ export default function ExpenseApproval() {
                   <input
                     type="checkbox"
                     className="rounded"
-                    checked={selectedExpenses.size === paginatedExpenses.length && paginatedExpenses.length > 0}
+                    checked={
+                      selectedExpenses.size === paginatedExpenses.length &&
+                      paginatedExpenses.length > 0
+                    }
                     onChange={(e) => {
                       if (e.target.checked) {
-                        setSelectedExpenses(new Set(paginatedExpenses.map(expense => expense.id)));
+                        setSelectedExpenses(
+                          new Set(
+                            paginatedExpenses.map((expense) => expense.id),
+                          ),
+                        );
                       } else {
                         setSelectedExpenses(new Set());
                       }
@@ -526,7 +586,10 @@ export default function ExpenseApproval() {
             </TableHeader>
             <TableBody>
               {paginatedExpenses.map((expense) => (
-                <TableRow key={expense.id} className={expense.urgency === 'high' ? 'bg-red-50' : ''}>
+                <TableRow
+                  key={expense.id}
+                  className={expense.urgency === "high" ? "bg-red-50" : ""}
+                >
                   <TableCell>
                     <input
                       type="checkbox"
@@ -546,17 +609,23 @@ export default function ExpenseApproval() {
                   <TableCell>
                     <div>
                       <div className="font-mono text-sm">{expense.id}</div>
-                      <div className="text-sm text-gray-500 truncate max-w-40">{expense.description}</div>
+                      <div className="text-sm text-gray-500 truncate max-w-40">
+                        {expense.description}
+                      </div>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div>
                       <div className="font-medium">{expense.employeeName}</div>
-                      <div className="text-sm text-gray-500">{expense.department}</div>
+                      <div className="text-sm text-gray-500">
+                        {expense.department}
+                      </div>
                     </div>
                   </TableCell>
                   <TableCell>{expense.category}</TableCell>
-                  <TableCell className="font-semibold">{formatCurrency(expense.amount)}</TableCell>
+                  <TableCell className="font-semibold">
+                    {formatCurrency(expense.amount)}
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-2">
                       {getUrgencyIcon(expense.urgency)}
@@ -564,7 +633,11 @@ export default function ExpenseApproval() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge variant={expense.daysWaiting > 3 ? "destructive" : "secondary"}>
+                    <Badge
+                      variant={
+                        expense.daysWaiting > 3 ? "destructive" : "secondary"
+                      }
+                    >
                       {expense.daysWaiting} days
                     </Badge>
                   </TableCell>
@@ -580,7 +653,13 @@ export default function ExpenseApproval() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleApprovalAction(expense, 'approve', 'Quick approval')}
+                        onClick={() =>
+                          handleApprovalAction(
+                            expense,
+                            "approve",
+                            "Quick approval",
+                          )
+                        }
                         className="text-green-600 hover:text-green-800"
                         disabled={isProcessing}
                       >
@@ -589,7 +668,13 @@ export default function ExpenseApproval() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleApprovalAction(expense, 'reject', 'Quick rejection')}
+                        onClick={() =>
+                          handleApprovalAction(
+                            expense,
+                            "reject",
+                            "Quick rejection",
+                          )
+                        }
                         className="text-red-600 hover:text-red-800"
                         disabled={isProcessing}
                       >
@@ -606,36 +691,44 @@ export default function ExpenseApproval() {
           <div className="px-6 py-4 border-t border-gray-200">
             <div className="flex items-center justify-between">
               <div className="text-sm text-gray-700">
-                Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, filteredExpenses.length)} of {filteredExpenses.length} expenses
+                Showing {startIndex + 1} to{" "}
+                {Math.min(startIndex + itemsPerPage, filteredExpenses.length)}{" "}
+                of {filteredExpenses.length} expenses
               </div>
               <div className="flex items-center space-x-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(1, prev - 1))
+                  }
                   disabled={currentPage === 1}
                 >
                   Previous
                 </Button>
-                
+
                 <div className="flex items-center space-x-1">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                    <Button
-                      key={page}
-                      variant={currentPage === page ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setCurrentPage(page)}
-                      className="w-8 h-8 p-0"
-                    >
-                      {page}
-                    </Button>
-                  ))}
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (page) => (
+                      <Button
+                        key={page}
+                        variant={currentPage === page ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setCurrentPage(page)}
+                        className="w-8 h-8 p-0"
+                      >
+                        {page}
+                      </Button>
+                    ),
+                  )}
                 </div>
-                
+
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+                  }
                   disabled={currentPage === totalPages}
                 >
                   Next
@@ -656,25 +749,44 @@ export default function ExpenseApproval() {
                 <div className="grid grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <div>
-                      <h3 className="font-semibold text-lg">{reviewingExpense.id}</h3>
-                      <p className="text-gray-600">{reviewingExpense.category}</p>
+                      <h3 className="font-semibold text-lg">
+                        {reviewingExpense.id}
+                      </h3>
+                      <p className="text-gray-600">
+                        {reviewingExpense.category}
+                      </p>
                     </div>
-                    
+
                     <div>
-                      <h4 className="font-medium text-gray-900 mb-2">Employee Information</h4>
+                      <h4 className="font-medium text-gray-900 mb-2">
+                        Employee Information
+                      </h4>
                       <div className="space-y-1 text-sm">
-                        <div><span className="text-gray-600">Name:</span> {reviewingExpense.employeeName}</div>
-                        <div><span className="text-gray-600">ID:</span> {reviewingExpense.employeeId}</div>
-                        <div><span className="text-gray-600">Department:</span> {reviewingExpense.department}</div>
+                        <div>
+                          <span className="text-gray-600">Name:</span>{" "}
+                          {reviewingExpense.employeeName}
+                        </div>
+                        <div>
+                          <span className="text-gray-600">ID:</span>{" "}
+                          {reviewingExpense.employeeId}
+                        </div>
+                        <div>
+                          <span className="text-gray-600">Department:</span>{" "}
+                          {reviewingExpense.department}
+                        </div>
                       </div>
                     </div>
-                    
+
                     <div>
-                      <h4 className="font-medium text-gray-900 mb-2">Description</h4>
-                      <p className="text-gray-700 text-sm">{reviewingExpense.description}</p>
+                      <h4 className="font-medium text-gray-900 mb-2">
+                        Description
+                      </h4>
+                      <p className="text-gray-700 text-sm">
+                        {reviewingExpense.description}
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-4">
                     <div className="bg-gray-50 p-4 rounded-lg">
                       <div className="text-center">
@@ -687,33 +799,51 @@ export default function ExpenseApproval() {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div>
-                      <h4 className="font-medium text-gray-900 mb-2">Timeline</h4>
+                      <h4 className="font-medium text-gray-900 mb-2">
+                        Timeline
+                      </h4>
                       <div className="space-y-1 text-sm">
-                        <div><span className="text-gray-600">Submitted:</span> {new Date(reviewingExpense.submittedDate).toLocaleDateString('en-IN')}</div>
-                        <div><span className="text-gray-600">Waiting:</span> {reviewingExpense.daysWaiting} days</div>
+                        <div>
+                          <span className="text-gray-600">Submitted:</span>{" "}
+                          {new Date(
+                            reviewingExpense.submittedDate,
+                          ).toLocaleDateString("en-IN")}
+                        </div>
+                        <div>
+                          <span className="text-gray-600">Waiting:</span>{" "}
+                          {reviewingExpense.daysWaiting} days
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <div className="border-t pt-6">
-                  <h4 className="font-medium text-gray-900 mb-4">Approval Decision</h4>
-                  
+                  <h4 className="font-medium text-gray-900 mb-4">
+                    Approval Decision
+                  </h4>
+
                   <div className="space-y-4">
                     <div className="flex space-x-4">
                       <Button
-                        variant={approvalAction === 'approve' ? 'default' : 'outline'}
-                        onClick={() => setApprovalAction('approve')}
+                        variant={
+                          approvalAction === "approve" ? "default" : "outline"
+                        }
+                        onClick={() => setApprovalAction("approve")}
                         className="flex-1"
                       >
                         <CheckCircle className="w-4 h-4 mr-2" />
                         Approve
                       </Button>
                       <Button
-                        variant={approvalAction === 'reject' ? 'destructive' : 'outline'}
-                        onClick={() => setApprovalAction('reject')}
+                        variant={
+                          approvalAction === "reject"
+                            ? "destructive"
+                            : "outline"
+                        }
+                        onClick={() => setApprovalAction("reject")}
                         className="flex-1"
                       >
                         <XCircle className="w-4 h-4 mr-2" />
@@ -721,9 +851,11 @@ export default function ExpenseApproval() {
                       </Button>
                     </div>
 
-                    {approvalAction === 'approve' && (
+                    {approvalAction === "approve" && (
                       <div>
-                        <Label htmlFor="partialAmount">Approved Amount (optional)</Label>
+                        <Label htmlFor="partialAmount">
+                          Approved Amount (optional)
+                        </Label>
                         <Input
                           id="partialAmount"
                           type="number"
@@ -747,24 +879,38 @@ export default function ExpenseApproval() {
                     </div>
 
                     <div className="flex justify-end space-x-2">
-                      <Button 
+                      <Button
                         variant="outline"
                         onClick={() => setIsReviewDialogOpen(false)}
                       >
                         Cancel
                       </Button>
-                      <Button 
-                        onClick={() => handleApprovalAction(
-                          reviewingExpense, 
-                          approvalAction, 
-                          approvalComments,
-                          partialAmount ? parseFloat(partialAmount) : undefined
-                        )}
-                        className={approvalAction === 'approve' ? 'bg-green-600 hover:bg-green-700' : ''}
-                        variant={approvalAction === 'reject' ? 'destructive' : 'default'}
+                      <Button
+                        onClick={() =>
+                          handleApprovalAction(
+                            reviewingExpense,
+                            approvalAction,
+                            approvalComments,
+                            partialAmount
+                              ? parseFloat(partialAmount)
+                              : undefined,
+                          )
+                        }
+                        className={
+                          approvalAction === "approve"
+                            ? "bg-green-600 hover:bg-green-700"
+                            : ""
+                        }
+                        variant={
+                          approvalAction === "reject"
+                            ? "destructive"
+                            : "default"
+                        }
                         disabled={isProcessing}
                       >
-                        {isProcessing ? 'Processing...' : `${approvalAction === 'approve' ? 'Approve' : 'Reject'} Expense`}
+                        {isProcessing
+                          ? "Processing..."
+                          : `${approvalAction === "approve" ? "Approve" : "Reject"} Expense`}
                       </Button>
                     </div>
                   </div>

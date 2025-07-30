@@ -8,7 +8,7 @@ import {
   getBranchById,
   createBranch,
   updateBranch,
-  deleteBranch
+  deleteBranch,
 } from "./routes/branches";
 import {
   getAllExpenses,
@@ -18,12 +18,9 @@ import {
   updateExpense,
   deleteExpense,
   approveExpense,
-  rejectExpense
+  rejectExpense,
 } from "./routes/expenses";
-import {
-  getDashboardStats,
-  getRecentExpenses
-} from "./routes/dashboard";
+import { getDashboardStats, getRecentExpenses } from "./routes/dashboard";
 
 export function createServer() {
   const app = express();

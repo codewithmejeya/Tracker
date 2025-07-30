@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Building2,
@@ -10,17 +10,17 @@ import {
   LogOut,
   User,
   Settings,
-  Bell
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
+  Bell,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Badge } from '@/components/ui/badge';
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -32,54 +32,65 @@ export default function Layout({ children }: LayoutProps) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/');
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   const navigationItems = [
     {
-      name: 'Dashboard',
-      href: '/dashboard',
+      name: "Dashboard",
+      href: "/dashboard",
       icon: LayoutDashboard,
-      current: location.pathname === '/dashboard'
+      current: location.pathname === "/dashboard",
     },
     {
-      name: 'Master Data',
+      name: "Master Data",
       icon: Building2,
-      current: location.pathname.startsWith('/master'),
+      current: location.pathname.startsWith("/master"),
       submenu: [
         {
-          name: 'Branches',
-          href: '/master/branches',
-          current: location.pathname === '/master/branches'
-        }
-      ]
+          name: "Branches",
+          href: "/master/branches",
+          current: location.pathname === "/master/branches",
+        },
+      ],
     },
     {
-      name: 'Finance',
+      name: "Finance",
       icon: Receipt,
-      current: location.pathname.startsWith('/finance'),
+      current: location.pathname.startsWith("/finance"),
       submenu: [
         {
-          name: 'Expenses',
-          href: '/finance/expenses',
-          current: location.pathname === '/finance/expenses'
+          name: "Expenses",
+          href: "/finance/expenses",
+          current: location.pathname === "/finance/expenses",
         },
         {
-          name: 'Expense Approval',
-          href: '/finance/expense-approval',
-          current: location.pathname === '/finance/expense-approval'
-        }
-      ]
-    }
+          name: "Expense Approval",
+          href: "/finance/expense-approval",
+          current: location.pathname === "/finance/expense-approval",
+        },
+      ],
+    },
   ];
 
   const TrackerLogo = () => (
     <div className="flex items-center space-x-3">
       <div className="flex items-center justify-center w-10 h-10 bg-tracker-blue rounded-lg">
-        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          className="w-6 h-6"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <circle cx="12" cy="12" r="10" fill="white" />
-          <path d="M8 12l2 2 4-4" stroke="hsl(var(--tracker-blue))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path
+            d="M8 12l2 2 4-4"
+            stroke="hsl(var(--tracker-blue))"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </div>
       <div>
@@ -92,12 +103,21 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Mobile sidebar */}
-      <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
-        <div className="fixed inset-0 bg-black bg-opacity-25" onClick={() => setSidebarOpen(false)} />
+      <div
+        className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? "block" : "hidden"}`}
+      >
+        <div
+          className="fixed inset-0 bg-black bg-opacity-25"
+          onClick={() => setSidebarOpen(false)}
+        />
         <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-xl">
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
             <TrackerLogo />
-            <Button variant="ghost" size="sm" onClick={() => setSidebarOpen(false)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSidebarOpen(false)}
+            >
               <X className="w-5 h-5" />
             </Button>
           </div>
@@ -117,8 +137,8 @@ export default function Layout({ children }: LayoutProps) {
                           to={subItem.href}
                           className={`block px-3 py-2 text-sm rounded-md transition-colors ${
                             subItem.current
-                              ? 'bg-tracker-blue text-white'
-                              : 'text-gray-600 hover:bg-gray-100'
+                              ? "bg-tracker-blue text-white"
+                              : "text-gray-600 hover:bg-gray-100"
                           }`}
                           onClick={() => setSidebarOpen(false)}
                         >
@@ -132,8 +152,8 @@ export default function Layout({ children }: LayoutProps) {
                     to={item.href!}
                     className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                       item.current
-                        ? 'bg-tracker-blue text-white'
-                        : 'text-gray-700 hover:bg-gray-100'
+                        ? "bg-tracker-blue text-white"
+                        : "text-gray-700 hover:bg-gray-100"
                     }`}
                     onClick={() => setSidebarOpen(false)}
                   >
@@ -169,8 +189,8 @@ export default function Layout({ children }: LayoutProps) {
                           to={subItem.href}
                           className={`block px-3 py-2 text-sm rounded-md transition-colors ${
                             subItem.current
-                              ? 'bg-tracker-blue text-white'
-                              : 'text-gray-600 hover:bg-gray-100'
+                              ? "bg-tracker-blue text-white"
+                              : "text-gray-600 hover:bg-gray-100"
                           }`}
                         >
                           {subItem.name}
@@ -183,8 +203,8 @@ export default function Layout({ children }: LayoutProps) {
                     to={item.href!}
                     className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                       item.current
-                        ? 'bg-tracker-blue text-white'
-                        : 'text-gray-700 hover:bg-gray-100'
+                        ? "bg-tracker-blue text-white"
+                        : "text-gray-700 hover:bg-gray-100"
                     }`}
                   >
                     <item.icon className="w-5 h-5 mr-3" />
@@ -212,9 +232,11 @@ export default function Layout({ children }: LayoutProps) {
                 <Menu className="w-5 h-5" />
               </Button>
               <h2 className="text-lg font-semibold text-gray-900">
-                {navigationItems.find(item => item.current)?.name ||
-                 navigationItems.find(item => item.submenu?.some(sub => sub.current))?.submenu?.find(sub => sub.current)?.name ||
-                 'Tracker System'}
+                {navigationItems.find((item) => item.current)?.name ||
+                  navigationItems
+                    .find((item) => item.submenu?.some((sub) => sub.current))
+                    ?.submenu?.find((sub) => sub.current)?.name ||
+                  "Tracker System"}
               </h2>
             </div>
 
@@ -228,7 +250,10 @@ export default function Layout({ children }: LayoutProps) {
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center space-x-2">
+                  <Button
+                    variant="ghost"
+                    className="flex items-center space-x-2"
+                  >
                     <div className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full">
                       <User className="w-4 h-4" />
                     </div>
@@ -256,9 +281,7 @@ export default function Layout({ children }: LayoutProps) {
         </header>
 
         {/* Page content */}
-        <main className="p-6">
-          {children}
-        </main>
+        <main className="p-6">{children}</main>
       </div>
     </div>
   );

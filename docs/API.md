@@ -7,11 +7,13 @@ The Tracker Management System provides a RESTful API for managing users, branche
 ## Authentication
 
 ### Base URL
+
 ```
 http://localhost:8080/api
 ```
 
 ### Headers
+
 ```
 Content-Type: application/json
 Authorization: Bearer <jwt_token>  // For protected routes
@@ -20,9 +22,11 @@ Authorization: Bearer <jwt_token>  // For protected routes
 ## Authentication Endpoints
 
 ### POST /auth/login
+
 Authenticate a user and receive a JWT token.
 
 **Request Body:**
+
 ```json
 {
   "username": "string",
@@ -31,6 +35,7 @@ Authenticate a user and receive a JWT token.
 ```
 
 **Response (200):**
+
 ```json
 {
   "message": "Login successful",
@@ -48,13 +53,16 @@ Authenticate a user and receive a JWT token.
 ```
 
 **Error Responses:**
+
 - `400`: Missing username or password
 - `401`: Invalid credentials
 
 ### POST /auth/signup
+
 Register a new user account.
 
 **Request Body:**
+
 ```json
 {
   "fullName": "John Doe",
@@ -68,6 +76,7 @@ Register a new user account.
 ```
 
 **Response (201):**
+
 ```json
 {
   "message": "Account created successfully",
@@ -86,14 +95,17 @@ Register a new user account.
 ```
 
 **Error Responses:**
+
 - `400`: Validation error or duplicate username/email/employeeId
 
 ## Dashboard Endpoints
 
 ### GET /dashboard/stats
+
 Get dashboard statistics for the overview page.
 
 **Response (200):**
+
 ```json
 {
   "totalExpenses": 1547,
@@ -106,9 +118,11 @@ Get dashboard statistics for the overview page.
 ```
 
 ### GET /dashboard/recent-expenses
+
 Get recent expense activity for the dashboard.
 
 **Response (200):**
+
 ```json
 [
   {
@@ -125,14 +139,17 @@ Get recent expense activity for the dashboard.
 ## Branch Management Endpoints
 
 ### GET /branches
+
 Get all branches with optional filtering.
 
 **Query Parameters:**
+
 - `search` (optional): Search term for filtering
 - `page` (optional): Page number (default: 1)
 - `limit` (optional): Items per page (default: 10)
 
 **Response (200):**
+
 ```json
 [
   {
@@ -147,9 +164,11 @@ Get all branches with optional filtering.
 ```
 
 ### GET /branches/:id
+
 Get a specific branch by ID.
 
 **Response (200):**
+
 ```json
 {
   "id": "BR001",
@@ -162,12 +181,15 @@ Get a specific branch by ID.
 ```
 
 **Error Responses:**
+
 - `404`: Branch not found
 
 ### POST /branches
+
 Create a new branch.
 
 **Request Body:**
+
 ```json
 {
   "branchName": "North Branch",
@@ -177,6 +199,7 @@ Create a new branch.
 ```
 
 **Response (201):**
+
 ```json
 {
   "id": "BR006",
@@ -189,9 +212,11 @@ Create a new branch.
 ```
 
 ### PUT /branches/:id
+
 Update an existing branch.
 
 **Request Body:**
+
 ```json
 {
   "branchName": "Updated Branch Name",
@@ -201,6 +226,7 @@ Update an existing branch.
 ```
 
 **Response (200):**
+
 ```json
 {
   "id": "BR001",
@@ -213,9 +239,11 @@ Update an existing branch.
 ```
 
 ### DELETE /branches/:id
+
 Delete a branch.
 
 **Response (200):**
+
 ```json
 {
   "message": "Branch deleted successfully",
@@ -233,9 +261,11 @@ Delete a branch.
 ## Expense Management Endpoints
 
 ### GET /expenses
+
 Get all expenses for the current user's context.
 
 **Response (200):**
+
 ```json
 [
   {
@@ -255,9 +285,11 @@ Get all expenses for the current user's context.
 ```
 
 ### GET /expenses/pending-approval
+
 Get expenses pending approval with urgency indicators.
 
 **Response (200):**
+
 ```json
 [
   {
@@ -277,9 +309,11 @@ Get expenses pending approval with urgency indicators.
 ```
 
 ### POST /expenses
+
 Create a new expense.
 
 **Request Body:**
+
 ```json
 {
   "employeeName": "John Doe",
@@ -292,6 +326,7 @@ Create a new expense.
 ```
 
 **Response (201):**
+
 ```json
 {
   "id": "EXP006",
@@ -309,36 +344,44 @@ Create a new expense.
 ```
 
 ### PUT /expenses/:id
+
 Update an existing expense (only if not approved).
 
 **Request Body:** Same as POST
 **Response (200):** Updated expense object
 
 ### DELETE /expenses/:id
+
 Delete an expense (only if not approved).
 
 **Response (200):**
+
 ```json
 {
   "message": "Expense deleted successfully",
-  "expense": { /* expense object */ }
+  "expense": {
+    /* expense object */
+  }
 }
 ```
 
 ## Expense Approval Endpoints
 
 ### POST /expenses/:id/approve
+
 Approve an expense.
 
 **Request Body:**
+
 ```json
 {
   "comments": "Approved for business travel",
-  "approvedAmount": 2500  // Optional: for partial approvals
+  "approvedAmount": 2500 // Optional: for partial approvals
 }
 ```
 
 **Response (200):**
+
 ```json
 {
   "message": "Expense approved successfully",
@@ -347,16 +390,18 @@ Approve an expense.
     "status": "approved",
     "approvedDate": "2024-01-01T12:00:00.000Z",
     "approverName": "barath",
-    "amount": 2500,
+    "amount": 2500
     // ... other expense fields
   }
 }
 ```
 
 ### POST /expenses/:id/reject
+
 Reject an expense.
 
 **Request Body:**
+
 ```json
 {
   "comments": "Insufficient documentation provided"
@@ -364,13 +409,14 @@ Reject an expense.
 ```
 
 **Response (200):**
+
 ```json
 {
   "message": "Expense rejected successfully",
   "expense": {
     "id": "EXP001",
     "status": "rejected",
-    "rejectionReason": "Insufficient documentation provided",
+    "rejectionReason": "Insufficient documentation provided"
     // ... other expense fields
   }
 }
@@ -379,6 +425,7 @@ Reject an expense.
 ## Error Responses
 
 ### Common Error Codes
+
 - `400`: Bad Request - Invalid input data
 - `401`: Unauthorized - Invalid or missing token
 - `403`: Forbidden - Insufficient permissions
@@ -386,10 +433,12 @@ Reject an expense.
 - `500`: Internal Server Error
 
 ### Error Response Format
+
 ```json
 {
   "message": "Error description",
-  "errors": [  // Optional: for validation errors
+  "errors": [
+    // Optional: for validation errors
     {
       "field": "fieldName",
       "message": "Specific field error"
@@ -401,6 +450,7 @@ Reject an expense.
 ## Rate Limiting
 
 Currently, no rate limiting is implemented. For production deployment, consider:
+
 - Authentication endpoints: 5 requests per minute
 - Data modification endpoints: 100 requests per hour
 - Read-only endpoints: 1000 requests per hour
@@ -408,12 +458,14 @@ Currently, no rate limiting is implemented. For production deployment, consider:
 ## Security Notes
 
 ### Current Security Measures
+
 - JWT token authentication
 - Input validation with Zod
 - CORS configuration
 - Basic XSS protection through React
 
 ### Production Security Recommendations
+
 - Implement password hashing (bcrypt)
 - Add rate limiting middleware
 - Use HTTPS in production
@@ -424,22 +476,24 @@ Currently, no rate limiting is implemented. For production deployment, consider:
 ## Data Models
 
 ### User Model
+
 ```typescript
 interface User {
   id: string;
   fullName: string;
   email: string;
   username: string;
-  password: string;  // Should be hashed in production
+  password: string; // Should be hashed in production
   employeeId: string;
   department: string;
-  role: 'employee' | 'manager' | 'admin';
+  role: "employee" | "manager" | "admin";
   createdAt: string;
   isActive: boolean;
 }
 ```
 
 ### Branch Model
+
 ```typescript
 interface Branch {
   id: string;
@@ -452,6 +506,7 @@ interface Branch {
 ```
 
 ### Expense Model
+
 ```typescript
 interface Expense {
   id: string;
@@ -462,7 +517,7 @@ interface Expense {
   amount: number;
   description: string;
   receiptUrl?: string;
-  status: 'draft' | 'submitted' | 'approved' | 'rejected';
+  status: "draft" | "submitted" | "approved" | "rejected";
   submittedDate: string;
   approvedDate?: string;
   approverName?: string;
@@ -477,6 +532,7 @@ interface Expense {
 ### Using cURL
 
 **Login:**
+
 ```bash
 curl -X POST http://localhost:8080/api/auth/login \
   -H "Content-Type: application/json" \
@@ -484,6 +540,7 @@ curl -X POST http://localhost:8080/api/auth/login \
 ```
 
 **Get Branches (with token):**
+
 ```bash
 curl -X GET http://localhost:8080/api/branches \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
@@ -500,16 +557,16 @@ curl -X GET http://localhost:8080/api/branches \
 
 ```javascript
 // Login and store token
-const loginResponse = await fetch('/api/auth/login', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ username: 'barath', password: '123456' })
+const loginResponse = await fetch("/api/auth/login", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ username: "barath", password: "123456" }),
 });
 const { token } = await loginResponse.json();
 
 // Use token for authenticated requests
-const branchesResponse = await fetch('/api/branches', {
-  headers: { 'Authorization': `Bearer ${token}` }
+const branchesResponse = await fetch("/api/branches", {
+  headers: { Authorization: `Bearer ${token}` },
 });
 const branches = await branchesResponse.json();
 ```

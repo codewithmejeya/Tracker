@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from "react";
 import {
   Plus,
   Search,
@@ -13,13 +13,13 @@ import {
   FileText,
   Clock,
   CheckCircle,
-  XCircle
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
+  XCircle,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -27,29 +27,29 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useToast } from '@/hooks/use-toast';
-import Layout from '@/components/Layout';
+} from "@/components/ui/dropdown-menu";
+import { useToast } from "@/hooks/use-toast";
+import Layout from "@/components/Layout";
 
 interface Expense {
   id: string;
@@ -59,7 +59,7 @@ interface Expense {
   amount: number;
   description: string;
   receiptUrl?: string;
-  status: 'draft' | 'submitted' | 'approved' | 'rejected';
+  status: "draft" | "submitted" | "approved" | "rejected";
   submittedDate: string;
   approvedDate?: string;
   approverName?: string;
@@ -70,21 +70,21 @@ interface Expense {
 
 export default function ExpenseManagement() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
   const [viewingExpense, setViewingExpense] = useState<Expense | null>(null);
   const [formData, setFormData] = useState({
-    employeeName: '',
-    employeeId: '',
-    category: '',
-    amount: '',
-    description: '',
-    receiptFile: null as File | null
+    employeeName: "",
+    employeeId: "",
+    category: "",
+    amount: "",
+    description: "",
+    receiptFile: null as File | null,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -93,15 +93,15 @@ export default function ExpenseManagement() {
   const itemsPerPage = 10;
 
   const categories = [
-    'Travel & Transportation',
-    'Meals & Entertainment',
-    'Office Supplies',
-    'Communications',
-    'Training & Development',
-    'Client Meeting',
-    'Software & Subscriptions',
-    'Equipment & Hardware',
-    'Other'
+    "Travel & Transportation",
+    "Meals & Entertainment",
+    "Office Supplies",
+    "Communications",
+    "Training & Development",
+    "Client Meeting",
+    "Software & Subscriptions",
+    "Equipment & Hardware",
+    "Other",
   ];
 
   useEffect(() => {
@@ -110,12 +110,12 @@ export default function ExpenseManagement() {
 
   const fetchExpenses = async () => {
     try {
-      const response = await fetch('/api/expenses', {
+      const response = await fetch("/api/expenses", {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setExpenses(data);
@@ -123,74 +123,74 @@ export default function ExpenseManagement() {
         // Fallback mock data
         setExpenses([
           {
-            id: 'EXP001',
-            employeeName: 'Rajesh Kumar',
-            employeeId: 'EMP001',
-            category: 'Travel & Transportation',
+            id: "EXP001",
+            employeeName: "Rajesh Kumar",
+            employeeId: "EMP001",
+            category: "Travel & Transportation",
             amount: 2500,
-            description: 'Flight tickets for client meeting in Mumbai',
-            status: 'submitted',
+            description: "Flight tickets for client meeting in Mumbai",
+            status: "submitted",
             submittedDate: new Date().toISOString(),
             createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
+            updatedAt: new Date().toISOString(),
           },
           {
-            id: 'EXP002',
-            employeeName: 'Priya Sharma',
-            employeeId: 'EMP002',
-            category: 'Office Supplies',
+            id: "EXP002",
+            employeeName: "Priya Sharma",
+            employeeId: "EMP002",
+            category: "Office Supplies",
             amount: 850,
-            description: 'Stationary and office materials',
-            status: 'approved',
+            description: "Stationary and office materials",
+            status: "approved",
             submittedDate: new Date(Date.now() - 86400000).toISOString(),
             approvedDate: new Date().toISOString(),
-            approverName: 'Manager A',
+            approverName: "Manager A",
             createdAt: new Date(Date.now() - 86400000).toISOString(),
-            updatedAt: new Date().toISOString()
+            updatedAt: new Date().toISOString(),
           },
           {
-            id: 'EXP003',
-            employeeName: 'Arun Patel',
-            employeeId: 'EMP003',
-            category: 'Meals & Entertainment',
+            id: "EXP003",
+            employeeName: "Arun Patel",
+            employeeId: "EMP003",
+            category: "Meals & Entertainment",
             amount: 1200,
-            description: 'Client dinner at Taj Hotel',
-            status: 'submitted',
+            description: "Client dinner at Taj Hotel",
+            status: "submitted",
             submittedDate: new Date(Date.now() - 172800000).toISOString(),
             createdAt: new Date(Date.now() - 172800000).toISOString(),
-            updatedAt: new Date(Date.now() - 172800000).toISOString()
+            updatedAt: new Date(Date.now() - 172800000).toISOString(),
           },
           {
-            id: 'EXP004',
-            employeeName: 'Meera Reddy',
-            employeeId: 'EMP004',
-            category: 'Communications',
+            id: "EXP004",
+            employeeName: "Meera Reddy",
+            employeeId: "EMP004",
+            category: "Communications",
             amount: 450,
-            description: 'Mobile recharge and internet bills',
-            status: 'rejected',
+            description: "Mobile recharge and internet bills",
+            status: "rejected",
             submittedDate: new Date(Date.now() - 259200000).toISOString(),
-            rejectionReason: 'Insufficient documentation',
+            rejectionReason: "Insufficient documentation",
             createdAt: new Date(Date.now() - 259200000).toISOString(),
-            updatedAt: new Date(Date.now() - 86400000).toISOString()
+            updatedAt: new Date(Date.now() - 86400000).toISOString(),
           },
           {
-            id: 'EXP005',
-            employeeName: 'Suresh Das',
-            employeeId: 'EMP005',
-            category: 'Training & Development',
+            id: "EXP005",
+            employeeName: "Suresh Das",
+            employeeId: "EMP005",
+            category: "Training & Development",
             amount: 3200,
-            description: 'Technical certification course',
-            status: 'approved',
+            description: "Technical certification course",
+            status: "approved",
             submittedDate: new Date(Date.now() - 345600000).toISOString(),
             approvedDate: new Date(Date.now() - 172800000).toISOString(),
-            approverName: 'Manager B',
+            approverName: "Manager B",
             createdAt: new Date(Date.now() - 345600000).toISOString(),
-            updatedAt: new Date(Date.now() - 172800000).toISOString()
-          }
+            updatedAt: new Date(Date.now() - 172800000).toISOString(),
+          },
         ]);
       }
     } catch (error) {
-      console.error('Error fetching expenses:', error);
+      console.error("Error fetching expenses:", error);
       toast({
         title: "Error",
         description: "Failed to fetch expenses.",
@@ -204,21 +204,23 @@ export default function ExpenseManagement() {
     setIsSubmitting(true);
 
     try {
-      const method = editingExpense ? 'PUT' : 'POST';
-      const url = editingExpense ? `/api/expenses/${editingExpense.id}` : '/api/expenses';
+      const method = editingExpense ? "PUT" : "POST";
+      const url = editingExpense
+        ? `/api/expenses/${editingExpense.id}`
+        : "/api/expenses";
 
       const submitData = {
         ...formData,
-        amount: parseFloat(formData.amount)
+        amount: parseFloat(formData.amount),
       };
 
       const response = await fetch(url, {
         method,
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify(submitData)
+        body: JSON.stringify(submitData),
       });
 
       if (response.ok) {
@@ -228,13 +230,13 @@ export default function ExpenseManagement() {
         resetForm();
         toast({
           title: "Success",
-          description: `Expense ${editingExpense ? 'updated' : 'created'} successfully.`,
+          description: `Expense ${editingExpense ? "updated" : "created"} successfully.`,
         });
       } else {
-        throw new Error('Failed to save expense');
+        throw new Error("Failed to save expense");
       }
     } catch (error) {
-      console.error('Error saving expense:', error);
+      console.error("Error saving expense:", error);
       toast({
         title: "Error",
         description: "Failed to save expense.",
@@ -253,7 +255,7 @@ export default function ExpenseManagement() {
       category: expense.category,
       amount: expense.amount.toString(),
       description: expense.description,
-      receiptFile: null
+      receiptFile: null,
     });
     setIsAddDialogOpen(true);
   };
@@ -264,13 +266,13 @@ export default function ExpenseManagement() {
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to delete this expense?')) {
+    if (confirm("Are you sure you want to delete this expense?")) {
       try {
         const response = await fetch(`/api/expenses/${id}`, {
-          method: 'DELETE',
+          method: "DELETE",
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         });
 
         if (response.ok) {
@@ -280,10 +282,10 @@ export default function ExpenseManagement() {
             description: "Expense deleted successfully.",
           });
         } else {
-          throw new Error('Failed to delete expense');
+          throw new Error("Failed to delete expense");
         }
       } catch (error) {
-        console.error('Error deleting expense:', error);
+        console.error("Error deleting expense:", error);
         toast({
           title: "Error",
           description: "Failed to delete expense.",
@@ -295,22 +297,22 @@ export default function ExpenseManagement() {
 
   const resetForm = () => {
     setFormData({
-      employeeName: '',
-      employeeId: '',
-      category: '',
-      amount: '',
-      description: '',
-      receiptFile: null
+      employeeName: "",
+      employeeId: "",
+      category: "",
+      amount: "",
+      description: "",
+      receiptFile: null,
     });
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
@@ -318,13 +320,17 @@ export default function ExpenseManagement() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'draft':
-        return <Badge variant="outline" className="text-gray-600">Draft</Badge>;
-      case 'submitted':
+      case "draft":
+        return (
+          <Badge variant="outline" className="text-gray-600">
+            Draft
+          </Badge>
+        );
+      case "submitted":
         return <Badge className="bg-blue-100 text-blue-800">Submitted</Badge>;
-      case 'approved':
+      case "approved":
         return <Badge className="bg-green-100 text-green-800">Approved</Badge>;
-      case 'rejected':
+      case "rejected":
         return <Badge className="bg-red-100 text-red-800">Rejected</Badge>;
       default:
         return <Badge>{status}</Badge>;
@@ -333,32 +339,38 @@ export default function ExpenseManagement() {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'submitted':
+      case "submitted":
         return <Clock className="w-4 h-4 text-blue-600" />;
-      case 'approved':
+      case "approved":
         return <CheckCircle className="w-4 h-4 text-green-600" />;
-      case 'rejected':
+      case "rejected":
         return <XCircle className="w-4 h-4 text-red-600" />;
       default:
         return <FileText className="w-4 h-4 text-gray-600" />;
     }
   };
 
-  const filteredExpenses = expenses.filter(expense => {
-    const matchesSearch = expense.employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         expense.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         expense.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         expense.id.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesStatus = statusFilter === 'all' || expense.status === statusFilter;
-    const matchesCategory = categoryFilter === 'all' || expense.category === categoryFilter;
-    
+  const filteredExpenses = expenses.filter((expense) => {
+    const matchesSearch =
+      expense.employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      expense.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      expense.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      expense.id.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === "all" || expense.status === statusFilter;
+    const matchesCategory =
+      categoryFilter === "all" || expense.category === categoryFilter;
+
     return matchesSearch && matchesStatus && matchesCategory;
   });
 
   const totalPages = Math.ceil(filteredExpenses.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedExpenses = filteredExpenses.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedExpenses = filteredExpenses.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
 
   return (
     <Layout>
@@ -366,8 +378,12 @@ export default function ExpenseManagement() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Expense Management</h1>
-            <p className="text-gray-600">Manage and track all expense submissions</p>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Expense Management
+            </h1>
+            <p className="text-gray-600">
+              Manage and track all expense submissions
+            </p>
           </div>
           <div className="flex space-x-2">
             <Button variant="outline">
@@ -376,10 +392,13 @@ export default function ExpenseManagement() {
             </Button>
             <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-tracker-blue hover:bg-tracker-blue/90" onClick={() => {
-                  setEditingExpense(null);
-                  resetForm();
-                }}>
+                <Button
+                  className="bg-tracker-blue hover:bg-tracker-blue/90"
+                  onClick={() => {
+                    setEditingExpense(null);
+                    resetForm();
+                  }}
+                >
                   <Plus className="w-4 h-4 mr-2" />
                   Add Expense
                 </Button>
@@ -387,7 +406,7 @@ export default function ExpenseManagement() {
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>
-                    {editingExpense ? 'Edit Expense' : 'Add New Expense'}
+                    {editingExpense ? "Edit Expense" : "Add New Expense"}
                   </DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -397,7 +416,12 @@ export default function ExpenseManagement() {
                       <Input
                         id="employeeName"
                         value={formData.employeeName}
-                        onChange={(e) => setFormData({ ...formData, employeeName: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            employeeName: e.target.value,
+                          })
+                        }
                         required
                       />
                     </div>
@@ -406,7 +430,12 @@ export default function ExpenseManagement() {
                       <Input
                         id="employeeId"
                         value={formData.employeeId}
-                        onChange={(e) => setFormData({ ...formData, employeeId: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            employeeId: e.target.value,
+                          })
+                        }
                         required
                       />
                     </div>
@@ -415,7 +444,12 @@ export default function ExpenseManagement() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="category">Category</Label>
-                      <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
+                      <Select
+                        value={formData.category}
+                        onValueChange={(value) =>
+                          setFormData({ ...formData, category: value })
+                        }
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
@@ -435,7 +469,9 @@ export default function ExpenseManagement() {
                         type="number"
                         step="0.01"
                         value={formData.amount}
-                        onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, amount: e.target.value })
+                        }
                         required
                       />
                     </div>
@@ -446,7 +482,12 @@ export default function ExpenseManagement() {
                     <Textarea
                       id="description"
                       value={formData.description}
-                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          description: e.target.value,
+                        })
+                      }
                       rows={3}
                       required
                     />
@@ -459,7 +500,12 @@ export default function ExpenseManagement() {
                       type="file"
                       accept="image/*,application/pdf"
                       ref={fileInputRef}
-                      onChange={(e) => setFormData({ ...formData, receiptFile: e.target.files?.[0] || null })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          receiptFile: e.target.files?.[0] || null,
+                        })
+                      }
                     />
                   </div>
 
@@ -476,7 +522,11 @@ export default function ExpenseManagement() {
                       className="bg-tracker-blue hover:bg-tracker-blue/90"
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? 'Saving...' : editingExpense ? 'Update' : 'Create'}
+                      {isSubmitting
+                        ? "Saving..."
+                        : editingExpense
+                          ? "Update"
+                          : "Create"}
                     </Button>
                   </div>
                 </form>
@@ -498,7 +548,7 @@ export default function ExpenseManagement() {
                   className="pl-10 w-64"
                 />
               </div>
-              
+
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger className="w-40">
                   <SelectValue placeholder="Status" />
@@ -550,15 +600,21 @@ export default function ExpenseManagement() {
             <TableBody>
               {paginatedExpenses.map((expense) => (
                 <TableRow key={expense.id}>
-                  <TableCell className="font-mono text-sm">{expense.id}</TableCell>
+                  <TableCell className="font-mono text-sm">
+                    {expense.id}
+                  </TableCell>
                   <TableCell>
                     <div>
                       <div className="font-medium">{expense.employeeName}</div>
-                      <div className="text-sm text-gray-500">{expense.employeeId}</div>
+                      <div className="text-sm text-gray-500">
+                        {expense.employeeId}
+                      </div>
                     </div>
                   </TableCell>
                   <TableCell>{expense.category}</TableCell>
-                  <TableCell className="font-semibold">{formatCurrency(expense.amount)}</TableCell>
+                  <TableCell className="font-semibold">
+                    {formatCurrency(expense.amount)}
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-2">
                       {getStatusIcon(expense.status)}
@@ -566,7 +622,9 @@ export default function ExpenseManagement() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    {new Date(expense.submittedDate).toLocaleDateString('en-IN')}
+                    {new Date(expense.submittedDate).toLocaleDateString(
+                      "en-IN",
+                    )}
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end space-x-2">
@@ -581,7 +639,7 @@ export default function ExpenseManagement() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleEdit(expense)}
-                        disabled={expense.status === 'approved'}
+                        disabled={expense.status === "approved"}
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
@@ -590,7 +648,7 @@ export default function ExpenseManagement() {
                         size="sm"
                         onClick={() => handleDelete(expense.id)}
                         className="text-red-600 hover:text-red-800"
-                        disabled={expense.status === 'approved'}
+                        disabled={expense.status === "approved"}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -605,36 +663,44 @@ export default function ExpenseManagement() {
           <div className="px-6 py-4 border-t border-gray-200">
             <div className="flex items-center justify-between">
               <div className="text-sm text-gray-700">
-                Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, filteredExpenses.length)} of {filteredExpenses.length} expenses
+                Showing {startIndex + 1} to{" "}
+                {Math.min(startIndex + itemsPerPage, filteredExpenses.length)}{" "}
+                of {filteredExpenses.length} expenses
               </div>
               <div className="flex items-center space-x-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(1, prev - 1))
+                  }
                   disabled={currentPage === 1}
                 >
                   Previous
                 </Button>
-                
+
                 <div className="flex items-center space-x-1">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                    <Button
-                      key={page}
-                      variant={currentPage === page ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setCurrentPage(page)}
-                      className="w-8 h-8 p-0"
-                    >
-                      {page}
-                    </Button>
-                  ))}
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (page) => (
+                      <Button
+                        key={page}
+                        variant={currentPage === page ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setCurrentPage(page)}
+                        className="w-8 h-8 p-0"
+                      >
+                        {page}
+                      </Button>
+                    ),
+                  )}
                 </div>
-                
+
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+                  }
                   disabled={currentPage === totalPages}
                 >
                   Next
@@ -643,8 +709,6 @@ export default function ExpenseManagement() {
             </div>
           </div>
         </div>
-
-
 
         {/* View Dialog */}
         <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
@@ -656,7 +720,9 @@ export default function ExpenseManagement() {
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-lg font-semibold">{viewingExpense.id}</h3>
+                    <h3 className="text-lg font-semibold">
+                      {viewingExpense.id}
+                    </h3>
                     <p className="text-gray-600">{viewingExpense.category}</p>
                   </div>
                   <div className="text-right">
@@ -669,40 +735,70 @@ export default function ExpenseManagement() {
 
                 <div className="grid grid-cols-2 gap-6">
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-2">Employee Information</h4>
+                    <h4 className="font-medium text-gray-900 mb-2">
+                      Employee Information
+                    </h4>
                     <div className="space-y-1 text-sm">
-                      <div><span className="text-gray-600">Name:</span> {viewingExpense.employeeName}</div>
-                      <div><span className="text-gray-600">ID:</span> {viewingExpense.employeeId}</div>
+                      <div>
+                        <span className="text-gray-600">Name:</span>{" "}
+                        {viewingExpense.employeeName}
+                      </div>
+                      <div>
+                        <span className="text-gray-600">ID:</span>{" "}
+                        {viewingExpense.employeeId}
+                      </div>
                     </div>
                   </div>
-                  
+
                   <div>
                     <h4 className="font-medium text-gray-900 mb-2">Dates</h4>
                     <div className="space-y-1 text-sm">
-                      <div><span className="text-gray-600">Submitted:</span> {new Date(viewingExpense.submittedDate).toLocaleDateString('en-IN')}</div>
+                      <div>
+                        <span className="text-gray-600">Submitted:</span>{" "}
+                        {new Date(
+                          viewingExpense.submittedDate,
+                        ).toLocaleDateString("en-IN")}
+                      </div>
                       {viewingExpense.approvedDate && (
-                        <div><span className="text-gray-600">Approved:</span> {new Date(viewingExpense.approvedDate).toLocaleDateString('en-IN')}</div>
+                        <div>
+                          <span className="text-gray-600">Approved:</span>{" "}
+                          {new Date(
+                            viewingExpense.approvedDate,
+                          ).toLocaleDateString("en-IN")}
+                        </div>
                       )}
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-2">Description</h4>
-                  <p className="text-gray-700 text-sm">{viewingExpense.description}</p>
+                  <h4 className="font-medium text-gray-900 mb-2">
+                    Description
+                  </h4>
+                  <p className="text-gray-700 text-sm">
+                    {viewingExpense.description}
+                  </p>
                 </div>
 
                 {viewingExpense.approverName && (
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-2">Approval Information</h4>
-                    <p className="text-sm text-gray-600">Approved by: {viewingExpense.approverName}</p>
+                    <h4 className="font-medium text-gray-900 mb-2">
+                      Approval Information
+                    </h4>
+                    <p className="text-sm text-gray-600">
+                      Approved by: {viewingExpense.approverName}
+                    </p>
                   </div>
                 )}
 
                 {viewingExpense.rejectionReason && (
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-2">Rejection Reason</h4>
-                    <p className="text-sm text-red-600">{viewingExpense.rejectionReason}</p>
+                    <h4 className="font-medium text-gray-900 mb-2">
+                      Rejection Reason
+                    </h4>
+                    <p className="text-sm text-red-600">
+                      {viewingExpense.rejectionReason}
+                    </p>
                   </div>
                 )}
               </div>

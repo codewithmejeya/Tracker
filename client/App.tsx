@@ -18,13 +18,13 @@ const queryClient = new QueryClient();
 
 // Protected Route component
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   return token ? <>{children}</> : <Navigate to="/" replace />;
 }
 
 // Check if user is already authenticated
 function AuthRedirect({ children }: { children: React.ReactNode }) {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   return token ? <Navigate to="/dashboard" replace /> : <>{children}</>;
 }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from "react";
 import {
   Plus,
   Search,
@@ -12,36 +12,40 @@ import {
   Maximize,
   LogOut,
   User,
-  FileText
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from '@/components/ui/table';
+  FileText,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Label } from '@/components/ui/label';
-import { useNavigate } from 'react-router-dom';
-import { useToast } from '@/hooks/use-toast';
-import { exportBranchesToExcel, importBranchesFromExcel, downloadExcelTemplate } from '@/lib/excel-utils';
-import Layout from '@/components/Layout';
+} from "@/components/ui/dropdown-menu";
+import { Label } from "@/components/ui/label";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import {
+  exportBranchesToExcel,
+  importBranchesFromExcel,
+  downloadExcelTemplate,
+} from "@/lib/excel-utils";
+import Layout from "@/components/Layout";
 
 interface Branch {
   id: string;
@@ -53,16 +57,16 @@ interface Branch {
 
 export default function Dashboard() {
   const [branches, setBranches] = useState<Branch[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
+  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [editingBranch, setEditingBranch] = useState<Branch | null>(null);
   const [formData, setFormData] = useState({
-    branchName: '',
-    location: '',
-    contactPerson: ''
+    branchName: "",
+    location: "",
+    contactPerson: "",
   });
   const [isImporting, setIsImporting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -77,27 +81,30 @@ export default function Dashboard() {
 
   const fetchBranches = async () => {
     try {
-      const response = await fetch('/api/branches', {
+      const response = await fetch("/api/branches", {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
       if (response.ok) {
         const data = await response.json();
         setBranches(data);
       }
     } catch (error) {
-      console.error('Error fetching branches:', error);
+      console.error("Error fetching branches:", error);
     }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/');
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   const handleExport = () => {
-    exportBranchesToExcel(branches, `branches_${new Date().toISOString().split('T')[0]}.xlsx`);
+    exportBranchesToExcel(
+      branches,
+      `branches_${new Date().toISOString().split("T")[0]}.xlsx`,
+    );
     toast({
       title: "Export Successful",
       description: "Branches data has been exported to Excel file.",
@@ -108,7 +115,9 @@ export default function Dashboard() {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -118,19 +127,21 @@ export default function Dashboard() {
 
       if (result.success && result.data) {
         // Send all branches to backend
-        const promises = result.data.map(branch =>
-          fetch('/api/branches', {
-            method: 'POST',
+        const promises = result.data.map((branch) =>
+          fetch("/api/branches", {
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            body: JSON.stringify(branch)
-          })
+            body: JSON.stringify(branch),
+          }),
         );
 
         const responses = await Promise.allSettled(promises);
-        const successful = responses.filter(r => r.status === 'fulfilled').length;
+        const successful = responses.filter(
+          (r) => r.status === "fulfilled",
+        ).length;
 
         await fetchBranches();
 
@@ -141,7 +152,7 @@ export default function Dashboard() {
       } else {
         toast({
           title: "Import Failed",
-          description: result.errors?.join('\n') || "Unknown error occurred",
+          description: result.errors?.join("\n") || "Unknown error occurred",
           variant: "destructive",
         });
       }
@@ -154,7 +165,7 @@ export default function Dashboard() {
     } finally {
       setIsImporting(false);
       if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+        fileInputRef.current.value = "";
       }
     }
   };
@@ -169,28 +180,30 @@ export default function Dashboard() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    const method = editingBranch ? 'PUT' : 'POST';
-    const url = editingBranch ? `/api/branches/${editingBranch.id}` : '/api/branches';
-    
+
+    const method = editingBranch ? "PUT" : "POST";
+    const url = editingBranch
+      ? `/api/branches/${editingBranch.id}`
+      : "/api/branches";
+
     try {
       const response = await fetch(url, {
         method,
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
         fetchBranches();
         setIsAddDialogOpen(false);
         setEditingBranch(null);
-        setFormData({ branchName: '', location: '', contactPerson: '' });
+        setFormData({ branchName: "", location: "", contactPerson: "" });
       }
     } catch (error) {
-      console.error('Error saving branch:', error);
+      console.error("Error saving branch:", error);
     }
   };
 
@@ -199,42 +212,44 @@ export default function Dashboard() {
     setFormData({
       branchName: branch.branchName,
       location: branch.location,
-      contactPerson: branch.contactPerson
+      contactPerson: branch.contactPerson,
     });
     setIsAddDialogOpen(true);
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to delete this branch?')) {
+    if (confirm("Are you sure you want to delete this branch?")) {
       try {
         const response = await fetch(`/api/branches/${id}`, {
-          method: 'DELETE',
+          method: "DELETE",
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         });
 
         if (response.ok) {
           fetchBranches();
         }
       } catch (error) {
-        console.error('Error deleting branch:', error);
+        console.error("Error deleting branch:", error);
       }
     }
   };
 
-  const filteredBranches = branches.filter(branch =>
-    branch.branchName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    branch.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    branch.contactPerson.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    branch.id.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredBranches = branches.filter(
+    (branch) =>
+      branch.branchName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      branch.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      branch.contactPerson.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      branch.id.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const totalPages = Math.ceil(filteredBranches.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedBranches = filteredBranches.slice(startIndex, startIndex + itemsPerPage);
-
-
+  const paginatedBranches = filteredBranches.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
 
   return (
     <Layout>
@@ -244,10 +259,14 @@ export default function Dashboard() {
           <div className="p-6 border-b border-gray-200">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
               <div className="flex items-center space-x-4">
-                <h2 className="text-lg font-semibold text-gray-900">Branches</h2>
-                <span className="text-sm text-gray-500">({filteredBranches.length} total)</span>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Branches
+                </h2>
+                <span className="text-sm text-gray-500">
+                  ({filteredBranches.length} total)
+                </span>
               </div>
-              
+
               <div className="flex items-center space-x-2">
                 <div className="relative">
                   <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -258,17 +277,17 @@ export default function Dashboard() {
                     className="pl-10 w-64"
                   />
                 </div>
-                
+
                 <Button variant="outline" size="sm">
                   <Filter className="w-4 h-4 mr-2" />
                   Filter
                 </Button>
-                
+
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="sm" disabled={isImporting}>
                       <Upload className="w-4 h-4 mr-2" />
-                      {isImporting ? 'Importing...' : 'Import'}
+                      {isImporting ? "Importing..." : "Import"}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
@@ -293,22 +312,22 @@ export default function Dashboard() {
                   type="file"
                   accept=".xlsx,.xls,.csv"
                   onChange={handleFileChange}
-                  style={{ display: 'none' }}
+                  style={{ display: "none" }}
                 />
 
                 <div className="flex items-center border border-gray-200 rounded-md">
                   <Button
-                    variant={viewMode === 'list' ? 'default' : 'ghost'}
+                    variant={viewMode === "list" ? "default" : "ghost"}
                     size="sm"
-                    onClick={() => setViewMode('list')}
+                    onClick={() => setViewMode("list")}
                     className="rounded-r-none"
                   >
                     <List className="w-4 h-4" />
                   </Button>
                   <Button
-                    variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                    variant={viewMode === "grid" ? "default" : "ghost"}
                     size="sm"
-                    onClick={() => setViewMode('grid')}
+                    onClick={() => setViewMode("grid")}
                     className="rounded-l-none"
                   >
                     <Grid3X3 className="w-4 h-4" />
@@ -323,13 +342,20 @@ export default function Dashboard() {
                   <Maximize className="w-4 h-4" />
                 </Button>
 
-                <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+                <Dialog
+                  open={isAddDialogOpen}
+                  onOpenChange={setIsAddDialogOpen}
+                >
                   <DialogTrigger asChild>
-                    <Button 
+                    <Button
                       className="bg-tracker-blue hover:bg-tracker-blue/90"
                       onClick={() => {
                         setEditingBranch(null);
-                        setFormData({ branchName: '', location: '', contactPerson: '' });
+                        setFormData({
+                          branchName: "",
+                          location: "",
+                          contactPerson: "",
+                        });
                       }}
                     >
                       <Plus className="w-4 h-4 mr-2" />
@@ -339,7 +365,7 @@ export default function Dashboard() {
                   <DialogContent>
                     <DialogHeader>
                       <DialogTitle>
-                        {editingBranch ? 'Edit Branch' : 'Add New Branch'}
+                        {editingBranch ? "Edit Branch" : "Add New Branch"}
                       </DialogTitle>
                     </DialogHeader>
                     <form onSubmit={handleSubmit} className="space-y-4">
@@ -348,7 +374,12 @@ export default function Dashboard() {
                         <Input
                           id="branchName"
                           value={formData.branchName}
-                          onChange={(e) => setFormData({ ...formData, branchName: e.target.value })}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              branchName: e.target.value,
+                            })
+                          }
                           required
                         />
                       </div>
@@ -357,7 +388,12 @@ export default function Dashboard() {
                         <Input
                           id="location"
                           value={formData.location}
-                          onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              location: e.target.value,
+                            })
+                          }
                           required
                         />
                       </div>
@@ -366,20 +402,28 @@ export default function Dashboard() {
                         <Input
                           id="contactPerson"
                           value={formData.contactPerson}
-                          onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              contactPerson: e.target.value,
+                            })
+                          }
                           required
                         />
                       </div>
                       <div className="flex justify-end space-x-2">
-                        <Button 
-                          type="button" 
+                        <Button
+                          type="button"
                           variant="outline"
                           onClick={() => setIsAddDialogOpen(false)}
                         >
                           Cancel
                         </Button>
-                        <Button type="submit" className="bg-tracker-blue hover:bg-tracker-blue/90">
-                          {editingBranch ? 'Update' : 'Create'}
+                        <Button
+                          type="submit"
+                          className="bg-tracker-blue hover:bg-tracker-blue/90"
+                        >
+                          {editingBranch ? "Update" : "Create"}
                         </Button>
                       </div>
                     </form>
@@ -404,8 +448,12 @@ export default function Dashboard() {
               <TableBody>
                 {paginatedBranches.map((branch) => (
                   <TableRow key={branch.id}>
-                    <TableCell className="font-mono text-sm">{branch.id}</TableCell>
-                    <TableCell className="font-medium">{branch.branchName}</TableCell>
+                    <TableCell className="font-mono text-sm">
+                      {branch.id}
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {branch.branchName}
+                    </TableCell>
                     <TableCell>{branch.location}</TableCell>
                     <TableCell>{branch.contactPerson}</TableCell>
                     <TableCell className="text-right">
@@ -437,36 +485,44 @@ export default function Dashboard() {
           <div className="px-6 py-4 border-t border-gray-200">
             <div className="flex items-center justify-between">
               <div className="text-sm text-gray-700">
-                Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, filteredBranches.length)} of {filteredBranches.length} entries
+                Showing {startIndex + 1} to{" "}
+                {Math.min(startIndex + itemsPerPage, filteredBranches.length)}{" "}
+                of {filteredBranches.length} entries
               </div>
               <div className="flex items-center space-x-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(1, prev - 1))
+                  }
                   disabled={currentPage === 1}
                 >
                   Previous
                 </Button>
-                
+
                 <div className="flex items-center space-x-1">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                    <Button
-                      key={page}
-                      variant={currentPage === page ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setCurrentPage(page)}
-                      className="w-8 h-8 p-0"
-                    >
-                      {page}
-                    </Button>
-                  ))}
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (page) => (
+                      <Button
+                        key={page}
+                        variant={currentPage === page ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setCurrentPage(page)}
+                        className="w-8 h-8 p-0"
+                      >
+                        {page}
+                      </Button>
+                    ),
+                  )}
                 </div>
-                
+
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+                  }
                   disabled={currentPage === totalPages}
                 >
                   Next

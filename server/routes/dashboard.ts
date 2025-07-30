@@ -1,4 +1,4 @@
-import { RequestHandler } from 'express';
+import { RequestHandler } from "express";
 
 // Mock data - in real app, this would come from database queries
 const calculateDashboardStats = () => {
@@ -8,52 +8,52 @@ const calculateDashboardStats = () => {
     totalBranches: 8,
     monthlySpend: 125430,
     expenseGrowth: 12.5,
-    approvalRate: 87.3
+    approvalRate: 87.3,
   };
 };
 
 const generateRecentExpenses = () => {
   return [
     {
-      id: 'EXP001',
-      employeeName: 'Rajesh Kumar',
+      id: "EXP001",
+      employeeName: "Rajesh Kumar",
       amount: 2500,
-      category: 'Travel',
-      status: 'pending',
-      date: new Date().toISOString()
+      category: "Travel",
+      status: "pending",
+      date: new Date().toISOString(),
     },
     {
-      id: 'EXP002',
-      employeeName: 'Priya Sharma',
+      id: "EXP002",
+      employeeName: "Priya Sharma",
       amount: 850,
-      category: 'Office Supplies',
-      status: 'approved',
-      date: new Date(Date.now() - 86400000).toISOString()
+      category: "Office Supplies",
+      status: "approved",
+      date: new Date(Date.now() - 86400000).toISOString(),
     },
     {
-      id: 'EXP003',
-      employeeName: 'Arun Patel',
+      id: "EXP003",
+      employeeName: "Arun Patel",
       amount: 1200,
-      category: 'Client Meeting',
-      status: 'pending',
-      date: new Date(Date.now() - 172800000).toISOString()
+      category: "Client Meeting",
+      status: "pending",
+      date: new Date(Date.now() - 172800000).toISOString(),
     },
     {
-      id: 'EXP004',
-      employeeName: 'Meera Reddy',
+      id: "EXP004",
+      employeeName: "Meera Reddy",
       amount: 450,
-      category: 'Communications',
-      status: 'rejected',
-      date: new Date(Date.now() - 259200000).toISOString()
+      category: "Communications",
+      status: "rejected",
+      date: new Date(Date.now() - 259200000).toISOString(),
     },
     {
-      id: 'EXP005',
-      employeeName: 'Suresh Das',
+      id: "EXP005",
+      employeeName: "Suresh Das",
       amount: 3200,
-      category: 'Training',
-      status: 'approved',
-      date: new Date(Date.now() - 345600000).toISOString()
-    }
+      category: "Training",
+      status: "approved",
+      date: new Date(Date.now() - 345600000).toISOString(),
+    },
   ];
 };
 

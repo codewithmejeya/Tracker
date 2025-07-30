@@ -1,23 +1,37 @@
-import { useState } from 'react';
-import { Eye, EyeOff, User, Mail, Building, Shield, ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { useNavigate, Link } from 'react-router-dom';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import {
+  Eye,
+  EyeOff,
+  User,
+  Mail,
+  Building,
+  Shield,
+  ArrowLeft,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useNavigate, Link } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    username: '',
-    password: '',
-    confirmPassword: '',
-    employeeId: '',
-    department: '',
-    role: 'employee'
+    fullName: "",
+    email: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
+    employeeId: "",
+    department: "",
+    role: "employee",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -28,24 +42,38 @@ export default function Signup() {
   const { toast } = useToast();
 
   const departments = [
-    'Sales', 'Marketing', 'IT', 'HR', 'Finance', 'Operations', 
-    'Customer Service', 'Research & Development', 'Legal', 'Admin'
+    "Sales",
+    "Marketing",
+    "IT",
+    "HR",
+    "Finance",
+    "Operations",
+    "Customer Service",
+    "Research & Development",
+    "Legal",
+    "Admin",
   ];
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required';
-    if (!formData.email.trim()) newErrors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
-    if (!formData.username.trim()) newErrors.username = 'Username is required';
-    else if (formData.username.length < 3) newErrors.username = 'Username must be at least 3 characters';
-    if (!formData.password) newErrors.password = 'Password is required';
-    else if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
-    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
-    if (!formData.employeeId.trim()) newErrors.employeeId = 'Employee ID is required';
-    if (!formData.department) newErrors.department = 'Department is required';
-    if (!agreeToTerms) newErrors.terms = 'You must agree to the terms and conditions';
+    if (!formData.fullName.trim()) newErrors.fullName = "Full name is required";
+    if (!formData.email.trim()) newErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(formData.email))
+      newErrors.email = "Email is invalid";
+    if (!formData.username.trim()) newErrors.username = "Username is required";
+    else if (formData.username.length < 3)
+      newErrors.username = "Username must be at least 3 characters";
+    if (!formData.password) newErrors.password = "Password is required";
+    else if (formData.password.length < 6)
+      newErrors.password = "Password must be at least 6 characters";
+    if (formData.password !== formData.confirmPassword)
+      newErrors.confirmPassword = "Passwords do not match";
+    if (!formData.employeeId.trim())
+      newErrors.employeeId = "Employee ID is required";
+    if (!formData.department) newErrors.department = "Department is required";
+    if (!agreeToTerms)
+      newErrors.terms = "You must agree to the terms and conditions";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -53,15 +81,15 @@ export default function Signup() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsLoading(true);
     try {
-      const response = await fetch('/api/auth/signup', {
-        method: 'POST',
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           fullName: formData.fullName,
@@ -70,7 +98,7 @@ export default function Signup() {
           password: formData.password,
           employeeId: formData.employeeId,
           department: formData.department,
-          role: formData.role
+          role: formData.role,
         }),
       });
 
@@ -79,14 +107,15 @@ export default function Signup() {
       if (response.ok) {
         toast({
           title: "Account Created Successfully!",
-          description: "Welcome to Tracker. You can now log in with your credentials.",
+          description:
+            "Welcome to Tracker. You can now log in with your credentials.",
         });
-        navigate('/');
+        navigate("/");
       } else {
-        setErrors({ submit: data.message || 'Registration failed' });
+        setErrors({ submit: data.message || "Registration failed" });
       }
     } catch (err) {
-      setErrors({ submit: 'Network error. Please try again.' });
+      setErrors({ submit: "Network error. Please try again." });
     } finally {
       setIsLoading(false);
     }
@@ -96,18 +125,39 @@ export default function Signup() {
     <div className="text-center mb-8">
       <div className="flex items-center justify-center mb-4">
         <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-tracker-blue to-tracker-light-blue rounded-2xl shadow-lg">
-          <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            className="w-8 h-8"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <circle cx="12" cy="12" r="10" fill="white" />
-            <path d="M8 12l2 2 4-4" stroke="hsl(var(--tracker-blue))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M8 12l2 2 4-4"
+              stroke="hsl(var(--tracker-blue))"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </div>
       </div>
       <h1 className="text-3xl font-bold text-white mb-2">Join Tracker</h1>
-      <p className="text-blue-100">Create your account to start managing your business</p>
+      <p className="text-blue-100">
+        Create your account to start managing your business
+      </p>
     </div>
   );
 
-  const FeatureCard = ({ icon: Icon, title, description }: { icon: any, title: string, description: string }) => (
+  const FeatureCard = ({
+    icon: Icon,
+    title,
+    description,
+  }: {
+    icon: any;
+    title: string;
+    description: string;
+  }) => (
     <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
       <Icon className="w-8 h-8 text-white mx-auto mb-2" />
       <h3 className="font-semibold text-white mb-1">{title}</h3>
@@ -120,24 +170,24 @@ export default function Signup() {
       {/* Left Side - Branding & Features */}
       <div className="hidden lg:flex lg:w-1/2 p-12 flex-col justify-center">
         <TrackerLogo />
-        
+
         <div className="grid grid-cols-2 gap-6 mb-8">
-          <FeatureCard 
+          <FeatureCard
             icon={Shield}
             title="Secure"
             description="Enterprise-grade security for your data"
           />
-          <FeatureCard 
+          <FeatureCard
             icon={Building}
             title="Scalable"
             description="Grows with your business needs"
           />
-          <FeatureCard 
+          <FeatureCard
             icon={User}
             title="User-Friendly"
             description="Intuitive interface for all users"
           />
-          <FeatureCard 
+          <FeatureCard
             icon={Mail}
             title="Integrated"
             description="Seamless workflow management"
@@ -162,69 +212,98 @@ export default function Signup() {
 
           <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl p-8">
             <div className="mb-6">
-              <Link to="/" className="inline-flex items-center text-gray-600 hover:text-tracker-blue transition-colors mb-4">
+              <Link
+                to="/"
+                className="inline-flex items-center text-gray-600 hover:text-tracker-blue transition-colors mb-4"
+              >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Login
               </Link>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Create Account</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Create Account
+              </h2>
               <p className="text-gray-600">Enter your details to get started</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Full Name */}
               <div>
-                <Label htmlFor="fullName" className="text-gray-700">Full Name</Label>
+                <Label htmlFor="fullName" className="text-gray-700">
+                  Full Name
+                </Label>
                 <Input
                   id="fullName"
                   type="text"
                   placeholder="Enter your full name"
                   value={formData.fullName}
-                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                  className={`mt-1 ${errors.fullName ? 'border-red-500' : ''}`}
+                  onChange={(e) =>
+                    setFormData({ ...formData, fullName: e.target.value })
+                  }
+                  className={`mt-1 ${errors.fullName ? "border-red-500" : ""}`}
                 />
-                {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
+                {errors.fullName && (
+                  <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
+                )}
               </div>
 
               {/* Email & Username */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="email" className="text-gray-700">Email</Label>
+                  <Label htmlFor="email" className="text-gray-700">
+                    Email
+                  </Label>
                   <Input
                     id="email"
                     type="email"
                     placeholder="your@email.com"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className={`mt-1 ${errors.email ? 'border-red-500' : ''}`}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                    className={`mt-1 ${errors.email ? "border-red-500" : ""}`}
                   />
-                  {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                  )}
                 </div>
                 <div>
-                  <Label htmlFor="username" className="text-gray-700">Username</Label>
+                  <Label htmlFor="username" className="text-gray-700">
+                    Username
+                  </Label>
                   <Input
                     id="username"
                     type="text"
                     placeholder="username"
                     value={formData.username}
-                    onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                    className={`mt-1 ${errors.username ? 'border-red-500' : ''}`}
+                    onChange={(e) =>
+                      setFormData({ ...formData, username: e.target.value })
+                    }
+                    className={`mt-1 ${errors.username ? "border-red-500" : ""}`}
                   />
-                  {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
+                  {errors.username && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.username}
+                    </p>
+                  )}
                 </div>
               </div>
 
               {/* Password & Confirm Password */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="password" className="text-gray-700">Password</Label>
+                  <Label htmlFor="password" className="text-gray-700">
+                    Password
+                  </Label>
                   <div className="relative mt-1">
                     <Input
                       id="password"
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       placeholder="Password"
                       value={formData.password}
-                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      className={`pr-10 ${errors.password ? 'border-red-500' : ''}`}
+                      onChange={(e) =>
+                        setFormData({ ...formData, password: e.target.value })
+                      }
+                      className={`pr-10 ${errors.password ? "border-red-500" : ""}`}
                     />
                     <button
                       type="button"
@@ -234,65 +313,114 @@ export default function Signup() {
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
                   </div>
-                  {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+                  {errors.password && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.password}
+                    </p>
+                  )}
                 </div>
                 <div>
-                  <Label htmlFor="confirmPassword" className="text-gray-700">Confirm Password</Label>
+                  <Label htmlFor="confirmPassword" className="text-gray-700">
+                    Confirm Password
+                  </Label>
                   <div className="relative mt-1">
                     <Input
                       id="confirmPassword"
-                      type={showConfirmPassword ? 'text' : 'password'}
+                      type={showConfirmPassword ? "text" : "password"}
                       placeholder="Confirm Password"
                       value={formData.confirmPassword}
-                      onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                      className={`pr-10 ${errors.confirmPassword ? 'border-red-500' : ''}`}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          confirmPassword: e.target.value,
+                        })
+                      }
+                      className={`pr-10 ${errors.confirmPassword ? "border-red-500" : ""}`}
                     />
                     <button
                       type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     >
-                      {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      {showConfirmPassword ? (
+                        <EyeOff size={18} />
+                      ) : (
+                        <Eye size={18} />
+                      )}
                     </button>
                   </div>
-                  {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+                  {errors.confirmPassword && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.confirmPassword}
+                    </p>
+                  )}
                 </div>
               </div>
 
               {/* Employee ID & Department */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="employeeId" className="text-gray-700">Employee ID</Label>
+                  <Label htmlFor="employeeId" className="text-gray-700">
+                    Employee ID
+                  </Label>
                   <Input
                     id="employeeId"
                     type="text"
                     placeholder="EMP001"
                     value={formData.employeeId}
-                    onChange={(e) => setFormData({ ...formData, employeeId: e.target.value })}
-                    className={`mt-1 ${errors.employeeId ? 'border-red-500' : ''}`}
+                    onChange={(e) =>
+                      setFormData({ ...formData, employeeId: e.target.value })
+                    }
+                    className={`mt-1 ${errors.employeeId ? "border-red-500" : ""}`}
                   />
-                  {errors.employeeId && <p className="text-red-500 text-sm mt-1">{errors.employeeId}</p>}
+                  {errors.employeeId && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.employeeId}
+                    </p>
+                  )}
                 </div>
                 <div>
-                  <Label htmlFor="department" className="text-gray-700">Department</Label>
-                  <Select value={formData.department} onValueChange={(value) => setFormData({ ...formData, department: value })}>
-                    <SelectTrigger className={`mt-1 ${errors.department ? 'border-red-500' : ''}`}>
+                  <Label htmlFor="department" className="text-gray-700">
+                    Department
+                  </Label>
+                  <Select
+                    value={formData.department}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, department: value })
+                    }
+                  >
+                    <SelectTrigger
+                      className={`mt-1 ${errors.department ? "border-red-500" : ""}`}
+                    >
                       <SelectValue placeholder="Select department" />
                     </SelectTrigger>
                     <SelectContent>
                       {departments.map((dept) => (
-                        <SelectItem key={dept} value={dept}>{dept}</SelectItem>
+                        <SelectItem key={dept} value={dept}>
+                          {dept}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                  {errors.department && <p className="text-red-500 text-sm mt-1">{errors.department}</p>}
+                  {errors.department && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.department}
+                    </p>
+                  )}
                 </div>
               </div>
 
               {/* Role Selection */}
               <div>
                 <Label className="text-gray-700">Role</Label>
-                <Select value={formData.role} onValueChange={(value) => setFormData({ ...formData, role: value })}>
+                <Select
+                  value={formData.role}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, role: value })
+                  }
+                >
                   <SelectTrigger className="mt-1">
                     <SelectValue />
                   </SelectTrigger>
@@ -312,14 +440,23 @@ export default function Signup() {
                   onCheckedChange={(checked) => setAgreeToTerms(!!checked)}
                   className="mt-1"
                 />
-                <Label htmlFor="terms" className="text-sm text-gray-600 leading-relaxed">
-                  I agree to the{' '}
-                  <a href="#" className="text-tracker-blue hover:underline">Terms of Service</a>
-                  {' '}and{' '}
-                  <a href="#" className="text-tracker-blue hover:underline">Privacy Policy</a>
+                <Label
+                  htmlFor="terms"
+                  className="text-sm text-gray-600 leading-relaxed"
+                >
+                  I agree to the{" "}
+                  <a href="#" className="text-tracker-blue hover:underline">
+                    Terms of Service
+                  </a>{" "}
+                  and{" "}
+                  <a href="#" className="text-tracker-blue hover:underline">
+                    Privacy Policy
+                  </a>
                 </Label>
               </div>
-              {errors.terms && <p className="text-red-500 text-sm">{errors.terms}</p>}
+              {errors.terms && (
+                <p className="text-red-500 text-sm">{errors.terms}</p>
+              )}
 
               {/* Error Message */}
               {errors.submit && (
@@ -340,14 +477,17 @@ export default function Signup() {
                     Creating Account...
                   </div>
                 ) : (
-                  'Create Account'
+                  "Create Account"
                 )}
               </Button>
 
               {/* Login Link */}
               <div className="text-center text-sm text-gray-600">
-                Already have an account?{' '}
-                <Link to="/" className="text-tracker-blue hover:text-tracker-blue/80 font-medium">
+                Already have an account?{" "}
+                <Link
+                  to="/"
+                  className="text-tracker-blue hover:text-tracker-blue/80 font-medium"
+                >
                   Sign in here
                 </Link>
               </div>

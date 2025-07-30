@@ -54,7 +54,7 @@ export interface Expense {
   amount: number;
   description: string;
   receiptUrl?: string;
-  status: 'draft' | 'submitted' | 'approved' | 'rejected';
+  status: "draft" | "submitted" | "approved" | "rejected";
   submittedDate: string;
   approvedDate?: string;
   approverName?: string;
@@ -89,7 +89,7 @@ export interface ApprovalRequest {
 }
 
 export interface PendingExpense extends Expense {
-  urgency: 'low' | 'medium' | 'high';
+  urgency: "low" | "medium" | "high";
   daysWaiting: number;
 }
 
@@ -108,7 +108,7 @@ export interface RecentExpense {
   employeeName: string;
   amount: number;
   category: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: "pending" | "approved" | "rejected";
   date: string;
 }
 
@@ -118,7 +118,7 @@ export interface PaginationParams {
   limit: number;
   search?: string;
   sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: "asc" | "desc";
 }
 
 export interface PaginatedResponse<T> {

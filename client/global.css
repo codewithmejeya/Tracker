@@ -88,7 +88,14 @@
 
   /* Tracker gradient background for login page */
   .tracker-gradient-bg {
-    background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 25%, #F97316 50%, #10B981 75%, #3B82F6 100%);
+    background: linear-gradient(
+      135deg,
+      #8b5cf6 0%,
+      #ec4899 25%,
+      #f97316 50%,
+      #10b981 75%,
+      #3b82f6 100%
+    );
     min-height: 100vh;
     display: flex;
     align-items: center;

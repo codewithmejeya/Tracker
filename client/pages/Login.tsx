@@ -1,30 +1,30 @@
-import { useState } from 'react';
-import { Eye, EyeOff, Shield, Zap, Users, BarChart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState } from "react";
+import { Eye, EyeOff, Shield, Zap, Users, BarChart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, password }),
       });
@@ -32,16 +32,16 @@ export default function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('token', data.token);
+        localStorage.setItem("token", data.token);
         if (rememberMe) {
-          localStorage.setItem('rememberMe', 'true');
+          localStorage.setItem("rememberMe", "true");
         }
-        navigate('/dashboard');
+        navigate("/dashboard");
       } else {
-        setError(data.message || 'Login failed');
+        setError(data.message || "Login failed");
       }
     } catch (err) {
-      setError('Network error. Please try again.');
+      setError("Network error. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -52,9 +52,20 @@ export default function Login() {
       <div className="flex items-center justify-center mb-6">
         <div className="relative">
           <div className="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-tracker-blue to-tracker-light-blue rounded-2xl shadow-lg transform hover:scale-105 transition-transform duration-300">
-            <svg className="w-10 h-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              className="w-10 h-10"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <circle cx="12" cy="12" r="10" fill="white" />
-              <path d="M8 12l2 2 4-4" stroke="hsl(var(--tracker-blue))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M8 12l2 2 4-4"
+                stroke="hsl(var(--tracker-blue))"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </div>
           <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
@@ -62,12 +73,22 @@ export default function Login() {
           </div>
         </div>
       </div>
-      <h1 className="text-4xl font-bold text-white mb-3 tracking-tight">Tracker</h1>
+      <h1 className="text-4xl font-bold text-white mb-3 tracking-tight">
+        Tracker
+      </h1>
       <p className="text-xl text-blue-100 font-light">Management System</p>
     </div>
   );
 
-  const FeatureCard = ({ icon: Icon, title, description }: { icon: any, title: string, description: string }) => (
+  const FeatureCard = ({
+    icon: Icon,
+    title,
+    description,
+  }: {
+    icon: any;
+    title: string;
+    description: string;
+  }) => (
     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center transform hover:scale-105 transition-all duration-300 hover:bg-white/20">
       <Icon className="w-8 h-8 text-white mx-auto mb-2" />
       <h3 className="font-semibold text-white mb-1">{title}</h3>
@@ -122,7 +143,9 @@ export default function Login() {
 
           <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl p-8 transform hover:scale-105 transition-transform duration-300">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                Welcome Back
+              </h2>
               <p className="text-gray-600">Sign in to your Tracker account</p>
             </div>
 
@@ -149,7 +172,7 @@ export default function Login() {
                 <div className="relative">
                   <Input
                     id="password"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -206,13 +229,16 @@ export default function Login() {
                     Signing in...
                   </div>
                 ) : (
-                  'Sign In'
+                  "Sign In"
                 )}
               </Button>
 
               <div className="text-center text-sm text-gray-600">
-                Don't have an account?{' '}
-                <Link to="/signup" className="text-tracker-blue hover:text-tracker-blue/80 font-medium transition-colors">
+                Don't have an account?{" "}
+                <Link
+                  to="/signup"
+                  className="text-tracker-blue hover:text-tracker-blue/80 font-medium transition-colors"
+                >
                   Create one here
                 </Link>
               </div>
@@ -222,7 +248,10 @@ export default function Login() {
           {/* Demo Credentials */}
           <div className="mt-6 bg-white/20 backdrop-blur-sm rounded-lg p-4 text-center">
             <p className="text-white text-sm mb-2">Demo Credentials:</p>
-            <p className="text-blue-100 text-xs">Username: <span className="font-mono">barath</span> | Password: <span className="font-mono">123456</span></p>
+            <p className="text-blue-100 text-xs">
+              Username: <span className="font-mono">barath</span> | Password:{" "}
+              <span className="font-mono">123456</span>
+            </p>
           </div>
         </div>
       </div>

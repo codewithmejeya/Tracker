@@ -19,6 +19,7 @@ Memory Storage (JavaScript Objects/Arrays)
 ### Data Persistence
 
 ⚠️ **Important Limitations:**
+
 - Data resets on server restart
 - No data persistence between sessions
 - Single-user/single-instance only
@@ -33,38 +34,40 @@ Memory Storage (JavaScript Objects/Arrays)
 
 ```typescript
 interface User {
-  id: string;           // Primary Key: "user_001", "user_002", etc.
-  fullName: string;     // Display name
-  email: string;        // Unique email address
-  username: string;     // Unique login identifier
-  password: string;     // Plain text (should be hashed)
-  employeeId: string;   // Unique employee identifier
-  department: string;   // Department name
-  role: 'employee' | 'manager' | 'admin';
-  createdAt: string;    // ISO timestamp
-  isActive: boolean;    // Account status
+  id: string; // Primary Key: "user_001", "user_002", etc.
+  fullName: string; // Display name
+  email: string; // Unique email address
+  username: string; // Unique login identifier
+  password: string; // Plain text (should be hashed)
+  employeeId: string; // Unique employee identifier
+  department: string; // Department name
+  role: "employee" | "manager" | "admin";
+  createdAt: string; // ISO timestamp
+  isActive: boolean; // Account status
 }
 ```
 
 **Sample Data:**
+
 ```javascript
 const users = [
   {
-    id: 'user_001',
-    fullName: 'Barath Kumar',
-    email: 'barath@tracker.com',
-    username: 'barath',
-    password: '123456',
-    employeeId: 'EMP001',
-    department: 'Admin',
-    role: 'admin',
-    createdAt: '2024-01-01T00:00:00.000Z',
-    isActive: true
-  }
+    id: "user_001",
+    fullName: "Barath Kumar",
+    email: "barath@tracker.com",
+    username: "barath",
+    password: "123456",
+    employeeId: "EMP001",
+    department: "Admin",
+    role: "admin",
+    createdAt: "2024-01-01T00:00:00.000Z",
+    isActive: true,
+  },
 ];
 ```
 
 **Operations:**
+
 - `find()` - User lookup by username/email
 - `push()` - New user registration
 - Auto-increment ID generation
@@ -75,30 +78,32 @@ const users = [
 
 ```typescript
 interface Branch {
-  id: string;           // Primary Key: "BR001", "BR002", etc.
-  branchName: string;   // Branch display name
-  location: string;     // Geographic location
+  id: string; // Primary Key: "BR001", "BR002", etc.
+  branchName: string; // Branch display name
+  location: string; // Geographic location
   contactPerson: string; // Primary contact name
-  createdAt: string;    // Creation timestamp
-  updatedAt: string;    // Last modification timestamp
+  createdAt: string; // Creation timestamp
+  updatedAt: string; // Last modification timestamp
 }
 ```
 
 **Sample Data:**
+
 ```javascript
 const branches = [
   {
-    id: 'BR001',
-    branchName: 'Main Branch',
-    location: 'Chennai, Tamil Nadu',
-    contactPerson: 'Rajesh Kumar',
-    createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
-  }
+    id: "BR001",
+    branchName: "Main Branch",
+    location: "Chennai, Tamil Nadu",
+    contactPerson: "Rajesh Kumar",
+    createdAt: "2024-01-01T00:00:00.000Z",
+    updatedAt: "2024-01-01T00:00:00.000Z",
+  },
 ];
 ```
 
 **Operations:**
+
 - `find()` - Branch lookup by ID
 - `push()` - Create new branch
 - `splice()` - Delete branch
@@ -110,44 +115,46 @@ const branches = [
 
 ```typescript
 interface Expense {
-  id: string;           // Primary Key: "EXP001", "EXP002", etc.
+  id: string; // Primary Key: "EXP001", "EXP002", etc.
   employeeName: string; // Foreign Key reference (User.fullName)
-  employeeId: string;   // Foreign Key reference (User.employeeId)
-  department: string;   // Department classification
-  category: string;     // Expense category
-  amount: number;       // Expense amount (decimal)
-  description: string;  // Detailed description
-  receiptUrl?: string;  // Optional receipt file path
-  status: 'draft' | 'submitted' | 'approved' | 'rejected';
+  employeeId: string; // Foreign Key reference (User.employeeId)
+  department: string; // Department classification
+  category: string; // Expense category
+  amount: number; // Expense amount (decimal)
+  description: string; // Detailed description
+  receiptUrl?: string; // Optional receipt file path
+  status: "draft" | "submitted" | "approved" | "rejected";
   submittedDate: string; // Submission timestamp
   approvedDate?: string; // Optional approval timestamp
   approverName?: string; // Optional approver name
   rejectionReason?: string; // Optional rejection reason
-  createdAt: string;    // Creation timestamp
-  updatedAt: string;    // Last modification timestamp
+  createdAt: string; // Creation timestamp
+  updatedAt: string; // Last modification timestamp
 }
 ```
 
 **Sample Data:**
+
 ```javascript
 const expenses = [
   {
-    id: 'EXP001',
-    employeeName: 'Rajesh Kumar',
-    employeeId: 'EMP001',
-    department: 'Sales',
-    category: 'Travel & Transportation',
+    id: "EXP001",
+    employeeName: "Rajesh Kumar",
+    employeeId: "EMP001",
+    department: "Sales",
+    category: "Travel & Transportation",
     amount: 2500,
-    description: 'Flight tickets for client meeting',
-    status: 'submitted',
-    submittedDate: '2024-01-01T00:00:00.000Z',
-    createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z'
-  }
+    description: "Flight tickets for client meeting",
+    status: "submitted",
+    submittedDate: "2024-01-01T00:00:00.000Z",
+    createdAt: "2024-01-01T00:00:00.000Z",
+    updatedAt: "2024-01-01T00:00:00.000Z",
+  },
 ];
 ```
 
 **Operations:**
+
 - `filter()` - Query by status, user, date range
 - `find()` - Expense lookup by ID
 - `push()` - Create new expense
@@ -163,7 +170,7 @@ erDiagram
     User ||--o{ Expense : approves
     User }o--|| Department : belongs_to
     Branch }o--|| User : managed_by
-    
+
     User {
         string id PK
         string fullName
@@ -174,7 +181,7 @@ erDiagram
         string role
         boolean isActive
     }
-    
+
     Expense {
         string id PK
         string employeeName FK
@@ -184,7 +191,7 @@ erDiagram
         string status
         string approverName FK
     }
-    
+
     Branch {
         string id PK
         string branchName
@@ -204,6 +211,7 @@ Since we're using in-memory arrays, relationships are maintained through:
 ## Data Flow
 
 ### User Registration Flow
+
 ```
 1. Client sends POST /api/auth/signup
 2. Server validates input with Zod schema
@@ -214,6 +222,7 @@ Since we're using in-memory arrays, relationships are maintained through:
 ```
 
 ### Expense Approval Flow
+
 ```
 1. Client sends POST /api/expenses/:id/approve
 2. Server finds expense in expenses array
@@ -225,6 +234,7 @@ Since we're using in-memory arrays, relationships are maintained through:
 ```
 
 ### Data Querying
+
 ```
 1. Client requests data (GET /api/expenses)
 2. Server filters array based on user context
@@ -237,14 +247,14 @@ Since we're using in-memory arrays, relationships are maintained through:
 
 ### Current Performance
 
-| Operation | Time Complexity | Memory Usage |
-|-----------|----------------|--------------|
-| Find User by ID | O(n) | Low |
-| List All Expenses | O(n) | Medium |
-| Filter Expenses | O(n) | Medium |
-| Create Record | O(1) | Low |
-| Update Record | O(n) | Low |
-| Delete Record | O(n) | Low |
+| Operation         | Time Complexity | Memory Usage |
+| ----------------- | --------------- | ------------ |
+| Find User by ID   | O(n)            | Low          |
+| List All Expenses | O(n)            | Medium       |
+| Filter Expenses   | O(n)            | Medium       |
+| Create Record     | O(1)            | Low          |
+| Update Record     | O(n)            | Low          |
+| Delete Record     | O(n)            | Low          |
 
 ### Scalability Limits
 
@@ -258,7 +268,9 @@ Since we're using in-memory arrays, relationships are maintained through:
 ### Recommended Database Options
 
 #### 1. PostgreSQL (Recommended)
+
 **Pros:**
+
 - ACID compliance
 - Complex queries and joins
 - JSON support for flexible schemas
@@ -266,6 +278,7 @@ Since we're using in-memory arrays, relationships are maintained through:
 - Strong ecosystem
 
 **Schema Example:**
+
 ```sql
 -- Users table
 CREATE TABLE users (
@@ -318,13 +331,16 @@ CREATE INDEX idx_users_employee_id ON users(employee_id);
 ```
 
 #### 2. MongoDB
+
 **Pros:**
+
 - Document-based storage
 - Flexible schema
 - Easy horizontal scaling
 - JSON-native
 
 **Schema Example:**
+
 ```javascript
 // Users collection
 {
@@ -361,11 +377,14 @@ CREATE INDEX idx_users_employee_id ON users(employee_id);
 ### Migration Steps
 
 #### Phase 1: Database Setup
+
 1. **Choose Database Provider**
+
    - Local: PostgreSQL/MySQL installation
    - Cloud: AWS RDS, Google Cloud SQL, PlanetScale
 
 2. **Install Dependencies**
+
    ```bash
    npm install pg @types/pg
    # or
@@ -382,11 +401,13 @@ CREATE INDEX idx_users_employee_id ON users(employee_id);
    ```
 
 #### Phase 2: Data Layer Implementation
+
 1. **Create Database Connection**
+
    ```typescript
    // db/connection.ts
-   import { Pool } from 'pg';
-   
+   import { Pool } from "pg";
+
    export const pool = new Pool({
      connectionString: process.env.DATABASE_URL,
      max: 20,
@@ -400,16 +421,24 @@ CREATE INDEX idx_users_employee_id ON users(employee_id);
    export class UserRepository {
      async findByUsername(username: string): Promise<User | null> {
        const result = await pool.query(
-         'SELECT * FROM users WHERE username = $1 AND is_active = true',
-         [username]
+         "SELECT * FROM users WHERE username = $1 AND is_active = true",
+         [username],
        );
        return result.rows[0] || null;
      }
-     
+
      async create(userData: CreateUserRequest): Promise<User> {
        const result = await pool.query(
-         'INSERT INTO users (full_name, email, username, password_hash, employee_id, department, role) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-         [userData.fullName, userData.email, userData.username, userData.passwordHash, userData.employeeId, userData.department, userData.role]
+         "INSERT INTO users (full_name, email, username, password_hash, employee_id, department, role) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+         [
+           userData.fullName,
+           userData.email,
+           userData.username,
+           userData.passwordHash,
+           userData.employeeId,
+           userData.department,
+           userData.role,
+         ],
        );
        return result.rows[0];
      }
@@ -417,29 +446,34 @@ CREATE INDEX idx_users_employee_id ON users(employee_id);
    ```
 
 #### Phase 3: Migration Script
+
 ```typescript
 // scripts/migrate-data.ts
-import { users, branches, expenses } from '../current-data';
-import { UserRepository, BranchRepository, ExpenseRepository } from '../repositories';
+import { users, branches, expenses } from "../current-data";
+import {
+  UserRepository,
+  BranchRepository,
+  ExpenseRepository,
+} from "../repositories";
 
 async function migrateData() {
   const userRepo = new UserRepository();
   const branchRepo = new BranchRepository();
   const expenseRepo = new ExpenseRepository();
-  
+
   // Migrate users
   for (const user of users) {
     await userRepo.create({
       ...user,
-      passwordHash: await bcrypt.hash(user.password, 10)
+      passwordHash: await bcrypt.hash(user.password, 10),
     });
   }
-  
+
   // Migrate branches
   for (const branch of branches) {
     await branchRepo.create(branch);
   }
-  
+
   // Migrate expenses
   for (const expense of expenses) {
     await expenseRepo.create(expense);
@@ -448,9 +482,10 @@ async function migrateData() {
 ```
 
 #### Phase 4: Replace Array Operations
+
 ```typescript
 // Before (in-memory)
-const user = users.find(u => u.username === username);
+const user = users.find((u) => u.username === username);
 
 // After (database)
 const user = await userRepository.findByUsername(username);
@@ -465,28 +500,29 @@ Create seed scripts for development/testing:
 export const seedData = {
   users: [
     {
-      fullName: 'Admin User',
-      email: 'admin@tracker.com',
-      username: 'admin',
-      password: 'admin123',
-      employeeId: 'EMP001',
-      department: 'Administration',
-      role: 'admin'
-    }
+      fullName: "Admin User",
+      email: "admin@tracker.com",
+      username: "admin",
+      password: "admin123",
+      employeeId: "EMP001",
+      department: "Administration",
+      role: "admin",
+    },
   ],
   branches: [
     {
-      branchName: 'Headquarters',
-      location: 'Chennai, Tamil Nadu',
-      contactPerson: 'Manager Name'
-    }
-  ]
+      branchName: "Headquarters",
+      location: "Chennai, Tamil Nadu",
+      contactPerson: "Manager Name",
+    },
+  ],
 };
 ```
 
 ## Backup and Recovery
 
 ### Current State (In-Memory)
+
 - **No backup capability**
 - **No recovery options**
 - **Data loss on server restart**
@@ -494,6 +530,7 @@ export const seedData = {
 ### Production Recommendations
 
 #### Automated Backups
+
 ```bash
 # PostgreSQL backup
 pg_dump tracker_db > backup_$(date +%Y%m%d_%H%M%S).sql
@@ -503,6 +540,7 @@ mongodump --db tracker --out ./backups/$(date +%Y%m%d_%H%M%S)
 ```
 
 #### Recovery Procedures
+
 1. **Point-in-time Recovery**: Database-specific tools
 2. **Replica Sets**: For high availability
 3. **Disaster Recovery**: Cross-region backups
@@ -510,6 +548,7 @@ mongodump --db tracker --out ./backups/$(date +%Y%m%d_%H%M%S)
 ## Monitoring and Analytics
 
 ### Database Metrics to Monitor
+
 - **Connection Pool Usage**
 - **Query Performance**
 - **Storage Growth**
@@ -517,6 +556,7 @@ mongodump --db tracker --out ./backups/$(date +%Y%m%d_%H%M%S)
 - **Replication Lag** (if applicable)
 
 ### Query Optimization
+
 - **Add Indexes**: Based on common query patterns
 - **Query Analysis**: Use EXPLAIN for PostgreSQL
 - **Connection Pooling**: Optimize connection management
@@ -524,12 +564,14 @@ mongodump --db tracker --out ./backups/$(date +%Y%m%d_%H%M%S)
 ## Security Considerations
 
 ### Current Security (In-Memory)
+
 - Plain text passwords (insecure)
 - No encryption at rest
 - No access logging
 - No audit trail
 
 ### Production Security
+
 1. **Password Hashing**: Use bcrypt or Argon2
 2. **Encryption at Rest**: Database-level encryption
 3. **Encryption in Transit**: SSL/TLS connections
@@ -538,8 +580,9 @@ mongodump --db tracker --out ./backups/$(date +%Y%m%d_%H%M%S)
 6. **Backup Encryption**: Secure backup storage
 
 ### Implementation Example
+
 ```typescript
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 // Hash password before storage
 const passwordHash = await bcrypt.hash(password, 12);
