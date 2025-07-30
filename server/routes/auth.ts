@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'digitrac-secret-key-2024';
+const JWT_SECRET = process.env.JWT_SECRET || 'tracker-secret-key-2024';
 
 // User registration schema
 const SignupSchema = z.object({
@@ -33,7 +33,7 @@ let users: User[] = [
   {
     id: 'user_001',
     fullName: 'Barath Kumar',
-    email: 'barath@digitrac.com',
+    email: 'barath@tracker.com',
     username: 'barath',
     password: '123456', // In production, this should be hashed
     employeeId: 'EMP001',
