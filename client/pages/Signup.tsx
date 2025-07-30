@@ -79,7 +79,7 @@ export default function Signup() {
       if (response.ok) {
         toast({
           title: "Account Created Successfully!",
-          description: "Welcome to DigiTrac. You can now log in with your credentials.",
+          description: "Welcome to Tracker. You can now log in with your credentials.",
         });
         navigate('/');
       } else {
@@ -92,17 +92,17 @@ export default function Signup() {
     }
   };
 
-  const DigiTracLogo = () => (
+  const TrackerLogo = () => (
     <div className="text-center mb-8">
       <div className="flex items-center justify-center mb-4">
-        <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-digitrac-blue to-digitrac-light-blue rounded-2xl shadow-lg">
+        <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-tracker-blue to-tracker-light-blue rounded-2xl shadow-lg">
           <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="12" cy="12" r="10" fill="white" />
-            <path d="M8 12l2 2 4-4" stroke="hsl(var(--digitrac-blue))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M8 12l2 2 4-4" stroke="hsl(var(--tracker-blue))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
       </div>
-      <h1 className="text-3xl font-bold text-white mb-2">Join DigiTrac</h1>
+      <h1 className="text-3xl font-bold text-white mb-2">Join Tracker</h1>
       <p className="text-blue-100">Create your account to start managing your business</p>
     </div>
   );
@@ -119,7 +119,7 @@ export default function Signup() {
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-green-500 flex">
       {/* Left Side - Branding & Features */}
       <div className="hidden lg:flex lg:w-1/2 p-12 flex-col justify-center">
-        <DigiTracLogo />
+        <TrackerLogo />
         
         <div className="grid grid-cols-2 gap-6 mb-8">
           <FeatureCard 
@@ -157,12 +157,12 @@ export default function Signup() {
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
           <div className="lg:hidden mb-8">
-            <DigiTracLogo />
+            <TrackerLogo />
           </div>
 
           <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl p-8">
             <div className="mb-6">
-              <Link to="/" className="inline-flex items-center text-gray-600 hover:text-digitrac-blue transition-colors mb-4">
+              <Link to="/" className="inline-flex items-center text-gray-600 hover:text-tracker-blue transition-colors mb-4">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Login
               </Link>
@@ -314,9 +314,9 @@ export default function Signup() {
                 />
                 <Label htmlFor="terms" className="text-sm text-gray-600 leading-relaxed">
                   I agree to the{' '}
-                  <a href="#" className="text-digitrac-blue hover:underline">Terms of Service</a>
+                  <a href="#" className="text-tracker-blue hover:underline">Terms of Service</a>
                   {' '}and{' '}
-                  <a href="#" className="text-digitrac-blue hover:underline">Privacy Policy</a>
+                  <a href="#" className="text-tracker-blue hover:underline">Privacy Policy</a>
                 </Label>
               </div>
               {errors.terms && <p className="text-red-500 text-sm">{errors.terms}</p>}
@@ -332,7 +332,7 @@ export default function Signup() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-digitrac-blue to-digitrac-light-blue hover:from-digitrac-blue/90 hover:to-digitrac-light-blue/90 text-white font-medium py-3 rounded-lg transition-all duration-200 transform hover:scale-105"
+                className="w-full bg-gradient-to-r from-tracker-blue to-tracker-light-blue hover:from-tracker-blue/90 hover:to-tracker-light-blue/90 text-white font-medium py-3 rounded-lg transition-all duration-200 transform hover:scale-105"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center">
@@ -347,7 +347,7 @@ export default function Signup() {
               {/* Login Link */}
               <div className="text-center text-sm text-gray-600">
                 Already have an account?{' '}
-                <Link to="/" className="text-digitrac-blue hover:text-digitrac-blue/80 font-medium">
+                <Link to="/" className="text-tracker-blue hover:text-tracker-blue/80 font-medium">
                   Sign in here
                 </Link>
               </div>
