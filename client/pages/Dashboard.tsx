@@ -326,7 +326,7 @@ export default function Dashboard() {
                 <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
                   <DialogTrigger asChild>
                     <Button 
-                      className="bg-digitrac-blue hover:bg-digitrac-blue/90"
+                      className="bg-tracker-blue hover:bg-tracker-blue/90"
                       onClick={() => {
                         setEditingBranch(null);
                         setFormData({ branchName: '', location: '', contactPerson: '' });
@@ -378,7 +378,7 @@ export default function Dashboard() {
                         >
                           Cancel
                         </Button>
-                        <Button type="submit" className="bg-digitrac-blue hover:bg-digitrac-blue/90">
+                        <Button type="submit" className="bg-tracker-blue hover:bg-tracker-blue/90">
                           {editingBranch ? 'Update' : 'Create'}
                         </Button>
                       </div>
