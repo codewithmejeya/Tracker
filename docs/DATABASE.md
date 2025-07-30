@@ -1,8 +1,8 @@
-# DigiTrac Database Documentation
+# Tracker Database Documentation
 
 ## Overview
 
-The DigiTrac Management System currently uses an **in-memory database** for demonstration purposes. This document explains the current data structure, relationships, and migration path to a production database.
+The Tracker Management System currently uses an **in-memory database** for demonstration purposes. This document explains the current data structure, relationships, and migration path to a production database.
 
 ## Current Implementation
 
@@ -52,7 +52,7 @@ const users = [
   {
     id: 'user_001',
     fullName: 'Barath Kumar',
-    email: 'barath@digitrac.com',
+    email: 'barath@tracker.com',
     username: 'barath',
     password: '123456',
     employeeId: 'EMP001',
@@ -330,7 +330,7 @@ CREATE INDEX idx_users_employee_id ON users(employee_id);
 {
   _id: ObjectId("..."),
   fullName: "Barath Kumar",
-  email: "barath@digitrac.com",
+  email: "barath@tracker.com",
   username: "barath",
   passwordHash: "$2b$10$...",
   employeeId: "EMP001",
@@ -376,9 +376,9 @@ CREATE INDEX idx_users_employee_id ON users(employee_id);
 
 3. **Environment Configuration**
    ```env
-   DATABASE_URL=postgresql://user:password@localhost:5432/digitrac
+   DATABASE_URL=postgresql://user:password@localhost:5432/tracker
    # or
-   MONGODB_URI=mongodb://localhost:27017/digitrac
+   MONGODB_URI=mongodb://localhost:27017/tracker
    ```
 
 #### Phase 2: Data Layer Implementation
@@ -466,7 +466,7 @@ export const seedData = {
   users: [
     {
       fullName: 'Admin User',
-      email: 'admin@digitrac.com',
+      email: 'admin@tracker.com',
       username: 'admin',
       password: 'admin123',
       employeeId: 'EMP001',
@@ -496,10 +496,10 @@ export const seedData = {
 #### Automated Backups
 ```bash
 # PostgreSQL backup
-pg_dump digitrac_db > backup_$(date +%Y%m%d_%H%M%S).sql
+pg_dump tracker_db > backup_$(date +%Y%m%d_%H%M%S).sql
 
 # MongoDB backup
-mongodump --db digitrac --out ./backups/$(date +%Y%m%d_%H%M%S)
+mongodump --db tracker --out ./backups/$(date +%Y%m%d_%H%M%S)
 ```
 
 #### Recovery Procedures
