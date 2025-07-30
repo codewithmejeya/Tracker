@@ -218,7 +218,7 @@ export default function MainDashboard() {
     <Layout>
       <div className="space-y-6">
         {/* Welcome Section */}
-        <div className="bg-gradient-to-r from-digitrac-blue to-digitrac-light-blue rounded-lg p-6 text-white">
+        <div className="bg-gradient-to-r from-tracker-blue to-tracker-light-blue rounded-lg p-6 text-white">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold">Welcome back, Barath!</h1>
