@@ -1,17 +1,18 @@
-import { useState, useEffect } from 'react';
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  Download, 
-  Upload, 
-  Edit, 
-  Trash2, 
-  Grid3X3, 
+import { useState, useEffect, useRef } from 'react';
+import {
+  Plus,
+  Search,
+  Filter,
+  Download,
+  Upload,
+  Edit,
+  Trash2,
+  Grid3X3,
   List,
   Maximize,
   LogOut,
-  User
+  User,
+  FileText
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -38,6 +39,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Label } from '@/components/ui/label';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
+import { exportBranchesToExcel, importBranchesFromExcel, downloadExcelTemplate } from '@/lib/excel-utils';
 
 interface Branch {
   id: string;
@@ -60,7 +63,10 @@ export default function Dashboard() {
     location: '',
     contactPerson: ''
   });
+  const [isImporting, setIsImporting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const itemsPerPage = 10;
 
@@ -87,6 +93,77 @@ export default function Dashboard() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/');
+  };
+
+  const handleExport = () => {
+    exportBranchesToExcel(branches, `branches_${new Date().toISOString().split('T')[0]}.xlsx`);
+    toast({
+      title: "Export Successful",
+      description: "Branches data has been exported to Excel file.",
+    });
+  };
+
+  const handleImportClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setIsImporting(true);
+    try {
+      const result = await importBranchesFromExcel(file);
+
+      if (result.success && result.data) {
+        // Send all branches to backend
+        const promises = result.data.map(branch =>
+          fetch('/api/branches', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(branch)
+          })
+        );
+
+        const responses = await Promise.allSettled(promises);
+        const successful = responses.filter(r => r.status === 'fulfilled').length;
+
+        await fetchBranches();
+
+        toast({
+          title: "Import Successful",
+          description: `Successfully imported ${successful} of ${result.data.length} branches.`,
+        });
+      } else {
+        toast({
+          title: "Import Failed",
+          description: result.errors?.join('\n') || "Unknown error occurred",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Import Failed",
+        description: "An error occurred while importing the file.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsImporting(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleDownloadTemplate = () => {
+    downloadExcelTemplate();
+    toast({
+      title: "Template Downloaded",
+      description: "Excel template has been downloaded.",
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -219,15 +296,37 @@ export default function Dashboard() {
                   Filter
                 </Button>
                 
-                <Button variant="outline" size="sm">
-                  <Upload className="w-4 h-4 mr-2" />
-                  Import
-                </Button>
-                
-                <Button variant="outline" size="sm">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" disabled={isImporting}>
+                      <Upload className="w-4 h-4 mr-2" />
+                      {isImporting ? 'Importing...' : 'Import'}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem onClick={handleImportClick}>
+                      <Upload className="w-4 h-4 mr-2" />
+                      Import Excel
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleDownloadTemplate}>
+                      <FileText className="w-4 h-4 mr-2" />
+                      Download Template
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                <Button variant="outline" size="sm" onClick={handleExport}>
                   <Download className="w-4 h-4 mr-2" />
                   Export
                 </Button>
+
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".xlsx,.xls,.csv"
+                  onChange={handleFileChange}
+                  style={{ display: 'none' }}
+                />
 
                 <div className="flex items-center border border-gray-200 rounded-md">
                   <Button
