@@ -41,6 +41,7 @@ import { Label } from '@/components/ui/label';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { exportBranchesToExcel, importBranchesFromExcel, downloadExcelTemplate } from '@/lib/excel-utils';
+import Layout from '@/components/Layout';
 
 interface Branch {
   id: string;
