@@ -1,8 +1,8 @@
-# DigiTrac Management System
+# Tracker Management System
 
 A comprehensive full-stack business management application featuring expense management, branch administration, and user authentication with modern UI/UX design.
 
-![DigiTrac Banner](https://via.placeholder.com/800x200/3B82F6/FFFFFF?text=DigiTrac+Management+System)
+![Tracker Banner](https://via.placeholder.com/800x200/3B82F6/FFFFFF?text=Tracker+Management+System)
 
 ## 🚀 Features
 
@@ -68,7 +68,7 @@ A comprehensive full-stack business management application featuring expense man
 ## 📁 Project Structure
 
 ```
-digitrac-management/
+tracker-management/
 ├── client/                     # React frontend
 │   ├── components/            
 │   │   ├── ui/                # Reusable UI components (Radix UI)
@@ -111,7 +111,7 @@ digitrac-management/
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd digitrac-management
+   cd tracker-management
    ```
 
 2. **Install dependencies**
@@ -286,7 +286,7 @@ For production deployment, replace in-memory arrays with a proper database:
 - **Responsive Design** for all screen sizes
 - **Smooth Animations** and transitions
 - **Interactive Elements** with hover effects
-- **Consistent Color Scheme** (DigiTrac Blue theme)
+- **Consistent Color Scheme** (Tracker Blue theme)
 
 ### Accessibility
 - **Keyboard Navigation** support
@@ -337,10 +337,10 @@ npm start              # Start production server
 #### 3. Container Deployment
 ```bash
 # Create Docker image
-docker build -t digitrac-app .
+docker build -t tracker-app .
 
 # Run container
-docker run -p 8080:8080 digitrac-app
+docker run -p 8080:8080 tracker-app
 ```
 
 ## 🔒 Security Features
