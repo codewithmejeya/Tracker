@@ -57,6 +57,12 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // DigiTrac specific colors
+        digitrac: {
+          blue: "hsl(var(--digitrac-blue))",
+          "light-blue": "hsl(var(--digitrac-light-blue))",
+          gray: "hsl(var(--digitrac-gray))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
