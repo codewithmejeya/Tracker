@@ -74,16 +74,16 @@ export default function Layout({ children }: LayoutProps) {
     }
   ];
 
-  const DigiTracLogo = () => (
+  const TrackerLogo = () => (
     <div className="flex items-center space-x-3">
-      <div className="flex items-center justify-center w-10 h-10 bg-digitrac-blue rounded-lg">
+      <div className="flex items-center justify-center w-10 h-10 bg-tracker-blue rounded-lg">
         <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="12" r="10" fill="white" />
-          <path d="M8 12l2 2 4-4" stroke="hsl(var(--digitrac-blue))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M8 12l2 2 4-4" stroke="hsl(var(--tracker-blue))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
       <div>
-        <h1 className="text-xl font-bold text-gray-900">DigiTrac</h1>
+        <h1 className="text-xl font-bold text-gray-900">Tracker</h1>
         <p className="text-xs text-gray-500">Management System</p>
       </div>
     </div>
@@ -96,7 +96,7 @@ export default function Layout({ children }: LayoutProps) {
         <div className="fixed inset-0 bg-black bg-opacity-25" onClick={() => setSidebarOpen(false)} />
         <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-xl">
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <DigiTracLogo />
+            <TrackerLogo />
             <Button variant="ghost" size="sm" onClick={() => setSidebarOpen(false)}>
               <X className="w-5 h-5" />
             </Button>
@@ -117,7 +117,7 @@ export default function Layout({ children }: LayoutProps) {
                           to={subItem.href}
                           className={`block px-3 py-2 text-sm rounded-md transition-colors ${
                             subItem.current
-                              ? 'bg-digitrac-blue text-white'
+                              ? 'bg-tracker-blue text-white'
                               : 'text-gray-600 hover:bg-gray-100'
                           }`}
                           onClick={() => setSidebarOpen(false)}
@@ -132,7 +132,7 @@ export default function Layout({ children }: LayoutProps) {
                     to={item.href!}
                     className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                       item.current
-                        ? 'bg-digitrac-blue text-white'
+                        ? 'bg-tracker-blue text-white'
                         : 'text-gray-700 hover:bg-gray-100'
                     }`}
                     onClick={() => setSidebarOpen(false)}
@@ -151,7 +151,7 @@ export default function Layout({ children }: LayoutProps) {
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
         <div className="flex flex-col flex-1 bg-white border-r border-gray-200">
           <div className="p-6 border-b border-gray-200">
-            <DigiTracLogo />
+            <TrackerLogo />
           </div>
           <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
             {navigationItems.map((item) => (
@@ -169,7 +169,7 @@ export default function Layout({ children }: LayoutProps) {
                           to={subItem.href}
                           className={`block px-3 py-2 text-sm rounded-md transition-colors ${
                             subItem.current
-                              ? 'bg-digitrac-blue text-white'
+                              ? 'bg-tracker-blue text-white'
                               : 'text-gray-600 hover:bg-gray-100'
                           }`}
                         >
@@ -183,7 +183,7 @@ export default function Layout({ children }: LayoutProps) {
                     to={item.href!}
                     className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                       item.current
-                        ? 'bg-digitrac-blue text-white'
+                        ? 'bg-tracker-blue text-white'
                         : 'text-gray-700 hover:bg-gray-100'
                     }`}
                   >
@@ -212,9 +212,9 @@ export default function Layout({ children }: LayoutProps) {
                 <Menu className="w-5 h-5" />
               </Button>
               <h2 className="text-lg font-semibold text-gray-900">
-                {navigationItems.find(item => item.current)?.name || 
+                {navigationItems.find(item => item.current)?.name ||
                  navigationItems.find(item => item.submenu?.some(sub => sub.current))?.submenu?.find(sub => sub.current)?.name ||
-                 'DigiTrac System'}
+                 'Tracker System'}
               </h2>
             </div>
 
