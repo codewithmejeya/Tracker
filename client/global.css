@@ -4,7 +4,7 @@
 
 @layer base {
   /**
-   * DigiTrac Branch Management System Color Scheme
+   * Tracker Management System Color Scheme
    * Based on the reference design with blue accent and gradient background
   */
   :root {
@@ -17,7 +17,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    /* DigiTrac Blue Primary Color */
+    /* Tracker Blue Primary Color */
     --primary: 209 100% 48%;
     --primary-foreground: 0 0% 100%;
 
@@ -40,10 +40,10 @@
 
     --radius: 0.5rem;
 
-    /* DigiTrac specific colors */
-    --digitrac-blue: 209 100% 48%;
-    --digitrac-light-blue: 189 100% 56%;
-    --digitrac-gray: 210 11% 71%;
+    /* Tracker specific colors */
+    --tracker-blue: 209 100% 48%;
+    --tracker-light-blue: 189 100% 56%;
+    --tracker-gray: 210 11% 71%;
   }
 
   .dark {
@@ -86,8 +86,8 @@
     @apply bg-background text-foreground;
   }
 
-  /* DigiTrac gradient background for login page */
-  .digitrac-gradient-bg {
+  /* Tracker gradient background for login page */
+  .tracker-gradient-bg {
     background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 25%, #F97316 50%, #10B981 75%, #3B82F6 100%);
     min-height: 100vh;
     display: flex;
@@ -106,23 +106,23 @@
     max-width: 400px;
   }
 
-  /* DigiTrac logo styling */
-  .digitrac-logo {
+  /* Tracker logo styling */
+  .tracker-logo {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 2rem;
   }
 
-  .digitrac-logo svg {
+  .tracker-logo svg {
     width: 32px;
     height: 32px;
     margin-right: 8px;
   }
 
-  .digitrac-logo-text {
+  .tracker-logo-text {
     font-size: 1.875rem;
     font-weight: 700;
-    color: hsl(var(--digitrac-blue));
+    color: hsl(var(--tracker-blue));
   }
 }
