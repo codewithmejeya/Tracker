@@ -1,8 +1,8 @@
-# DigiTrac API Documentation
+# Tracker API Documentation
 
 ## Overview
 
-The DigiTrac Management System provides a RESTful API for managing users, branches, expenses, and approvals. All endpoints (except authentication) require a valid JWT token.
+The Tracker Management System provides a RESTful API for managing users, branches, expenses, and approvals. All endpoints (except authentication) require a valid JWT token.
 
 ## Authentication
 
@@ -39,7 +39,7 @@ Authenticate a user and receive a JWT token.
     "id": "user_001",
     "username": "barath",
     "fullName": "Barath Kumar",
-    "email": "barath@digitrac.com",
+    "email": "barath@tracker.com",
     "employeeId": "EMP001",
     "department": "Admin",
     "role": "admin"
@@ -514,4 +514,4 @@ const branchesResponse = await fetch('/api/branches', {
 const branches = await branchesResponse.json();
 ```
 
-This documentation covers all the available API endpoints in the DigiTrac Management System. For additional support or questions about the API, please refer to the main README.md file.
+This documentation covers all the available API endpoints in the Tracker Management System. For additional support or questions about the API, please refer to the main README.md file.
