@@ -233,44 +233,11 @@ export default function Dashboard() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedBranches = filteredBranches.slice(startIndex, startIndex + itemsPerPage);
 
-  const DigiTracHeader = () => (
-    <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2">
-            <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="12" r="10" fill="hsl(var(--digitrac-blue))" />
-              <path d="M8 12l2 2 4-4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            <span className="text-2xl font-bold text-digitrac-blue">DigiTrac</span>
-          </div>
-          <span className="text-gray-400">|</span>
-          <h1 className="text-xl font-semibold text-gray-800">Branch Management</h1>
-        </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="flex items-center space-x-2">
-              <User className="w-5 h-5" />
-              <span>barath</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem onClick={handleLogout}>
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-    </header>
-  );
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <DigiTracHeader />
-      
-      <main className="p-6">
+    <Layout>
+      <div className="space-y-6">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           {/* Toolbar */}
           <div className="p-6 border-b border-gray-200">
@@ -507,7 +474,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </Layout>
   );
 }
