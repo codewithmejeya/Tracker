@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
-import { login, verifyToken } from "./routes/auth";
+import { login, signup, verifyToken } from "./routes/auth";
 import {
   getAllBranches,
   getBranchById,
@@ -43,6 +43,7 @@ export function createServer() {
 
   // Authentication routes
   app.post("/api/auth/login", login);
+  app.post("/api/auth/signup", signup);
 
   // Protected branch management routes
   app.get("/api/branches", verifyToken, getAllBranches);
