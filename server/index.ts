@@ -10,6 +10,20 @@ import {
   updateBranch,
   deleteBranch
 } from "./routes/branches";
+import {
+  getAllExpenses,
+  getPendingExpenses,
+  getExpenseById,
+  createExpense,
+  updateExpense,
+  deleteExpense,
+  approveExpense,
+  rejectExpense
+} from "./routes/expenses";
+import {
+  getDashboardStats,
+  getRecentExpenses
+} from "./routes/dashboard";
 
 export function createServer() {
   const app = express();
@@ -36,6 +50,20 @@ export function createServer() {
   app.post("/api/branches", verifyToken, createBranch);
   app.put("/api/branches/:id", verifyToken, updateBranch);
   app.delete("/api/branches/:id", verifyToken, deleteBranch);
+
+  // Protected expense management routes
+  app.get("/api/expenses", verifyToken, getAllExpenses);
+  app.get("/api/expenses/pending-approval", verifyToken, getPendingExpenses);
+  app.get("/api/expenses/:id", verifyToken, getExpenseById);
+  app.post("/api/expenses", verifyToken, createExpense);
+  app.put("/api/expenses/:id", verifyToken, updateExpense);
+  app.delete("/api/expenses/:id", verifyToken, deleteExpense);
+  app.post("/api/expenses/:id/approve", verifyToken, approveExpense);
+  app.post("/api/expenses/:id/reject", verifyToken, rejectExpense);
+
+  // Protected dashboard routes
+  app.get("/api/dashboard/stats", verifyToken, getDashboardStats);
+  app.get("/api/dashboard/recent-expenses", verifyToken, getRecentExpenses);
 
   return app;
 }
