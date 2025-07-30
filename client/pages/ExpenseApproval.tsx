@@ -678,7 +678,7 @@ export default function ExpenseApproval() {
                   <div className="space-y-4">
                     <div className="bg-gray-50 p-4 rounded-lg">
                       <div className="text-center">
-                        <div className="text-3xl font-bold text-digitrac-blue mb-2">
+                        <div className="text-3xl font-bold text-tracker-blue mb-2">
                           {formatCurrency(reviewingExpense.amount)}
                         </div>
                         <div className="flex items-center justify-center space-x-2">
