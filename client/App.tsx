@@ -7,7 +7,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
+import MainDashboard from "./pages/MainDashboard";
 import Dashboard from "./pages/Dashboard";
+import ExpenseManagement from "./pages/ExpenseManagement";
+import ExpenseApproval from "./pages/ExpenseApproval";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,7 +46,31 @@ const App = () => (
             path="/dashboard"
             element={
               <ProtectedRoute>
+                <MainDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/master/branches"
+            element={
+              <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/finance/expenses"
+            element={
+              <ProtectedRoute>
+                <ExpenseManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/finance/expense-approval"
+            element={
+              <ProtectedRoute>
+                <ExpenseApproval />
               </ProtectedRoute>
             }
           />
