@@ -376,7 +376,7 @@ export default function ExpenseManagement() {
             </Button>
             <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-digitrac-blue hover:bg-digitrac-blue/90" onClick={() => {
+                <Button className="bg-tracker-blue hover:bg-tracker-blue/90" onClick={() => {
                   setEditingExpense(null);
                   resetForm();
                 }}>
@@ -473,7 +473,7 @@ export default function ExpenseManagement() {
                     </Button>
                     <Button
                       type="submit"
-                      className="bg-digitrac-blue hover:bg-digitrac-blue/90"
+                      className="bg-tracker-blue hover:bg-tracker-blue/90"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? 'Saving...' : editingExpense ? 'Update' : 'Create'}
@@ -660,7 +660,7 @@ export default function ExpenseManagement() {
                     <p className="text-gray-600">{viewingExpense.category}</p>
                   </div>
                   <div className="text-right">
-                    <div className="text-2xl font-bold text-digitrac-blue">
+                    <div className="text-2xl font-bold text-tracker-blue">
                       {formatCurrency(viewingExpense.amount)}
                     </div>
                     {getStatusBadge(viewingExpense.status)}
