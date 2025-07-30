@@ -47,14 +47,14 @@ export default function Login() {
     }
   };
 
-  const DigiTracLogo = () => (
+  const TrackerLogo = () => (
     <div className="text-center mb-8">
       <div className="flex items-center justify-center mb-6">
         <div className="relative">
-          <div className="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-digitrac-blue to-digitrac-light-blue rounded-2xl shadow-lg transform hover:scale-105 transition-transform duration-300">
+          <div className="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-tracker-blue to-tracker-light-blue rounded-2xl shadow-lg transform hover:scale-105 transition-transform duration-300">
             <svg className="w-10 h-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="12" cy="12" r="10" fill="white" />
-              <path d="M8 12l2 2 4-4" stroke="hsl(var(--digitrac-blue))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M8 12l2 2 4-4" stroke="hsl(var(--tracker-blue))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
           <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
@@ -62,7 +62,7 @@ export default function Login() {
           </div>
         </div>
       </div>
-      <h1 className="text-4xl font-bold text-white mb-3 tracking-tight">DigiTrac</h1>
+      <h1 className="text-4xl font-bold text-white mb-3 tracking-tight">Tracker</h1>
       <p className="text-xl text-blue-100 font-light">Management System</p>
     </div>
   );
@@ -79,7 +79,7 @@ export default function Login() {
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-green-500 flex">
       {/* Left Side - Branding & Features */}
       <div className="hidden lg:flex lg:w-1/2 p-12 flex-col justify-center">
-        <DigiTracLogo />
+        <TrackerLogo />
 
         <div className="grid grid-cols-2 gap-6 mb-8">
           <FeatureCard
@@ -117,13 +117,13 @@ export default function Login() {
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
           <div className="lg:hidden mb-8">
-            <DigiTracLogo />
+            <TrackerLogo />
           </div>
 
           <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl p-8 transform hover:scale-105 transition-transform duration-300">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-              <p className="text-gray-600">Sign in to your DigiTrac account</p>
+              <p className="text-gray-600">Sign in to your Tracker account</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -137,7 +137,7 @@ export default function Login() {
                   placeholder="Enter your username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-digitrac-blue focus:border-transparent text-gray-700 placeholder-gray-400 transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-tracker-blue focus:border-transparent text-gray-700 placeholder-gray-400 transition-all duration-200"
                   required
                 />
               </div>
@@ -153,7 +153,7 @@ export default function Login() {
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-digitrac-blue focus:border-transparent text-gray-700 placeholder-gray-400 transition-all duration-200"
+                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-tracker-blue focus:border-transparent text-gray-700 placeholder-gray-400 transition-all duration-200"
                     required
                   />
                   <button
@@ -178,7 +178,7 @@ export default function Login() {
                     id="remember-me"
                     checked={rememberMe}
                     onCheckedChange={(checked) => setRememberMe(!!checked)}
-                    className="border-digitrac-blue data-[state=checked]:bg-digitrac-blue"
+                    className="border-tracker-blue data-[state=checked]:bg-tracker-blue"
                   />
                   <Label
                     htmlFor="remember-me"
@@ -189,7 +189,7 @@ export default function Login() {
                 </div>
                 <a
                   href="#"
-                  className="text-sm text-digitrac-blue hover:text-digitrac-blue/80 transition-colors"
+                  className="text-sm text-tracker-blue hover:text-tracker-blue/80 transition-colors"
                 >
                   Forgot Password?
                 </a>
@@ -198,7 +198,7 @@ export default function Login() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-digitrac-blue to-digitrac-light-blue hover:from-digitrac-blue/90 hover:to-digitrac-light-blue/90 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                className="w-full bg-gradient-to-r from-tracker-blue to-tracker-light-blue hover:from-tracker-blue/90 hover:to-tracker-light-blue/90 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center">
@@ -212,7 +212,7 @@ export default function Login() {
 
               <div className="text-center text-sm text-gray-600">
                 Don't have an account?{' '}
-                <Link to="/signup" className="text-digitrac-blue hover:text-digitrac-blue/80 font-medium transition-colors">
+                <Link to="/signup" className="text-tracker-blue hover:text-tracker-blue/80 font-medium transition-colors">
                   Create one here
                 </Link>
               </div>
