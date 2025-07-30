@@ -57,11 +57,11 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // DigiTrac specific colors
-        digitrac: {
-          blue: "hsl(var(--digitrac-blue))",
-          "light-blue": "hsl(var(--digitrac-light-blue))",
-          gray: "hsl(var(--digitrac-gray))",
+        // Tracker specific colors
+        tracker: {
+          blue: "hsl(var(--tracker-blue))",
+          "light-blue": "hsl(var(--tracker-light-blue))",
+          gray: "hsl(var(--tracker-gray))",
         },
       },
       borderRadius: {
