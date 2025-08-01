@@ -107,9 +107,39 @@ export default function MainDashboard() {
         });
       }
 
-      if (expensesResponse.ok) {
-        const expensesData = await expensesResponse.json();
-        setRecentExpenses(expensesData);
+      if (expensesResponse?.ok) {
+        try {
+          const expensesData = await expensesResponse.json();
+          setRecentExpenses(expensesData);
+        } catch {
+          // JSON parsing failed, use fallback
+          setRecentExpenses([
+            {
+              id: "EXP001",
+              employeeName: "Rajesh Kumar",
+              amount: 2500,
+              category: "Travel",
+              status: "pending",
+              date: new Date().toISOString(),
+            },
+            {
+              id: "EXP002",
+              employeeName: "Priya Sharma",
+              amount: 850,
+              category: "Office Supplies",
+              status: "approved",
+              date: new Date(Date.now() - 86400000).toISOString(),
+            },
+            {
+              id: "EXP003",
+              employeeName: "Arun Patel",
+              amount: 1200,
+              category: "Client Meeting",
+              status: "pending",
+              date: new Date(Date.now() - 172800000).toISOString(),
+            },
+          ]);
+        }
       } else {
         // Fallback mock data
         setRecentExpenses([
