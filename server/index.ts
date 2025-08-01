@@ -26,6 +26,15 @@ import { getDashboardStats, getRecentExpenses } from "./routes/dashboard";
 export function createServer() {
   const app = express();
 
+  // Initialize database
+  try {
+    initializeDatabase();
+    console.log("Database initialized successfully");
+  } catch (error) {
+    console.error("Failed to initialize database:", error);
+    process.exit(1);
+  }
+
   // Middleware
   app.use(cors());
   app.use(express.json());
