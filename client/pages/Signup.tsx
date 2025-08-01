@@ -21,6 +21,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigate, Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { getApiUrl } from "@/lib/api-config";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -86,7 +87,7 @@ export default function Signup() {
 
     setIsLoading(true);
     try {
-      const response = await fetch("/api/auth/signup", {
+      const response = await fetch(getApiUrl("auth/signup"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
