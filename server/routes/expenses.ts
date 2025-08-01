@@ -10,7 +10,9 @@ const expenseSchema = z.object({
   amount: z.number().positive("Amount must be positive"),
   description: z.string().optional(),
   receiptUrl: z.string().optional(),
-  status: z.enum(["draft", "submitted", "approved", "rejected"]).default("draft"),
+  status: z
+    .enum(["draft", "submitted", "approved", "rejected"])
+    .default("draft"),
 });
 
 const approvalSchema = z.object({
@@ -33,13 +35,17 @@ export const getAllExpenses: RequestHandler = (req, res) => {
 export const getPendingExpenses: RequestHandler = (req, res) => {
   try {
     const pendingExpenses = queries.getPendingExpenses.all("pending");
-    
+
     // Add urgency and days waiting calculation
     const enrichedExpenses = pendingExpenses.map((expense: any) => {
-      const submittedDate = new Date(expense.submitted_date || expense.created_at);
+      const submittedDate = new Date(
+        expense.submitted_date || expense.created_at,
+      );
       const now = new Date();
-      const daysWaiting = Math.floor((now.getTime() - submittedDate.getTime()) / (1000 * 60 * 60 * 24));
-      
+      const daysWaiting = Math.floor(
+        (now.getTime() - submittedDate.getTime()) / (1000 * 60 * 60 * 24),
+      );
+
       let urgency: "low" | "medium" | "high" = "low";
       if (daysWaiting > 7) urgency = "high";
       else if (daysWaiting > 3) urgency = "medium";
@@ -79,7 +85,15 @@ export const getExpenseById: RequestHandler = (req, res) => {
 // POST /api/expenses - Create a new expense
 export const createExpense: RequestHandler = (req, res) => {
   try {
-    const { employeeName, employeeId, category, amount, description, receiptUrl, status } = expenseSchema.parse(req.body);
+    const {
+      employeeName,
+      employeeId,
+      category,
+      amount,
+      description,
+      receiptUrl,
+      status,
+    } = expenseSchema.parse(req.body);
 
     const result = queries.createExpense.run(
       employeeName,
@@ -88,7 +102,7 @@ export const createExpense: RequestHandler = (req, res) => {
       amount,
       description || "",
       receiptUrl || "",
-      status
+      status,
     );
 
     const newExpenseId = result.lastInsertRowid;
@@ -101,9 +115,9 @@ export const createExpense: RequestHandler = (req, res) => {
   } catch (error) {
     console.error("Error creating expense:", error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ 
-        message: "Invalid input", 
-        errors: error.errors 
+      return res.status(400).json({
+        message: "Invalid input",
+        errors: error.errors,
       });
     }
     res.status(500).json({ message: "Internal server error" });
@@ -114,7 +128,15 @@ export const createExpense: RequestHandler = (req, res) => {
 export const updateExpense: RequestHandler = (req, res) => {
   try {
     const { id } = req.params;
-    const { employeeName, employeeId, category, amount, description, receiptUrl, status } = expenseSchema.parse(req.body);
+    const {
+      employeeName,
+      employeeId,
+      category,
+      amount,
+      description,
+      receiptUrl,
+      status,
+    } = expenseSchema.parse(req.body);
 
     // Check if expense exists
     const existingExpense = queries.getExpenseById.get(id);
@@ -131,7 +153,7 @@ export const updateExpense: RequestHandler = (req, res) => {
       description || "",
       receiptUrl || "",
       status,
-      id
+      id,
     );
 
     // Fetch the updated expense
@@ -144,9 +166,9 @@ export const updateExpense: RequestHandler = (req, res) => {
   } catch (error) {
     console.error("Error updating expense:", error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ 
-        message: "Invalid input", 
-        errors: error.errors 
+      return res.status(400).json({
+        message: "Invalid input",
+        errors: error.errors,
       });
     }
     res.status(500).json({ message: "Internal server error" });
@@ -203,9 +225,9 @@ export const approveExpense: RequestHandler = (req, res) => {
   } catch (error) {
     console.error("Error approving expense:", error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ 
-        message: "Invalid input", 
-        errors: error.errors 
+      return res.status(400).json({
+        message: "Invalid input",
+        errors: error.errors,
       });
     }
     res.status(500).json({ message: "Internal server error" });
@@ -237,9 +259,9 @@ export const rejectExpense: RequestHandler = (req, res) => {
   } catch (error) {
     console.error("Error rejecting expense:", error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ 
-        message: "Invalid input", 
-        errors: error.errors 
+      return res.status(400).json({
+        message: "Invalid input",
+        errors: error.errors,
       });
     }
     res.status(500).json({ message: "Internal server error" });

@@ -5,12 +5,18 @@ import { queries } from "../database.js";
 export const getDashboardStats: RequestHandler = (req, res) => {
   try {
     const stats = queries.getDashboardStats.get() as any;
-    
+
     // Calculate additional metrics
     const expenseGrowth = 12.5; // Simulated growth percentage
-    const approvalRate = stats.total_expenses > 0 
-      ? Math.round(((stats.total_expenses - stats.pending_approvals) / stats.total_expenses) * 100 * 10) / 10
-      : 0;
+    const approvalRate =
+      stats.total_expenses > 0
+        ? Math.round(
+            ((stats.total_expenses - stats.pending_approvals) /
+              stats.total_expenses) *
+              100 *
+              10,
+          ) / 10
+        : 0;
 
     const response = {
       totalExpenses: stats.total_expenses || 0,
@@ -40,7 +46,7 @@ export const getDashboardStats: RequestHandler = (req, res) => {
 export const getRecentExpenses: RequestHandler = (req, res) => {
   try {
     const recentExpenses = queries.getRecentExpenses.all();
-    
+
     // Format the response to match expected structure
     const formattedExpenses = recentExpenses.map((expense: any) => ({
       id: expense.id.toString(),

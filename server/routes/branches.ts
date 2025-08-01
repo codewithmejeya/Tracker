@@ -40,9 +40,15 @@ export const getBranchById: RequestHandler = (req, res) => {
 // POST /api/branches - Create a new branch
 export const createBranch: RequestHandler = (req, res) => {
   try {
-    const { branchName, location, contactPerson } = branchSchema.parse(req.body);
+    const { branchName, location, contactPerson } = branchSchema.parse(
+      req.body,
+    );
 
-    const result = queries.createBranch.run(branchName, location, contactPerson);
+    const result = queries.createBranch.run(
+      branchName,
+      location,
+      contactPerson,
+    );
     const newBranchId = result.lastInsertRowid;
 
     // Fetch the created branch
@@ -55,9 +61,9 @@ export const createBranch: RequestHandler = (req, res) => {
   } catch (error) {
     console.error("Error creating branch:", error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ 
-        message: "Invalid input", 
-        errors: error.errors 
+      return res.status(400).json({
+        message: "Invalid input",
+        errors: error.errors,
       });
     }
     res.status(500).json({ message: "Internal server error" });
@@ -68,7 +74,9 @@ export const createBranch: RequestHandler = (req, res) => {
 export const updateBranch: RequestHandler = (req, res) => {
   try {
     const { id } = req.params;
-    const { branchName, location, contactPerson } = branchSchema.parse(req.body);
+    const { branchName, location, contactPerson } = branchSchema.parse(
+      req.body,
+    );
 
     // Check if branch exists
     const existingBranch = queries.getBranchById.get(id);
@@ -89,9 +97,9 @@ export const updateBranch: RequestHandler = (req, res) => {
   } catch (error) {
     console.error("Error updating branch:", error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ 
-        message: "Invalid input", 
-        errors: error.errors 
+      return res.status(400).json({
+        message: "Invalid input",
+        errors: error.errors,
       });
     }
     res.status(500).json({ message: "Internal server error" });

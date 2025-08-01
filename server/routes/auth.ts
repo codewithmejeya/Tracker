@@ -39,7 +39,7 @@ export const login: RequestHandler = async (req, res) => {
 
     // Check password - handle both hashed and plain text for backward compatibility
     let isValidPassword = false;
-    if (user.password.startsWith('$2b$')) {
+    if (user.password.startsWith("$2b$")) {
       // Hashed password
       isValidPassword = await bcrypt.compare(password, user.password);
     } else {
@@ -76,9 +76,11 @@ export const login: RequestHandler = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Login error:', error);
+    console.error("Login error:", error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ message: "Invalid input", errors: error.errors });
+      return res
+        .status(400)
+        .json({ message: "Invalid input", errors: error.errors });
     }
     res.status(500).json({ message: "Internal server error" });
   }
@@ -97,7 +99,9 @@ export const signup: RequestHandler = async (req, res) => {
     } = signupSchema.parse(req.body);
 
     // Check if username or email already exists
-    const existingUser = queries.getUserByUsername.get(username) || queries.getUserByEmail.get(email);
+    const existingUser =
+      queries.getUserByUsername.get(username) ||
+      queries.getUserByEmail.get(email);
 
     if (existingUser) {
       return res
@@ -117,7 +121,7 @@ export const signup: RequestHandler = async (req, res) => {
         fullName,
         employeeId,
         department,
-        role
+        role,
       );
 
       const newUserId = result.lastInsertRowid as number;
@@ -147,16 +151,20 @@ export const signup: RequestHandler = async (req, res) => {
         },
       });
     } catch (dbError: any) {
-      console.error('Database error:', dbError);
-      if (dbError.code === 'SQLITE_CONSTRAINT_UNIQUE') {
-        return res.status(400).json({ message: "Username, email, or employee ID already exists" });
+      console.error("Database error:", dbError);
+      if (dbError.code === "SQLITE_CONSTRAINT_UNIQUE") {
+        return res
+          .status(400)
+          .json({ message: "Username, email, or employee ID already exists" });
       }
       throw dbError;
     }
   } catch (error) {
-    console.error('Signup error:', error);
+    console.error("Signup error:", error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ message: "Invalid input", errors: error.errors });
+      return res
+        .status(400)
+        .json({ message: "Invalid input", errors: error.errors });
     }
     res.status(500).json({ message: "Internal server error" });
   }

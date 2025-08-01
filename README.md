@@ -59,6 +59,7 @@ The application now uses **SQLite database** for production-ready data persisten
 #### Database Schema
 
 **Users Table**
+
 ```sql
 CREATE TABLE users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -75,6 +76,7 @@ CREATE TABLE users (
 ```
 
 **Branches Table**
+
 ```sql
 CREATE TABLE branches (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -87,6 +89,7 @@ CREATE TABLE branches (
 ```
 
 **Expenses Table**
+
 ```sql
 CREATE TABLE expenses (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -118,6 +121,7 @@ CREATE TABLE expenses (
 #### Demo Data Included
 
 **Users:**
+
 - **Admin**: `admin` / `admin123` (Full system access)
 - **Manager**: `manager` / `manager123` (Approval permissions)
 - **Employee**: `barath` / `123456` (Standard user access)
@@ -140,11 +144,13 @@ If you're seeing "Network error. Please try again." when trying to login, it's b
 ### Prerequisites
 
 1. **Install Dependencies**
+
 ```bash
 npm install better-sqlite3 bcryptjs @types/bcryptjs @types/better-sqlite3
 ```
 
 2. **Test Backend Locally (Optional)**
+
 ```bash
 # Test standalone backend
 npm run dev:backend
@@ -157,19 +163,23 @@ npm run dev:backend
 ### Option A: Railway Deployment (Recommended - FREE)
 
 #### Step 1: Create Railway Account
+
 1. Go to [railway.app](https://railway.app)
 2. Sign up with GitHub
 3. Get $5 free credit (enough for months of hosting)
 
 #### Step 2: Deploy from GitHub Repository
+
 1. Click **"New Project"**
 2. Select **"Deploy from GitHub repo"**
 3. Connect your repository: `https://github.com/codewithmejeya/Tracker`
 4. Railway auto-detects Node.js project
 
 #### Step 3: Configure Environment Variables
+
 1. Go to your project → **Variables** tab
 2. Add these variables:
+
 ```
 NODE_ENV=production
 JWT_SECRET=your-super-secure-random-string-here
@@ -177,11 +187,14 @@ PORT=${{RAILWAY_PUBLIC_PORT}}
 ```
 
 #### Step 4: Configure Build Settings
+
 Railway auto-detects, but verify:
+
 - **Build Command**: `npm run build:server`
 - **Start Command**: `npm start`
 
 #### Step 5: Deploy and Get URL
+
 1. Railway will build and deploy automatically
 2. Copy your deployment URL (e.g., `https://tracker-backend-production.up.railway.app`)
 3. Test the backend: `https://your-url.railway.app/api/ping`
@@ -191,10 +204,12 @@ Railway auto-detects, but verify:
 ### Option B: Render Deployment (Alternative - FREE Tier)
 
 #### Step 1: Create Render Account
+
 1. Go to [render.com](https://render.com)
 2. Sign up with GitHub
 
 #### Step 2: Create Web Service
+
 1. Click **"New +"** → **"Web Service"**
 2. Connect your GitHub repository
 3. Configure settings:
@@ -204,12 +219,14 @@ Railway auto-detects, but verify:
    - **Start Command**: `npm start`
 
 #### Step 3: Set Environment Variables
+
 ```
 NODE_ENV=production
 JWT_SECRET=your-super-secure-random-string-here
 ```
 
 #### Step 4: Deploy
+
 1. Click **"Create Web Service"**
 2. Wait for build completion (5-10 minutes)
 3. Get your URL: `https://tracker-backend.onrender.com`
@@ -219,17 +236,21 @@ JWT_SECRET=your-super-secure-random-string-here
 ### Option C: Vercel Deployment (Serverless)
 
 #### Step 1: Install Vercel CLI
+
 ```bash
 npm install -g vercel
 ```
 
 #### Step 2: Deploy
+
 ```bash
 vercel --prod
 ```
 
 #### Step 3: Set Environment Variables
+
 In Vercel dashboard:
+
 ```
 NODE_ENV=production
 JWT_SECRET=your-super-secure-random-string-here
@@ -252,6 +273,7 @@ Value: https://your-backend-url.railway.app
 ```
 
 **Example URLs by Platform:**
+
 - Railway: `https://tracker-backend-production.up.railway.app`
 - Render: `https://tracker-backend.onrender.com`
 - Vercel: `https://tracker-backend.vercel.app`
@@ -275,12 +297,14 @@ Value: https://your-backend-url.railway.app
 ## 🧪 Testing Your Deployment
 
 ### Backend Health Check
+
 ```bash
 curl https://your-backend-url.railway.app/api/ping
 # Should return: {"message": "ping"}
 ```
 
 ### Login Test
+
 ```bash
 curl -X POST https://your-backend-url.railway.app/api/auth/login \
   -H "Content-Type: application/json" \
@@ -288,6 +312,7 @@ curl -X POST https://your-backend-url.railway.app/api/auth/login \
 ```
 
 ### Dashboard Stats Test
+
 ```bash
 curl https://your-backend-url.railway.app/api/dashboard/stats \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
@@ -298,6 +323,7 @@ curl https://your-backend-url.railway.app/api/dashboard/stats \
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **React 18** with TypeScript
 - **React Router 6** (SPA mode)
 - **TailwindCSS 3** for styling
@@ -307,6 +333,7 @@ curl https://your-backend-url.railway.app/api/dashboard/stats \
 - **Vitest** for testing
 
 ### Backend
+
 - **Express.js** with TypeScript
 - **SQLite3** with better-sqlite3 driver
 - **bcryptjs** for password hashing
@@ -315,6 +342,7 @@ curl https://your-backend-url.railway.app/api/dashboard/stats \
 - **CORS** enabled for cross-origin requests
 
 ### Database
+
 - **SQLite Database** with persistent storage
 - **Automatic schema creation** and data population
 - **Production-ready** with proper indexing and constraints
@@ -369,6 +397,7 @@ tracker-management/
 ## 🚀 Getting Started (Local Development)
 
 ### Prerequisites
+
 - **Node.js** (v16 or higher)
 - **npm** or **yarn**
 - **Modern web browser**
@@ -376,44 +405,50 @@ tracker-management/
 ### Installation
 
 1. **Clone the repository**
+
 ```bash
 git clone https://github.com/codewithmejeya/Tracker.git
 cd Tracker
 ```
 
 2. **Install dependencies**
+
 ```bash
 npm install
 ```
 
 3. **Install database dependencies**
+
 ```bash
 npm install better-sqlite3 bcryptjs @types/bcryptjs @types/better-sqlite3
 ```
 
 4. **Start development server**
+
 ```bash
 npm run dev
 ```
 
 5. **Open your browser**
+
 ```
 http://localhost:8080
 ```
 
 ### Demo Login Credentials
 
-| Role | Username | Password | Access Level |
-|------|----------|----------|--------------|
-| Admin | `admin` | `admin123` | Full system access |
-| Manager | `manager` | `manager123` | Expense approval rights |
-| Employee | `barath` | `123456` | Basic user features |
+| Role     | Username  | Password     | Access Level            |
+| -------- | --------- | ------------ | ----------------------- |
+| Admin    | `admin`   | `admin123`   | Full system access      |
+| Manager  | `manager` | `manager123` | Expense approval rights |
+| Employee | `barath`  | `123456`     | Basic user features     |
 
 ---
 
 ## 🔧 Environment Configuration
 
 ### Development (.env)
+
 ```env
 # Optional - defaults work for local development
 VITE_API_URL=http://localhost:8080
@@ -422,6 +457,7 @@ NODE_ENV=development
 ```
 
 ### Production (Platform Environment Variables)
+
 ```env
 # Required for deployment
 NODE_ENV=production
@@ -435,14 +471,17 @@ VITE_API_URL=https://your-backend-url.railway.app
 ## 📞 API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/login` - User login with bcrypt password verification
 - `POST /api/auth/signup` - User registration with password hashing
 
-### Dashboard  
+### Dashboard
+
 - `GET /api/dashboard/stats` - Real-time statistics from SQLite database
 - `GET /api/dashboard/recent-expenses` - Recent activity feed from database
 
 ### Branch Management
+
 - `GET /api/branches` - List all branches from database
 - `GET /api/branches/:id` - Get specific branch
 - `POST /api/branches` - Create new branch with database persistence
@@ -450,6 +489,7 @@ VITE_API_URL=https://your-backend-url.railway.app
 - `DELETE /api/branches/:id` - Delete branch from database
 
 ### Expense Management
+
 - `GET /api/expenses` - List all expenses from database
 - `GET /api/expenses/pending-approval` - Get pending approvals with urgency calculation
 - `GET /api/expenses/:id` - Get specific expense
@@ -466,39 +506,49 @@ VITE_API_URL=https://your-backend-url.railway.app
 ### Common Issues and Solutions
 
 #### 1. "Network error. Please try again."
+
 **Cause**: Frontend can't reach backend API
-**Solution**: 
+**Solution**:
+
 1. Verify backend is deployed and running
 2. Check `VITE_API_URL` environment variable in Cloudflare Pages
 3. Test backend health: `https://your-backend-url/api/ping`
 4. Redeploy frontend after setting environment variables
 
 #### 2. "Internal Server Error" on Backend
+
 **Cause**: Database initialization failed
 **Solution**:
+
 1. Check backend logs in hosting platform
 2. Verify SQLite dependencies are installed
 3. Ensure write permissions for database file
 4. Check JWT_SECRET environment variable is set
 
 #### 3. Login Works but Data Doesn't Load
+
 **Cause**: Database queries failing
 **Solution**:
+
 1. Check backend logs for SQL errors
 2. Verify database file exists and is accessible
 3. Test individual API endpoints
 4. Check JWT token is being sent in requests
 
 #### 4. CORS Errors
+
 **Cause**: Cross-origin request blocked
 **Solution**:
+
 1. Backend includes CORS middleware for all origins
 2. Verify backend is properly deployed
 3. Check browser console for specific CORS errors
 
 #### 5. Build Failures on Deployment Platform
+
 **Cause**: Missing dependencies or incorrect build commands
 **Solution**:
+
 1. Verify package.json includes all SQLite dependencies
 2. Check build commands match platform requirements
 3. Ensure Node.js version compatibility (v16+)
@@ -506,16 +556,19 @@ VITE_API_URL=https://your-backend-url.railway.app
 ### Debug Steps
 
 1. **Test Backend Health**
+
 ```bash
 curl https://your-backend-url/api/ping
 ```
 
 2. **Test Database Connection**
+
 ```bash
 curl https://your-backend-url/api/dashboard/stats
 ```
 
 3. **Test Authentication**
+
 ```bash
 curl -X POST https://your-backend-url/api/auth/login \
   -H "Content-Type: application/json" \
@@ -523,6 +576,7 @@ curl -X POST https://your-backend-url/api/auth/login \
 ```
 
 4. **Check Frontend Environment**
+
 - Open browser dev tools → Application → Environment Variables
 - Verify `VITE_API_URL` is set correctly
 
@@ -556,18 +610,21 @@ curl -X POST https://your-backend-url/api/auth/login \
 ### Database Maintenance
 
 **Backup Strategy**
+
 ```bash
 # Backup SQLite database
 cp data/tracker.db backups/tracker-$(date +%Y%m%d).db
 ```
 
 **Database Size Monitoring**
+
 ```bash
 # Check database size
 ls -lh data/tracker.db
 ```
 
 **Query Performance**
+
 - SQLite auto-optimizes most queries
 - Indexes are automatically created for primary keys
 - Foreign key constraints ensure data integrity
@@ -575,10 +632,12 @@ ls -lh data/tracker.db
 ### Performance Monitoring
 
 **Backend Health Endpoint**
+
 - `/api/ping` - Basic health check
 - Returns server status and response time
 
 **Database Statistics**
+
 - `/api/dashboard/stats` - Real-time database statistics
 - Includes record counts and calculated metrics
 
@@ -620,7 +679,7 @@ git push origin feature/new-feature
 ### Version 1.0.0 (Previous)
 
 - ✅ User authentication with JWT
-- ✅ Expense management and approval workflow  
+- ✅ Expense management and approval workflow
 - ✅ Branch management system
 - ✅ Executive dashboard with analytics
 - ✅ Excel import/export functionality

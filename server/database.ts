@@ -1,18 +1,18 @@
-import Database from 'better-sqlite3';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import Database from "better-sqlite3";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Database path - will create if doesn't exist
-const dbPath = path.join(__dirname, '../data/tracker.db');
+const dbPath = path.join(__dirname, "../data/tracker.db");
 
 // Initialize database
 export const db = new Database(dbPath);
 
 // Enable foreign keys
-db.pragma('foreign_keys = ON');
+db.pragma("foreign_keys = ON");
 
 // Initialize database schema
 export function initializeDatabase() {
@@ -65,8 +65,10 @@ export function initializeDatabase() {
   `);
 
   // Insert demo users if they don't exist
-  const existingUsers = db.prepare('SELECT COUNT(*) as count FROM users').get() as { count: number };
-  
+  const existingUsers = db
+    .prepare("SELECT COUNT(*) as count FROM users")
+    .get() as { count: number };
+
   if (existingUsers.count === 0) {
     const insertUser = db.prepare(`
       INSERT INTO users (username, email, password, full_name, employee_id, department, role)
@@ -74,34 +76,66 @@ export function initializeDatabase() {
     `);
 
     // Demo users (passwords are hashed versions of simple passwords)
-    insertUser.run('admin', 'admin@tracker.com', '$2b$10$8K1p/a0dclxMeWi8H6cOYu6Qlvzp4Ip8J2fYjVnZF5A9ydwWX2KCe', 'System Administrator', 'ADM001', 'IT', 'admin'); // password: admin123
-    insertUser.run('manager', 'manager@tracker.com', '$2b$10$8K1p/a0dclxMeWi8H6cOYu6Qlvzp4Ip8J2fYjVnZF5A9ydwWX2KCe', 'Department Manager', 'MGR001', 'Management', 'manager'); // password: manager123
-    insertUser.run('barath', 'barath@tracker.com', '$2b$10$QqQqQqQqQqQqQqQqQqQqQu3J3J3J3J3J3J3J3J3J3J3J3J3J3J3J3', 'Barath Kumar', 'EMP001', 'Sales', 'employee'); // password: 123456
-    
-    console.log('Demo users created successfully');
+    insertUser.run(
+      "admin",
+      "admin@tracker.com",
+      "$2b$10$8K1p/a0dclxMeWi8H6cOYu6Qlvzp4Ip8J2fYjVnZF5A9ydwWX2KCe",
+      "System Administrator",
+      "ADM001",
+      "IT",
+      "admin",
+    ); // password: admin123
+    insertUser.run(
+      "manager",
+      "manager@tracker.com",
+      "$2b$10$8K1p/a0dclxMeWi8H6cOYu6Qlvzp4Ip8J2fYjVnZF5A9ydwWX2KCe",
+      "Department Manager",
+      "MGR001",
+      "Management",
+      "manager",
+    ); // password: manager123
+    insertUser.run(
+      "barath",
+      "barath@tracker.com",
+      "$2b$10$QqQqQqQqQqQqQqQqQqQqQu3J3J3J3J3J3J3J3J3J3J3J3J3J3J3J3",
+      "Barath Kumar",
+      "EMP001",
+      "Sales",
+      "employee",
+    ); // password: 123456
+
+    console.log("Demo users created successfully");
   }
 
   // Insert demo branches if they don't exist
-  const existingBranches = db.prepare('SELECT COUNT(*) as count FROM branches').get() as { count: number };
-  
+  const existingBranches = db
+    .prepare("SELECT COUNT(*) as count FROM branches")
+    .get() as { count: number };
+
   if (existingBranches.count === 0) {
     const insertBranch = db.prepare(`
       INSERT INTO branches (branch_name, location, contact_person)
       VALUES (?, ?, ?)
     `);
 
-    insertBranch.run('Mumbai Central', 'Mumbai, Maharashtra', 'Rahul Sharma');
-    insertBranch.run('Delhi North', 'Delhi, NCR', 'Priya Singh');
-    insertBranch.run('Bangalore Tech Park', 'Bangalore, Karnataka', 'Arun Kumar');
-    insertBranch.run('Chennai Express', 'Chennai, Tamil Nadu', 'Meera Reddy');
-    insertBranch.run('Hyderabad Hub', 'Hyderabad, Telangana', 'Suresh Das');
-    
-    console.log('Demo branches created successfully');
+    insertBranch.run("Mumbai Central", "Mumbai, Maharashtra", "Rahul Sharma");
+    insertBranch.run("Delhi North", "Delhi, NCR", "Priya Singh");
+    insertBranch.run(
+      "Bangalore Tech Park",
+      "Bangalore, Karnataka",
+      "Arun Kumar",
+    );
+    insertBranch.run("Chennai Express", "Chennai, Tamil Nadu", "Meera Reddy");
+    insertBranch.run("Hyderabad Hub", "Hyderabad, Telangana", "Suresh Das");
+
+    console.log("Demo branches created successfully");
   }
 
   // Insert demo expenses if they don't exist
-  const existingExpenses = db.prepare('SELECT COUNT(*) as count FROM expenses').get() as { count: number };
-  
+  const existingExpenses = db
+    .prepare("SELECT COUNT(*) as count FROM expenses")
+    .get() as { count: number };
+
   if (existingExpenses.count === 0) {
     const insertExpense = db.prepare(`
       INSERT INTO expenses (employee_name, employee_id, category, amount, description, status, submitted_date)
@@ -112,31 +146,71 @@ export function initializeDatabase() {
     const yesterday = new Date(Date.now() - 86400000).toISOString();
     const twoDaysAgo = new Date(Date.now() - 172800000).toISOString();
 
-    insertExpense.run('Rajesh Kumar', 'EMP002', 'Travel & Transportation', 2500.00, 'Client meeting in Delhi', 'pending', now);
-    insertExpense.run('Priya Sharma', 'EMP003', 'Office Supplies', 850.00, 'Laptop accessories and stationery', 'approved', yesterday);
-    insertExpense.run('Arun Patel', 'EMP004', 'Client Meeting', 1200.00, 'Business lunch with potential client', 'pending', twoDaysAgo);
-    insertExpense.run('Meera Reddy', 'EMP005', 'Communications', 450.00, 'Mobile bill reimbursement', 'rejected', twoDaysAgo);
-    insertExpense.run('Suresh Das', 'EMP006', 'Training & Development', 3200.00, 'Professional certification course', 'approved', yesterday);
-    
-    console.log('Demo expenses created successfully');
+    insertExpense.run(
+      "Rajesh Kumar",
+      "EMP002",
+      "Travel & Transportation",
+      2500.0,
+      "Client meeting in Delhi",
+      "pending",
+      now,
+    );
+    insertExpense.run(
+      "Priya Sharma",
+      "EMP003",
+      "Office Supplies",
+      850.0,
+      "Laptop accessories and stationery",
+      "approved",
+      yesterday,
+    );
+    insertExpense.run(
+      "Arun Patel",
+      "EMP004",
+      "Client Meeting",
+      1200.0,
+      "Business lunch with potential client",
+      "pending",
+      twoDaysAgo,
+    );
+    insertExpense.run(
+      "Meera Reddy",
+      "EMP005",
+      "Communications",
+      450.0,
+      "Mobile bill reimbursement",
+      "rejected",
+      twoDaysAgo,
+    );
+    insertExpense.run(
+      "Suresh Das",
+      "EMP006",
+      "Training & Development",
+      3200.0,
+      "Professional certification course",
+      "approved",
+      yesterday,
+    );
+
+    console.log("Demo expenses created successfully");
   }
 
-  console.log('Database initialized successfully');
+  console.log("Database initialized successfully");
 }
 
 // Helper functions for database operations
 export const queries = {
   // User queries
-  getUserByUsername: db.prepare('SELECT * FROM users WHERE username = ?'),
-  getUserByEmail: db.prepare('SELECT * FROM users WHERE email = ?'),
+  getUserByUsername: db.prepare("SELECT * FROM users WHERE username = ?"),
+  getUserByEmail: db.prepare("SELECT * FROM users WHERE email = ?"),
   createUser: db.prepare(`
     INSERT INTO users (username, email, password, full_name, employee_id, department, role)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `),
-  
+
   // Branch queries
-  getAllBranches: db.prepare('SELECT * FROM branches ORDER BY created_at DESC'),
-  getBranchById: db.prepare('SELECT * FROM branches WHERE id = ?'),
+  getAllBranches: db.prepare("SELECT * FROM branches ORDER BY created_at DESC"),
+  getBranchById: db.prepare("SELECT * FROM branches WHERE id = ?"),
   createBranch: db.prepare(`
     INSERT INTO branches (branch_name, location, contact_person)
     VALUES (?, ?, ?)
@@ -146,12 +220,14 @@ export const queries = {
     SET branch_name = ?, location = ?, contact_person = ?, updated_at = CURRENT_TIMESTAMP
     WHERE id = ?
   `),
-  deleteBranch: db.prepare('DELETE FROM branches WHERE id = ?'),
-  
+  deleteBranch: db.prepare("DELETE FROM branches WHERE id = ?"),
+
   // Expense queries
-  getAllExpenses: db.prepare('SELECT * FROM expenses ORDER BY created_at DESC'),
-  getExpenseById: db.prepare('SELECT * FROM expenses WHERE id = ?'),
-  getPendingExpenses: db.prepare('SELECT * FROM expenses WHERE status = ? ORDER BY created_at DESC'),
+  getAllExpenses: db.prepare("SELECT * FROM expenses ORDER BY created_at DESC"),
+  getExpenseById: db.prepare("SELECT * FROM expenses WHERE id = ?"),
+  getPendingExpenses: db.prepare(
+    "SELECT * FROM expenses WHERE status = ? ORDER BY created_at DESC",
+  ),
   createExpense: db.prepare(`
     INSERT INTO expenses (employee_name, employee_id, category, amount, description, receipt_url, status)
     VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -161,7 +237,7 @@ export const queries = {
     SET employee_name = ?, employee_id = ?, category = ?, amount = ?, description = ?, receipt_url = ?, status = ?, updated_at = CURRENT_TIMESTAMP
     WHERE id = ?
   `),
-  deleteExpense: db.prepare('DELETE FROM expenses WHERE id = ?'),
+  deleteExpense: db.prepare("DELETE FROM expenses WHERE id = ?"),
   approveExpense: db.prepare(`
     UPDATE expenses 
     SET status = 'approved', approved_date = CURRENT_TIMESTAMP, approver_name = ?, updated_at = CURRENT_TIMESTAMP
@@ -172,7 +248,7 @@ export const queries = {
     SET status = 'rejected', rejection_reason = ?, updated_at = CURRENT_TIMESTAMP
     WHERE id = ?
   `),
-  
+
   // Dashboard queries
   getDashboardStats: db.prepare(`
     SELECT 
@@ -187,5 +263,5 @@ export const queries = {
     FROM expenses 
     ORDER BY created_at DESC 
     LIMIT 10
-  `)
+  `),
 };
