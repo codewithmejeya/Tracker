@@ -5,13 +5,13 @@ import path from "path";
 export default defineConfig({
   build: {
     lib: {
-      entry: path.resolve(__dirname, "server/node-build.ts"),
+      entry: path.resolve(__dirname, "server/production.ts"),
       name: "server",
-      fileName: "production",
+      fileName: "node-build",
       formats: ["es"],
     },
     outDir: "dist/server",
-    target: "node22",
+    target: "node18",
     ssr: true,
     rollupOptions: {
       external: [
@@ -32,6 +32,12 @@ export default defineConfig({
         // External dependencies that should not be bundled
         "express",
         "cors",
+        "better-sqlite3",
+        "bcryptjs",
+        "jsonwebtoken",
+        "zod",
+        "dotenv",
+        "xlsx",
       ],
       output: {
         format: "es",
