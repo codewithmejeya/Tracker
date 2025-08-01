@@ -1,12 +1,21 @@
 import Database from "better-sqlite3";
 import path from "path";
 import { fileURLToPath } from "url";
+import { mkdirSync } from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Ensure data directory exists
+const dataDir = path.join(__dirname, "../data");
+try {
+  mkdirSync(dataDir, { recursive: true });
+} catch (error) {
+  // Directory might already exist, which is fine
+}
+
 // Database path - will create if doesn't exist
-const dbPath = path.join(__dirname, "../data/tracker.db");
+const dbPath = path.join(dataDir, "tracker.db");
 
 // Initialize database
 export const db = new Database(dbPath);
