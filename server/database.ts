@@ -164,7 +164,7 @@ export function initializeDatabase() {
       "Travel & Transportation",
       2500.0,
       "Client meeting in Delhi",
-      "pending",
+      "submitted",
       now,
     );
     insertExpense.run(
