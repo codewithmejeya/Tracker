@@ -12,7 +12,7 @@ const branchSchema = z.object({
 // GET /api/branches - Get all branches
 export const getAllBranches: RequestHandler = (req, res) => {
   try {
-    const branches = queries.getAllBranches.all();
+    const branches = getQueries().getAllBranches.all();
     res.json(branches);
   } catch (error) {
     console.error("Error fetching branches:", error);
