@@ -34,7 +34,7 @@ export const getAllExpenses: RequestHandler = (req, res) => {
 // GET /api/expenses/pending-approval - Get pending expenses for approval
 export const getPendingExpenses: RequestHandler = (req, res) => {
   try {
-    const pendingExpenses = queries.getPendingExpenses.all("pending");
+    const pendingExpenses = getQueries().getPendingExpenses.all("pending");
 
     // Add urgency and days waiting calculation
     const enrichedExpenses = pendingExpenses.map((expense: any) => {
