@@ -62,7 +62,7 @@ export default function MainDashboard() {
     fetchDashboardData();
   }, []);
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = () => {
     setLoading(true);
 
     // Set default mock data immediately
