@@ -44,6 +44,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import Layout from "@/components/Layout";
+import { getApiUrl } from "@/lib/api-config";
 
 interface PendingExpense {
   id: string;
@@ -107,7 +108,7 @@ export default function ExpenseApproval() {
 
   const fetchPendingExpenses = async () => {
     try {
-      const response = await fetch("/api/expenses/pending-approval", {
+      const response = await fetch(getApiUrl("expenses/pending-approval"), {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -205,7 +206,7 @@ export default function ExpenseApproval() {
     setIsProcessing(true);
 
     try {
-      const response = await fetch(`/api/expenses/${expense.id}/${action}`, {
+      const response = await fetch(getApiUrl(`expenses/${expense.id}/${action}`), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
