@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import { z } from "zod";
-import { queries } from "../database.js";
+import { getQueries } from "../database.js";
 
 // Expense validation schema
 const expenseSchema = z.object({
