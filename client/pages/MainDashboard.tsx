@@ -63,172 +63,87 @@ export default function MainDashboard() {
   }, []);
 
   const fetchDashboardData = async () => {
+    setLoading(true);
+
+    // Set default mock data immediately
+    const mockStats = {
+      totalExpenses: 1547,
+      pendingApprovals: 23,
+      totalBranches: 8,
+      monthlySpend: 125430,
+      expenseGrowth: 12.5,
+      approvalRate: 87.3,
+    };
+
+    const mockExpenses = [
+      {
+        id: "EXP001",
+        employeeName: "Rajesh Kumar",
+        amount: 2500,
+        category: "Travel",
+        status: "pending" as const,
+        date: new Date().toISOString(),
+      },
+      {
+        id: "EXP002",
+        employeeName: "Priya Sharma",
+        amount: 850,
+        category: "Office Supplies",
+        status: "approved" as const,
+        date: new Date(Date.now() - 86400000).toISOString(),
+      },
+      {
+        id: "EXP003",
+        employeeName: "Arun Patel",
+        amount: 1200,
+        category: "Client Meeting",
+        status: "pending" as const,
+        date: new Date(Date.now() - 172800000).toISOString(),
+      },
+    ];
+
+    // Set mock data first, then try to fetch real data
+    setStats(mockStats);
+    setRecentExpenses(mockExpenses);
+
+    // Try to fetch real data from API
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
+    // Fetch stats with individual error handling
     try {
-      // Try to fetch from API, with graceful fallback to mock data
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("No authentication token found");
-      }
-
-      const [statsResponse, expensesResponse] = await Promise.all([
-        fetch(getApiUrl("dashboard/stats"), {
-          headers: { Authorization: `Bearer ${token}` },
-        }).catch(() => null), // Return null on network error
-        fetch(getApiUrl("dashboard/recent-expenses"), {
-          headers: { Authorization: `Bearer ${token}` },
-        }).catch(() => null), // Return null on network error
-      ]);
-
-      if (statsResponse?.ok) {
-        try {
-          const statsData = await statsResponse.json();
-          setStats(statsData);
-        } catch {
-          // JSON parsing failed, use fallback
-          setStats({
-            totalExpenses: 1547,
-            pendingApprovals: 23,
-            totalBranches: 8,
-            monthlySpend: 125430,
-            expenseGrowth: 12.5,
-            approvalRate: 87.3,
-          });
-        }
-      } else {
-        // Fallback mock data
-        setStats({
-          totalExpenses: 1547,
-          pendingApprovals: 23,
-          totalBranches: 8,
-          monthlySpend: 125430,
-          expenseGrowth: 12.5,
-          approvalRate: 87.3,
-        });
-      }
-
-      if (expensesResponse?.ok) {
-        try {
-          const expensesData = await expensesResponse.json();
-          setRecentExpenses(expensesData);
-        } catch {
-          // JSON parsing failed, use fallback
-          setRecentExpenses([
-            {
-              id: "EXP001",
-              employeeName: "Rajesh Kumar",
-              amount: 2500,
-              category: "Travel",
-              status: "pending",
-              date: new Date().toISOString(),
-            },
-            {
-              id: "EXP002",
-              employeeName: "Priya Sharma",
-              amount: 850,
-              category: "Office Supplies",
-              status: "approved",
-              date: new Date(Date.now() - 86400000).toISOString(),
-            },
-            {
-              id: "EXP003",
-              employeeName: "Arun Patel",
-              amount: 1200,
-              category: "Client Meeting",
-              status: "pending",
-              date: new Date(Date.now() - 172800000).toISOString(),
-            },
-          ]);
-        }
-      } else {
-        // Fallback mock data
-        setRecentExpenses([
-          {
-            id: "EXP001",
-            employeeName: "Rajesh Kumar",
-            amount: 2500,
-            category: "Travel",
-            status: "pending",
-            date: new Date().toISOString(),
-          },
-          {
-            id: "EXP002",
-            employeeName: "Priya Sharma",
-            amount: 850,
-            category: "Office Supplies",
-            status: "approved",
-            date: new Date(Date.now() - 86400000).toISOString(),
-          },
-          {
-            id: "EXP003",
-            employeeName: "Arun Patel",
-            amount: 1200,
-            category: "Client Meeting",
-            status: "pending",
-            date: new Date(Date.now() - 172800000).toISOString(),
-          },
-          {
-            id: "EXP004",
-            employeeName: "Meera Reddy",
-            amount: 450,
-            category: "Communications",
-            status: "rejected",
-            date: new Date(Date.now() - 259200000).toISOString(),
-          },
-          {
-            id: "EXP005",
-            employeeName: "Suresh Das",
-            amount: 3200,
-            category: "Training",
-            status: "approved",
-            date: new Date(Date.now() - 345600000).toISOString(),
-          },
-        ]);
-      }
-    } catch (error) {
-      console.warn(
-        "Dashboard API unavailable, using mock data:",
-        error.message,
-      );
-      // Set fallback data on network error
-      setStats({
-        totalExpenses: 1547,
-        pendingApprovals: 23,
-        totalBranches: 8,
-        monthlySpend: 125430,
-        expenseGrowth: 12.5,
-        approvalRate: 87.3,
+      const statsResponse = await fetch(getApiUrl("dashboard/stats"), {
+        headers: { Authorization: `Bearer ${token}` },
       });
 
-      setRecentExpenses([
-        {
-          id: "EXP001",
-          employeeName: "Rajesh Kumar",
-          amount: 2500,
-          category: "Travel",
-          status: "pending",
-          date: new Date().toISOString(),
-        },
-        {
-          id: "EXP002",
-          employeeName: "Priya Sharma",
-          amount: 850,
-          category: "Office Supplies",
-          status: "approved",
-          date: new Date(Date.now() - 86400000).toISOString(),
-        },
-        {
-          id: "EXP003",
-          employeeName: "Arun Patel",
-          amount: 1200,
-          category: "Client Meeting",
-          status: "pending",
-          date: new Date(Date.now() - 172800000).toISOString(),
-        },
-      ]);
-    } finally {
-      setLoading(false);
+      if (statsResponse.ok) {
+        const statsData = await statsResponse.json();
+        setStats(statsData);
+      }
+    } catch (error) {
+      // Silently fail - mock data is already set
+      console.log("Stats API unavailable, using mock data");
     }
+
+    // Fetch expenses with individual error handling
+    try {
+      const expensesResponse = await fetch(getApiUrl("dashboard/recent-expenses"), {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (expensesResponse.ok) {
+        const expensesData = await expensesResponse.json();
+        setRecentExpenses(expensesData);
+      }
+    } catch (error) {
+      // Silently fail - mock data is already set
+      console.log("Expenses API unavailable, using mock data");
+    }
+
+    setLoading(false);
   };
 
   const formatCurrency = (amount: number) => {
