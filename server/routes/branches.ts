@@ -24,7 +24,7 @@ export const getAllBranches: RequestHandler = (req, res) => {
 export const getBranchById: RequestHandler = (req, res) => {
   try {
     const { id } = req.params;
-    const branch = queries.getBranchById.get(id);
+    const branch = getQueries().getBranchById.get(id);
 
     if (!branch) {
       return res.status(404).json({ message: "Branch not found" });
@@ -40,19 +40,13 @@ export const getBranchById: RequestHandler = (req, res) => {
 // POST /api/branches - Create a new branch
 export const createBranch: RequestHandler = (req, res) => {
   try {
-    const { branchName, location, contactPerson } = branchSchema.parse(
-      req.body,
-    );
+    const { branchName, location, contactPerson } = branchSchema.parse(req.body);
 
-    const result = queries.createBranch.run(
-      branchName,
-      location,
-      contactPerson,
-    );
+    const result = getQueries().createBranch.run(branchName, location, contactPerson);
     const newBranchId = result.lastInsertRowid;
 
     // Fetch the created branch
-    const newBranch = queries.getBranchById.get(newBranchId);
+    const newBranch = getQueries().getBranchById.get(newBranchId);
 
     res.status(201).json({
       message: "Branch created successfully",
@@ -61,9 +55,9 @@ export const createBranch: RequestHandler = (req, res) => {
   } catch (error) {
     console.error("Error creating branch:", error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({
-        message: "Invalid input",
-        errors: error.errors,
+      return res.status(400).json({ 
+        message: "Invalid input", 
+        errors: error.errors 
       });
     }
     res.status(500).json({ message: "Internal server error" });
@@ -74,21 +68,19 @@ export const createBranch: RequestHandler = (req, res) => {
 export const updateBranch: RequestHandler = (req, res) => {
   try {
     const { id } = req.params;
-    const { branchName, location, contactPerson } = branchSchema.parse(
-      req.body,
-    );
+    const { branchName, location, contactPerson } = branchSchema.parse(req.body);
 
     // Check if branch exists
-    const existingBranch = queries.getBranchById.get(id);
+    const existingBranch = getQueries().getBranchById.get(id);
     if (!existingBranch) {
       return res.status(404).json({ message: "Branch not found" });
     }
 
     // Update the branch
-    queries.updateBranch.run(branchName, location, contactPerson, id);
+    getQueries().updateBranch.run(branchName, location, contactPerson, id);
 
     // Fetch the updated branch
-    const updatedBranch = queries.getBranchById.get(id);
+    const updatedBranch = getQueries().getBranchById.get(id);
 
     res.json({
       message: "Branch updated successfully",
@@ -97,9 +89,9 @@ export const updateBranch: RequestHandler = (req, res) => {
   } catch (error) {
     console.error("Error updating branch:", error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({
-        message: "Invalid input",
-        errors: error.errors,
+      return res.status(400).json({ 
+        message: "Invalid input", 
+        errors: error.errors 
       });
     }
     res.status(500).json({ message: "Internal server error" });
@@ -112,13 +104,13 @@ export const deleteBranch: RequestHandler = (req, res) => {
     const { id } = req.params;
 
     // Check if branch exists
-    const existingBranch = queries.getBranchById.get(id);
+    const existingBranch = getQueries().getBranchById.get(id);
     if (!existingBranch) {
       return res.status(404).json({ message: "Branch not found" });
     }
 
     // Delete the branch
-    queries.deleteBranch.run(id);
+    getQueries().deleteBranch.run(id);
 
     res.json({ message: "Branch deleted successfully" });
   } catch (error) {
