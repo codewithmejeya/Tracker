@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { queries } from "../database.js";
+import { getQueries } from "../database.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || "tracker-secret-key-2024";
 
