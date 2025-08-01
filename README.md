@@ -50,9 +50,11 @@ A comprehensive full-stack business management application featuring expense man
 ## 🚀 Deployment
 
 ### Current Issue
+
 If you're seeing "Network error. Please try again." when trying to login, it's because the frontend is deployed without the backend API.
 
 ### Quick Fix for Cloudflare Pages
+
 1. **Deploy backend separately** to Railway, Render, or Vercel
 2. **Set environment variable** in Cloudflare Pages:
    ```
@@ -61,7 +63,9 @@ If you're seeing "Network error. Please try again." when trying to login, it's b
 3. **Redeploy** your Cloudflare Pages site
 
 ### Recommended: Deploy to Netlify
+
 This app is pre-configured for Netlify with functions:
+
 1. Connect repository to Netlify
 2. Build command: `npm run build:client`
 3. Publish directory: `dist/spa`

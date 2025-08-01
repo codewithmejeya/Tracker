@@ -206,17 +206,20 @@ export default function ExpenseApproval() {
     setIsProcessing(true);
 
     try {
-      const response = await fetch(getApiUrl(`expenses/${expense.id}/${action}`), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+      const response = await fetch(
+        getApiUrl(`expenses/${expense.id}/${action}`),
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            comments,
+            approvedAmount: amount || expense.amount,
+          }),
         },
-        body: JSON.stringify({
-          comments,
-          approvedAmount: amount || expense.amount,
-        }),
-      });
+      );
 
       if (response.ok) {
         fetchPendingExpenses();

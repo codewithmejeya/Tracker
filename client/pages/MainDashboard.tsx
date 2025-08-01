@@ -186,7 +186,10 @@ export default function MainDashboard() {
         ]);
       }
     } catch (error) {
-      console.warn("Dashboard API unavailable, using mock data:", error.message);
+      console.warn(
+        "Dashboard API unavailable, using mock data:",
+        error.message,
+      );
       // Set fallback data on network error
       setStats({
         totalExpenses: 1547,
