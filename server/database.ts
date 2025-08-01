@@ -207,70 +207,84 @@ export function initializeDatabase() {
   console.log("Database initialized successfully");
 }
 
-// Helper functions for database operations
-export const queries = {
-  // User queries
-  getUserByUsername: db.prepare("SELECT * FROM users WHERE username = ?"),
-  getUserByEmail: db.prepare("SELECT * FROM users WHERE email = ?"),
-  createUser: db.prepare(`
-    INSERT INTO users (username, email, password, full_name, employee_id, department, role)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-  `),
+// Helper functions for database operations - initialized after database setup
+let queries: any = null;
 
-  // Branch queries
-  getAllBranches: db.prepare("SELECT * FROM branches ORDER BY created_at DESC"),
-  getBranchById: db.prepare("SELECT * FROM branches WHERE id = ?"),
-  createBranch: db.prepare(`
-    INSERT INTO branches (branch_name, location, contact_person)
-    VALUES (?, ?, ?)
-  `),
-  updateBranch: db.prepare(`
-    UPDATE branches 
-    SET branch_name = ?, location = ?, contact_person = ?, updated_at = CURRENT_TIMESTAMP
-    WHERE id = ?
-  `),
-  deleteBranch: db.prepare("DELETE FROM branches WHERE id = ?"),
+function initializeQueries() {
+  if (!queries) {
+    queries = {
+      // User queries
+      getUserByUsername: db.prepare("SELECT * FROM users WHERE username = ?"),
+      getUserByEmail: db.prepare("SELECT * FROM users WHERE email = ?"),
+      createUser: db.prepare(`
+        INSERT INTO users (username, email, password, full_name, employee_id, department, role)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `),
 
-  // Expense queries
-  getAllExpenses: db.prepare("SELECT * FROM expenses ORDER BY created_at DESC"),
-  getExpenseById: db.prepare("SELECT * FROM expenses WHERE id = ?"),
-  getPendingExpenses: db.prepare(
-    "SELECT * FROM expenses WHERE status = ? ORDER BY created_at DESC",
-  ),
-  createExpense: db.prepare(`
-    INSERT INTO expenses (employee_name, employee_id, category, amount, description, receipt_url, status)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-  `),
-  updateExpense: db.prepare(`
-    UPDATE expenses 
-    SET employee_name = ?, employee_id = ?, category = ?, amount = ?, description = ?, receipt_url = ?, status = ?, updated_at = CURRENT_TIMESTAMP
-    WHERE id = ?
-  `),
-  deleteExpense: db.prepare("DELETE FROM expenses WHERE id = ?"),
-  approveExpense: db.prepare(`
-    UPDATE expenses 
-    SET status = 'approved', approved_date = CURRENT_TIMESTAMP, approver_name = ?, updated_at = CURRENT_TIMESTAMP
-    WHERE id = ?
-  `),
-  rejectExpense: db.prepare(`
-    UPDATE expenses 
-    SET status = 'rejected', rejection_reason = ?, updated_at = CURRENT_TIMESTAMP
-    WHERE id = ?
-  `),
+      // Branch queries
+      getAllBranches: db.prepare("SELECT * FROM branches ORDER BY created_at DESC"),
+      getBranchById: db.prepare("SELECT * FROM branches WHERE id = ?"),
+      createBranch: db.prepare(`
+        INSERT INTO branches (branch_name, location, contact_person)
+        VALUES (?, ?, ?)
+      `),
+      updateBranch: db.prepare(`
+        UPDATE branches
+        SET branch_name = ?, location = ?, contact_person = ?, updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+      `),
+      deleteBranch: db.prepare("DELETE FROM branches WHERE id = ?"),
 
-  // Dashboard queries
-  getDashboardStats: db.prepare(`
-    SELECT 
-      COUNT(*) as total_expenses,
-      SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_approvals,
-      SUM(CASE WHEN status = 'approved' THEN amount ELSE 0 END) as monthly_spend,
-      (SELECT COUNT(*) FROM branches) as total_branches
-    FROM expenses
-  `),
-  getRecentExpenses: db.prepare(`
-    SELECT id, employee_name, amount, category, status, created_at as date
-    FROM expenses 
-    ORDER BY created_at DESC 
-    LIMIT 10
-  `),
-};
+      // Expense queries
+      getAllExpenses: db.prepare("SELECT * FROM expenses ORDER BY created_at DESC"),
+      getExpenseById: db.prepare("SELECT * FROM expenses WHERE id = ?"),
+      getPendingExpenses: db.prepare(
+        "SELECT * FROM expenses WHERE status = ? ORDER BY created_at DESC",
+      ),
+      createExpense: db.prepare(`
+        INSERT INTO expenses (employee_name, employee_id, category, amount, description, receipt_url, status)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `),
+      updateExpense: db.prepare(`
+        UPDATE expenses
+        SET employee_name = ?, employee_id = ?, category = ?, amount = ?, description = ?, receipt_url = ?, status = ?, updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+      `),
+      deleteExpense: db.prepare("DELETE FROM expenses WHERE id = ?"),
+      approveExpense: db.prepare(`
+        UPDATE expenses
+        SET status = 'approved', approved_date = CURRENT_TIMESTAMP, approver_name = ?, updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+      `),
+      rejectExpense: db.prepare(`
+        UPDATE expenses
+        SET status = 'rejected', rejection_reason = ?, updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+      `),
+
+      // Dashboard queries
+      getDashboardStats: db.prepare(`
+        SELECT
+          COUNT(*) as total_expenses,
+          SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_approvals,
+          SUM(CASE WHEN status = 'approved' THEN amount ELSE 0 END) as monthly_spend,
+          (SELECT COUNT(*) FROM branches) as total_branches
+        FROM expenses
+      `),
+      getRecentExpenses: db.prepare(`
+        SELECT id, employee_name, amount, category, status, created_at as date
+        FROM expenses
+        ORDER BY created_at DESC
+        LIMIT 10
+      `),
+    };
+  }
+  return queries;
+}
+
+export function getQueries() {
+  if (!queries) {
+    throw new Error("Database not initialized. Call initializeDatabase() first.");
+  }
+  return queries;
+}
