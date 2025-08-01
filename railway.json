@@ -1,0 +1,23 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS",
+    "buildCommand": "npm run build:server"
+  },
+  "deploy": {
+    "startCommand": "npm start",
+    "healthcheckPath": "/api/ping",
+    "healthcheckTimeout": 300,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10
+  },
+  "environments": {
+    "production": {
+      "variables": {
+        "NODE_ENV": "production",
+        "PORT": "${{RAILWAY_PUBLIC_PORT}}",
+        "JWT_SECRET": "${{JWT_SECRET}}"
+      }
+    }
+  }
+}
