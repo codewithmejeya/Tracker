@@ -1,11 +1,19 @@
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import { z } from "zod";
+import { queries } from "../database.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || "tracker-secret-key-2024";
 
+// Login schema
+const loginSchema = z.object({
+  username: z.string().min(1, "Username or email is required"),
+  password: z.string().min(1, "Password is required"),
+});
+
 // User registration schema
-const SignupSchema = z.object({
+const signupSchema = z.object({
   fullName: z.string().min(1, "Full name is required"),
   email: z.string().email("Invalid email address"),
   username: z.string().min(3, "Username must be at least 3 characters"),
@@ -15,149 +23,140 @@ const SignupSchema = z.object({
   role: z.enum(["employee", "manager", "admin"]).default("employee"),
 });
 
-// In-memory user database (in production, use a real database)
-interface User {
-  id: string;
-  fullName: string;
-  email: string;
-  username: string;
-  password: string; // In production, hash this
-  employeeId: string;
-  department: string;
-  role: "employee" | "manager" | "admin";
-  createdAt: string;
-  isActive: boolean;
-}
-
-let users: User[] = [
-  {
-    id: "user_001",
-    fullName: "Barath Kumar",
-    email: "barath@tracker.com",
-    username: "barath",
-    password: "123456", // In production, this should be hashed
-    employeeId: "EMP001",
-    department: "Admin",
-    role: "admin",
-    createdAt: new Date().toISOString(),
-    isActive: true,
-  },
-];
-
-// Generate unique user ID
-function generateUserId(): string {
-  const lastUser = users.sort((a, b) => a.id.localeCompare(b.id)).pop();
-  if (!lastUser) return "user_001";
-
-  const lastNumber = parseInt(lastUser.id.substring(5));
-  return `user_${String(lastNumber + 1).padStart(3, "0")}`;
-}
-
-// Hardcoded credentials for demo (keeping original login working)
-const DEMO_CREDENTIALS = {
-  username: "barath",
-  password: "123456",
-};
-
-export const login: RequestHandler = (req, res) => {
-  const { username, password } = req.body;
-
-  // Validate required fields
-  if (!username || !password) {
-    return res
-      .status(400)
-      .json({ message: "Username and password are required" });
-  }
-
-  // Find user in database
-  const user = users.find((u) => u.username === username && u.isActive);
-
-  // Check credentials
-  if (!user || user.password !== password) {
-    return res.status(401).json({ message: "Invalid credentials" });
-  }
-
-  // Generate JWT token
-  const token = jwt.sign(
-    {
-      username: user.username,
-      userId: user.id,
-      role: user.role,
-      employeeId: user.employeeId,
-    },
-    JWT_SECRET,
-    { expiresIn: "24h" },
-  );
-
-  res.json({
-    message: "Login successful",
-    token,
-    user: {
-      id: user.id,
-      username: user.username,
-      fullName: user.fullName,
-      email: user.email,
-      employeeId: user.employeeId,
-      department: user.department,
-      role: user.role,
-    },
-  });
-};
-
-// Signup endpoint
-export const signup: RequestHandler = (req, res) => {
+export const login: RequestHandler = async (req, res) => {
   try {
-    const validatedData = SignupSchema.parse(req.body);
+    const { username, password } = loginSchema.parse(req.body);
 
-    // Check if username or email already exists
-    const existingUser = users.find(
-      (u) =>
-        u.username === validatedData.username ||
-        u.email === validatedData.email ||
-        u.employeeId === validatedData.employeeId,
-    );
-
-    if (existingUser) {
-      if (existingUser.username === validatedData.username) {
-        return res.status(400).json({ message: "Username already exists" });
-      }
-      if (existingUser.email === validatedData.email) {
-        return res.status(400).json({ message: "Email already registered" });
-      }
-      if (existingUser.employeeId === validatedData.employeeId) {
-        return res.status(400).json({ message: "Employee ID already exists" });
-      }
+    // Find user by username or email
+    let user = queries.getUserByUsername.get(username) as any;
+    if (!user) {
+      user = queries.getUserByEmail.get(username) as any;
     }
 
-    // Create new user
-    const newUser: User = {
-      id: generateUserId(),
-      fullName: validatedData.fullName,
-      email: validatedData.email,
-      username: validatedData.username,
-      password: validatedData.password, // In production, hash this
-      employeeId: validatedData.employeeId,
-      department: validatedData.department,
-      role: validatedData.role,
-      createdAt: new Date().toISOString(),
-      isActive: true,
-    };
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
 
-    users.push(newUser);
+    // Check password - handle both hashed and plain text for backward compatibility
+    let isValidPassword = false;
+    if (user.password.startsWith('$2b$')) {
+      // Hashed password
+      isValidPassword = await bcrypt.compare(password, user.password);
+    } else {
+      // Plain text password (for demo users)
+      isValidPassword = password === user.password;
+    }
 
-    // Return success (don't include password)
-    const { password: _, ...userResponse } = newUser;
+    if (!isValidPassword) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
 
-    res.status(201).json({
-      message: "Account created successfully",
-      user: userResponse,
+    // Generate JWT token
+    const token = jwt.sign(
+      {
+        userId: user.id,
+        username: user.username,
+        role: user.role,
+      },
+      JWT_SECRET,
+      { expiresIn: "24h" },
+    );
+
+    res.json({
+      message: "Login successful",
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        fullName: user.full_name,
+        role: user.role,
+        department: user.department,
+        employeeId: user.employee_id,
+      },
     });
   } catch (error) {
+    console.error('Login error:', error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({
-        message: "Validation error",
-        errors: error.errors,
+      return res.status(400).json({ message: "Invalid input", errors: error.errors });
+    }
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const signup: RequestHandler = async (req, res) => {
+  try {
+    const {
+      fullName,
+      email,
+      username,
+      password,
+      employeeId,
+      department,
+      role = "employee",
+    } = signupSchema.parse(req.body);
+
+    // Check if username or email already exists
+    const existingUser = queries.getUserByUsername.get(username) || queries.getUserByEmail.get(email);
+
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ message: "Username or email already exists" });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create new user
+    try {
+      const result = queries.createUser.run(
+        username,
+        email,
+        hashedPassword,
+        fullName,
+        employeeId,
+        department,
+        role
+      );
+
+      const newUserId = result.lastInsertRowid as number;
+
+      // Generate JWT token
+      const token = jwt.sign(
+        {
+          userId: newUserId,
+          username,
+          role,
+        },
+        JWT_SECRET,
+        { expiresIn: "24h" },
+      );
+
+      res.status(201).json({
+        message: "Account created successfully",
+        token,
+        user: {
+          id: newUserId,
+          username,
+          email,
+          fullName,
+          role,
+          department,
+          employeeId,
+        },
       });
+    } catch (dbError: any) {
+      console.error('Database error:', dbError);
+      if (dbError.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+        return res.status(400).json({ message: "Username, email, or employee ID already exists" });
+      }
+      throw dbError;
+    }
+  } catch (error) {
+    console.error('Signup error:', error);
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ message: "Invalid input", errors: error.errors });
     }
     res.status(500).json({ message: "Internal server error" });
   }
