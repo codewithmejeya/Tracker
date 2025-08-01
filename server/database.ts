@@ -182,7 +182,7 @@ export function initializeDatabase() {
       "Client Meeting",
       1200.0,
       "Business lunch with potential client",
-      "pending",
+      "submitted",
       twoDaysAgo,
     );
     insertExpense.run(
