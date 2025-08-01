@@ -205,6 +205,9 @@ export function initializeDatabase() {
   }
 
   console.log("Database initialized successfully");
+
+  // Initialize prepared statements after schema is ready
+  initializeQueries();
 }
 
 // Helper functions for database operations - initialized after database setup
