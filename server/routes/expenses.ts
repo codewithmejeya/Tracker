@@ -23,7 +23,7 @@ const approvalSchema = z.object({
 // GET /api/expenses - Get all expenses
 export const getAllExpenses: RequestHandler = (req, res) => {
   try {
-    const expenses = queries.getAllExpenses.all();
+    const expenses = getQueries().getAllExpenses.all();
     res.json(expenses);
   } catch (error) {
     console.error("Error fetching expenses:", error);
