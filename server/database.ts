@@ -6,22 +6,12 @@ import { mkdirSync } from "fs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Ensure data directory exists
+// Database path variables
 const dataDir = path.join(__dirname, "../data");
-try {
-  mkdirSync(dataDir, { recursive: true });
-} catch (error) {
-  // Directory might already exist, which is fine
-}
-
-// Database path - will create if doesn't exist
 const dbPath = path.join(dataDir, "tracker.db");
 
-// Initialize database
-export const db = new Database(dbPath);
-
-// Enable foreign keys
-db.pragma("foreign_keys = ON");
+// Database instance - will be initialized in initializeDatabase
+let db: any = null;
 
 // Initialize database schema
 export function initializeDatabase() {
