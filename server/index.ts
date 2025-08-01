@@ -41,7 +41,10 @@ export function createServer() {
         databaseInitialized = true;
       } catch (error) {
         console.error("Failed to initialize database:", error);
-        return res.status(500).json({ message: "Database initialization failed" });
+        return res.status(500).json({
+          message: "Database initialization failed",
+          error: error.message
+        });
       }
     }
     next();
