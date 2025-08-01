@@ -1,7 +1,7 @@
 /**
  * Production server entry point for Railway deployment
  */
-import { createServer } from './index.js';
+import { createServer } from "./index.js";
 
 const PORT = process.env.PORT || 3000;
 
@@ -15,12 +15,12 @@ app.listen(PORT, () => {
 });
 
 // Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down gracefully');
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received, shutting down gracefully");
   process.exit(0);
 });
 
-process.on('SIGINT', () => {
-  console.log('SIGINT received, shutting down gracefully');
+process.on("SIGINT", () => {
+  console.log("SIGINT received, shutting down gracefully");
   process.exit(0);
 });

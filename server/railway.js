@@ -4,7 +4,7 @@
  */
 
 // Import required modules
-import { createServer } from './index.js';
+import { createServer } from "./index.js";
 
 const PORT = process.env.PORT || 3000;
 
@@ -16,27 +16,27 @@ app.listen(PORT, () => {
   console.log(`📊 API Health: http://localhost:${PORT}/api/ping`);
   console.log(`🔐 Auth Login: http://localhost:${PORT}/api/auth/login`);
   console.log(`📈 Dashboard: http://localhost:${PORT}/api/dashboard/stats`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
 });
 
 // Graceful shutdown handlers
-process.on('SIGTERM', () => {
-  console.log('🛑 SIGTERM received, shutting down gracefully...');
+process.on("SIGTERM", () => {
+  console.log("🛑 SIGTERM received, shutting down gracefully...");
   process.exit(0);
 });
 
-process.on('SIGINT', () => {
-  console.log('🛑 SIGINT received, shutting down gracefully...');
+process.on("SIGINT", () => {
+  console.log("🛑 SIGINT received, shutting down gracefully...");
   process.exit(0);
 });
 
 // Error handlers
-process.on('uncaughtException', (err) => {
-  console.error('❌ Uncaught Exception:', err);
+process.on("uncaughtException", (err) => {
+  console.error("❌ Uncaught Exception:", err);
   process.exit(1);
 });
 
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("❌ Unhandled Rejection at:", promise, "reason:", reason);
   process.exit(1);
 });
