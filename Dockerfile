@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install all dependencies (including dev dependencies for tsx)
+RUN npm install
 
 # Copy source code
 COPY . .
@@ -22,5 +22,5 @@ EXPOSE 3000
 # Set environment
 ENV NODE_ENV=production
 
-# Start the server
-CMD ["node", "server/railway.js"]
+# Start the server with tsx for TypeScript support
+CMD ["npx", "tsx", "server/production.ts"]
