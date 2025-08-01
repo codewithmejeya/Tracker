@@ -25,6 +25,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Layout from "@/components/Layout";
+import { getApiUrl } from "@/lib/api-config";
 
 interface DashboardStats {
   totalExpenses: number;
@@ -65,10 +66,10 @@ export default function MainDashboard() {
     try {
       // Simulate API calls - in real app, these would be actual API endpoints
       const [statsResponse, expensesResponse] = await Promise.all([
-        fetch("/api/dashboard/stats", {
+        fetch(getApiUrl("dashboard/stats"), {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }),
-        fetch("/api/dashboard/recent-expenses", {
+        fetch(getApiUrl("dashboard/recent-expenses"), {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }),
       ]);
