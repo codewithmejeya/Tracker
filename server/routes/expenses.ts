@@ -69,7 +69,7 @@ export const getPendingExpenses: RequestHandler = (req, res) => {
 export const getExpenseById: RequestHandler = (req, res) => {
   try {
     const { id } = req.params;
-    const expense = queries.getExpenseById.get(id);
+    const expense = getQueries().getExpenseById.get(id);
 
     if (!expense) {
       return res.status(404).json({ message: "Expense not found" });
