@@ -47,6 +47,28 @@ A comprehensive full-stack business management application featuring expense man
 - **Pagination** (10 items per page)
 - **Real-time Updates**
 
+## 🚀 Deployment
+
+### Current Issue
+If you're seeing "Network error. Please try again." when trying to login, it's because the frontend is deployed without the backend API.
+
+### Quick Fix for Cloudflare Pages
+1. **Deploy backend separately** to Railway, Render, or Vercel
+2. **Set environment variable** in Cloudflare Pages:
+   ```
+   VITE_API_URL=https://your-backend-url.com
+   ```
+3. **Redeploy** your Cloudflare Pages site
+
+### Recommended: Deploy to Netlify
+This app is pre-configured for Netlify with functions:
+1. Connect repository to Netlify
+2. Build command: `npm run build:client`
+3. Publish directory: `dist/spa`
+4. Deploy automatically
+
+See [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) for detailed instructions.
+
 ## 🛠️ Tech Stack
 
 ### Frontend
@@ -278,7 +300,7 @@ For production deployment, replace in-memory arrays with a proper database:
    - Implement schema versioning
    - Add seed data scripts
 
-## 🔧 API Endpoints
+## ���� API Endpoints
 
 ### Authentication
 
@@ -434,7 +456,7 @@ git push origin feature/new-feature
 - ✅ User authentication with JWT
 - ✅ Expense management and approval workflow
 - ✅ Branch management system
-- ✅ Executive dashboard with analytics
+- ��� Executive dashboard with analytics
 - ✅ Excel import/export functionality
 - ✅ Responsive UI with modern design
 - ✅ TypeScript throughout the application
