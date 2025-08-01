@@ -113,35 +113,53 @@ export default function MainDashboard() {
       return;
     }
 
-    // Fetch stats with individual error handling
-    try {
-      const statsResponse = await fetch(getApiUrl("dashboard/stats"), {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+    // Safely fetch stats - no errors thrown
+    const fetchStats = async () => {
+      try {
+        const url = getApiUrl("dashboard/stats");
+        console.log("Fetching stats from:", url);
 
-      if (statsResponse.ok) {
-        const statsData = await statsResponse.json();
-        setStats(statsData);
+        const statsResponse = await fetch(url, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (statsResponse?.ok) {
+          const statsData = await statsResponse.json();
+          setStats(statsData);
+          console.log("Stats loaded from API");
+        } else {
+          console.log("Stats API response not ok, using mock data");
+        }
+      } catch (error) {
+        console.log("Stats API unavailable, using mock data");
       }
-    } catch (error) {
-      // Silently fail - mock data is already set
-      console.log("Stats API unavailable, using mock data");
-    }
+    };
 
-    // Fetch expenses with individual error handling
-    try {
-      const expensesResponse = await fetch(getApiUrl("dashboard/recent-expenses"), {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+    // Safely fetch expenses - no errors thrown
+    const fetchExpenses = async () => {
+      try {
+        const url = getApiUrl("dashboard/recent-expenses");
+        console.log("Fetching expenses from:", url);
 
-      if (expensesResponse.ok) {
-        const expensesData = await expensesResponse.json();
-        setRecentExpenses(expensesData);
+        const expensesResponse = await fetch(url, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (expensesResponse?.ok) {
+          const expensesData = await expensesResponse.json();
+          setRecentExpenses(expensesData);
+          console.log("Expenses loaded from API");
+        } else {
+          console.log("Expenses API response not ok, using mock data");
+        }
+      } catch (error) {
+        console.log("Expenses API unavailable, using mock data");
       }
-    } catch (error) {
-      // Silently fail - mock data is already set
-      console.log("Expenses API unavailable, using mock data");
-    }
+    };
+
+    // Execute both fetches without blocking
+    fetchStats();
+    fetchExpenses();
 
     setLoading(false);
   };
