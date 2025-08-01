@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import { initializeDatabase } from "./database.js";
 import { handleDemo } from "./routes/demo";
 import { login, signup, verifyToken } from "./routes/auth";
 import {
