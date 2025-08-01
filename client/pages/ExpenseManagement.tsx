@@ -50,6 +50,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import Layout from "@/components/Layout";
+import { getApiUrl } from "@/lib/api-config";
 
 interface Expense {
   id: string;
@@ -110,7 +111,7 @@ export default function ExpenseManagement() {
 
   const fetchExpenses = async () => {
     try {
-      const response = await fetch("/api/expenses", {
+      const response = await fetch(getApiUrl("expenses"), {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -268,7 +269,7 @@ export default function ExpenseManagement() {
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this expense?")) {
       try {
-        const response = await fetch(`/api/expenses/${id}`, {
+        const response = await fetch(getApiUrl(`expenses/${id}`), {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
