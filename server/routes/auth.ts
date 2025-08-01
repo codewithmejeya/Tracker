@@ -100,6 +100,7 @@ export const signup: RequestHandler = async (req, res) => {
     } = signupSchema.parse(req.body);
 
     // Check if username or email already exists
+    const queries = getQueries();
     const existingUser =
       queries.getUserByUsername.get(username) ||
       queries.getUserByEmail.get(email);
