@@ -15,6 +15,19 @@ let db: any = null;
 
 // Initialize database schema
 export function initializeDatabase() {
+  // Ensure data directory exists
+  try {
+    mkdirSync(dataDir, { recursive: true });
+  } catch (error) {
+    // Directory might already exist, which is fine
+  }
+
+  // Initialize database
+  if (!db) {
+    db = new Database(dbPath);
+    // Enable foreign keys
+    db.pragma("foreign_keys = ON");
+  }
   // Users table
   db.exec(`
     CREATE TABLE IF NOT EXISTS users (
