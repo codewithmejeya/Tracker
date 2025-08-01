@@ -46,6 +46,7 @@ import {
   downloadExcelTemplate,
 } from "@/lib/excel-utils";
 import Layout from "@/components/Layout";
+import { getApiUrl } from "@/lib/api-config";
 
 interface Branch {
   id: string;
@@ -81,7 +82,7 @@ export default function Dashboard() {
 
   const fetchBranches = async () => {
     try {
-      const response = await fetch("/api/branches", {
+      const response = await fetch(getApiUrl("branches"), {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -128,7 +129,7 @@ export default function Dashboard() {
       if (result.success && result.data) {
         // Send all branches to backend
         const promises = result.data.map((branch) =>
-          fetch("/api/branches", {
+          fetch(getApiUrl("branches"), {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -220,7 +221,7 @@ export default function Dashboard() {
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this branch?")) {
       try {
-        const response = await fetch(`/api/branches/${id}`, {
+        const response = await fetch(getApiUrl(`branches/${id}`), {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
