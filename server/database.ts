@@ -228,7 +228,9 @@ function initializeQueries() {
       `),
 
       // Branch queries
-      getAllBranches: db.prepare("SELECT * FROM branches ORDER BY created_at DESC"),
+      getAllBranches: db.prepare(
+        "SELECT * FROM branches ORDER BY created_at DESC",
+      ),
       getBranchById: db.prepare("SELECT * FROM branches WHERE id = ?"),
       createBranch: db.prepare(`
         INSERT INTO branches (branch_name, location, contact_person)
@@ -242,7 +244,9 @@ function initializeQueries() {
       deleteBranch: db.prepare("DELETE FROM branches WHERE id = ?"),
 
       // Expense queries
-      getAllExpenses: db.prepare("SELECT * FROM expenses ORDER BY created_at DESC"),
+      getAllExpenses: db.prepare(
+        "SELECT * FROM expenses ORDER BY created_at DESC",
+      ),
       getExpenseById: db.prepare("SELECT * FROM expenses WHERE id = ?"),
       getPendingExpenses: db.prepare(
         "SELECT * FROM expenses WHERE status = ? ORDER BY created_at DESC",
@@ -290,7 +294,9 @@ function initializeQueries() {
 
 export function getQueries() {
   if (!queries) {
-    throw new Error("Database not initialized. Call initializeDatabase() first.");
+    throw new Error(
+      "Database not initialized. Call initializeDatabase() first.",
+    );
   }
   return queries;
 }

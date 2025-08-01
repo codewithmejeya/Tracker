@@ -43,7 +43,7 @@ export function createServer() {
         console.error("Failed to initialize database:", error);
         return res.status(500).json({
           message: "Database initialization failed",
-          error: error.message
+          error: error.message,
         });
       }
     }

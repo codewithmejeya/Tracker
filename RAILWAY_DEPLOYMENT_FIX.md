@@ -1,7 +1,9 @@
 # 🚀 Railway Deployment Fix Guide
 
 ## Problem
+
 You're getting an npm error during Railway deployment:
+
 ```
 npm error Missing: @types/bcryptjs@2.4.6 from lock file
 npm error Missing: better-sqlite3@9.6.0 from lock file
@@ -14,11 +16,13 @@ This happens because the `package-lock.json` file is out of sync with the new SQ
 ### Option A: Update Lock File Locally (Recommended)
 
 1. **In your local project directory, run:**
+
 ```bash
 npm install
 ```
 
 2. **Commit and push the updated package-lock.json:**
+
 ```bash
 git add package-lock.json
 git commit -m "Update package-lock.json with SQLite dependencies"
@@ -43,6 +47,7 @@ git push origin main
 ### Option C: Alternative - Remove npm ci Usage
 
 1. **Create a custom start script** by adding this to package.json:
+
 ```json
 "scripts": {
   "railway:build": "npm install --only=production && npm run build:server",
@@ -60,11 +65,13 @@ After fixing, test your Railway deployment:
 
 1. **Check build logs** in Railway dashboard
 2. **Test API endpoint:**
+
 ```bash
 curl https://your-railway-url.railway.app/api/ping
 ```
 
 3. **Test login:**
+
 ```bash
 curl -X POST https://your-railway-url.railway.app/api/auth/login \
   -H "Content-Type: application/json" \
