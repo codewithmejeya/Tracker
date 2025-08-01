@@ -26,19 +26,26 @@ import { getDashboardStats, getRecentExpenses } from "./routes/dashboard";
 export function createServer() {
   const app = express();
 
-  // Initialize database
-  try {
-    initializeDatabase();
-    console.log("Database initialized successfully");
-  } catch (error) {
-    console.error("Failed to initialize database:", error);
-    process.exit(1);
-  }
-
   // Middleware
   app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+
+  // Initialize database lazily on first request
+  let databaseInitialized = false;
+  app.use((req, res, next) => {
+    if (!databaseInitialized) {
+      try {
+        initializeDatabase();
+        console.log("Database initialized successfully");
+        databaseInitialized = true;
+      } catch (error) {
+        console.error("Failed to initialize database:", error);
+        return res.status(500).json({ message: "Database initialization failed" });
+      }
+    }
+    next();
+  });
 
   // Public routes
   app.get("/api/ping", (_req, res) => {
