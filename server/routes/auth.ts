@@ -28,6 +28,7 @@ export const login: RequestHandler = async (req, res) => {
     const { username, password } = loginSchema.parse(req.body);
 
     // Find user by username or email
+    const queries = getQueries();
     let user = queries.getUserByUsername.get(username) as any;
     if (!user) {
       user = queries.getUserByEmail.get(username) as any;
