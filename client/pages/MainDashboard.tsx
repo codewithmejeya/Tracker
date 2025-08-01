@@ -64,14 +64,20 @@ export default function MainDashboard() {
 
   const fetchDashboardData = async () => {
     try {
-      // Simulate API calls - in real app, these would be actual API endpoints
+      // Try to fetch from API, with graceful fallback to mock data
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
       const [statsResponse, expensesResponse] = await Promise.all([
         fetch(getApiUrl("dashboard/stats"), {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }),
+          headers: { Authorization: `Bearer ${token}` },
+        }).catch(() => null), // Return null on network error
         fetch(getApiUrl("dashboard/recent-expenses"), {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }),
+          headers: { Authorization: `Bearer ${token}` },
+        }).catch(() => null), // Return null on network error
       ]);
 
       if (statsResponse.ok) {
