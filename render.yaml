@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: tracker-backend
+    env: node
+    buildCommand: npm install && npm run build:server
+    startCommand: npm start
+    healthCheckPath: /api/ping
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 10000
+    disk:
+      name: tracker-data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1
